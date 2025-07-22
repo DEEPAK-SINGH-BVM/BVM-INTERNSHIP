@@ -6,6 +6,11 @@
 </head>
 
 <body>
+  <style>
+    select {
+      width: 200px;
+    }
+  </style>
   <select id="country">
     <option value=""> Select Country </option>
   </select>
@@ -24,6 +29,7 @@
     async function getCountry() {
       let req = await fetch("https://countriesnow.space/api/v0.1/countries/states");
       let res = await req.json()
+
       Data = res.data
       console.log(Data);
 
@@ -35,24 +41,43 @@
         // console.log(option.value)
         countrySelect.append(option)
       });
-    }
-
-    function getStates() {
+      //
       let State = document.getElementById("state");
-      let City = document.getElementById("city");
-      console.log(State);
+      // let City = document.getElementById("city");
+      // console.log(State, 'state');
 
       let selectedCountry = document.getElementById("country").value
-      let country = Data.filter(item => item.name == selectedCountry)
+      let country = Data.filter(item => item.name === selectedCountry)
       if (country) {
-        country.States.forEach(state => {
+        Data.forEach(state => {
           let option = document.createElement("option")
           option.textContent = state.name;
-          State.appendChild(option)
+          console.log(option.textContent);
+          
+          console.log(state);
+          State.append(option)
         })
       }
     }
-    document.getElementById("country").addEventListener("change", getStates);
+
+    // function getStates() {
+    //   let State = document.getElementById("state");
+    //   // let City = document.getElementById("city");
+    //   console.log(State, 'state');
+
+    //   let selectedCountry = document.getElementById("country").value
+    //   let country = Data.find(item => item.name === selectedCountry)
+    //   if (country) {
+    //     Data.forEach(state => {
+    //       let option = document.createElement("option")
+    //       option.textContent = state.name;
+    //       console.log(state.name);
+
+    //       State.appendChild(option)
+    //     })
+    //   }
+    // }
+    // document.getElementById("country").addEventListener("change", getStates);
 
     getCountry();
   </script>
