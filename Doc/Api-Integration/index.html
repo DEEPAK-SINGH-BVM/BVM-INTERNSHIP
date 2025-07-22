@@ -31,7 +31,7 @@
       Data.forEach(element => {
         let option = document.createElement("option");
         option.textContent = element.name
-        // option.value = country.name;
+        // option.value = element.name;
         // console.log(option.value)
         countrySelect.append(option)
       });
@@ -43,7 +43,6 @@
       console.log(State);
 
       let selectedCountry = document.getElementById("country").value
-      // console.log(selectedCountry);
       let country = Data.filter(item => item.name == selectedCountry)
       if (country) {
         country.States.forEach(state => {

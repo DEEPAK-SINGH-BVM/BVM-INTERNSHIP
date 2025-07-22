@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Head / Tail </title>
+    <title>Head Tail</title>
 </head>
 
 <body>
@@ -12,112 +10,30 @@
         #container {
             display: flex;
         }
-
-        .text {
-            padding-left: 5px;
-        }
     </style>
-    <!-- <div id="container"></div> -->
-
-    <button onclick="headClick()">H</button>
-    <button onclick="tailClick()">T</button>
-
-    <button id="head" onclick="mainClick()">H</button>
-    <button id="tail" onclick="mainClick()">T</button>
+    <button onclick="addValue('H')">H</button>
+    <button onclick="addValue('T')">T</button>
 
     <div id="container">
-        <div id="store" class="text">
-            <b>H</b>
-        </div>
-        <div id="store2" class="text">
-            <b>T</b>
-        </div>
-        <div id="store" class="text">
-            <b>H</b>
-        </div>
-        <div id="store2" class="text">
-            <b>T</b>
-        </div>
-
     </div>
+    <script>
+        let string = "";
+        let Column = [];
+        function addValue(value) {
+
+            if (value !== string) {
+                Column = document.createElement("div");
+                document.getElementById("container").append(Column);
+            }
+            let box = document.createElement("div");
+            box.innerText = value;
+            // console.log(box), 'Box';
+            Column.append(box);
+            string = value;
+            console.log(string);
+        }
+    </script>
 
 </body>
-<!-- Changes -->
-<script>
-    let storeAll = [];
-
-    // function headClick() {
-    //     let store = document.getElementById("store");
-    //     let head = document.createElement("tr");
-    //     head.innerHTML = 'H'
-    //     store.append(head)
-    //     storeAll.push(head.innerHTML)
-    //     console.log(storeAll);
-    // }
-    
-    // function tailClick() {
-    //     let store2 = document.getElementById("store2")
-    //     let tail = document.createElement("tr")
-    //     tail.innerHTML = 'T'
-    //     store2.append(tail)
-    //     storeAll.push(tail.innerHTML)
-    //     console.log(storeAll);
-    // }
-
-    function headClick() {
-        let store = document.getElementById("store");
-        let head = document.createElement("tr");
-        head.innerHTML = 'H'
-        store.append(head)
-        // storeAll.push(head.innerHTML)
-        console.log(storeAll);
-    }
-    function tailClick() {
-        let store2 = document.getElementById("store2")
-        let tail = document.createElement("tr")
-        tail.innerHTML = 'T'
-        store2.append(tail)
-        // storeAll.push(tail.innerHTML)
-        console.log(storeAll);
-    }
-
-    let Container = document.getElementById("container");
-
-    let head = document.getElementById("head").textContent;
-    console.log(head);
-
-    let tail = document.getElementById("tail").textContent;
-    console.log(tail);
-
-    function mainClick() {
-        if (storeAll !== 'T' ) {
-            let store = document.getElementById("store");
-            let head = document.createElement("p");
-            head.innerHTML = 'H'
-            store.append(head)
-            storeAll.push(head.innerHTML)
-            console.log(storeAll);
-        }
-        else {
-            let store2 = document.getElementById("store2")
-            let tail = document.createElement("p")
-            tail.innerHTML = 'T'
-            store2.append(tail)
-            storeAll.push(tail.innerHTML)
-            console.log(storeAll);
-        }
-    }
-
-    /*
-        Create two button (Head & Tail)
-        If you click Head then create 1 column of H	
-        If you click Tail then print T on another column
-        Like:-   H T H T
-                 H T H T
-                 H T H T
-
-
-    */
-</script>
 
 </html>
