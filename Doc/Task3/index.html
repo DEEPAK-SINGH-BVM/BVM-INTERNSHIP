@@ -17,97 +17,107 @@
             padding-left: 5px;
         }
     </style>
+    <!-- <div id="container"></div> -->
+
+    <button onclick="headClick()">H</button>
+    <button onclick="tailClick()">T</button>
+
+    <button id="head" onclick="mainClick()">H</button>
+    <button id="tail" onclick="mainClick()">T</button>
+
     <div id="container">
-        <button onclick="headClick()">H</button>
-        <button onclick="tailClick()">T</button>
+        <div id="store" class="text">
+            <b>H</b>
+        </div>
+        <div id="store2" class="text">
+            <b>T</b>
+        </div>
+        <div id="store" class="text">
+            <b>H</b>
+        </div>
+        <div id="store2" class="text">
+            <b>T</b>
+        </div>
+
     </div>
-
-    <!-- <button id="head" onclick="mainClick()">H</button>
-    <button id="tail" onclick="mainClick()">T</button> -->
-
-
-    <!-- <div id="container">
-       <div id="store" class="text">
-            <b>H</b>
-        </div>
-        <div id="store2" class="text">
-            <b>T</b>
-        </div> -->
-    <!-- <div id="store" class="text">
-            <b>H</b>
-        </div>
-        <div id="store2" class="text">
-            <b>T</b>
-        </div>
-    </div> -->
 
 </body>
 <!-- Changes -->
 <script>
-
     let storeAll = [];
 
+    // function headClick() {
+    //     let store = document.getElementById("store");
+    //     let head = document.createElement("tr");
+    //     head.innerHTML = 'H'
+    //     store.append(head)
+    //     storeAll.push(head.innerHTML)
+    //     console.log(storeAll);
+    // }
+    
+    // function tailClick() {
+    //     let store2 = document.getElementById("store2")
+    //     let tail = document.createElement("tr")
+    //     tail.innerHTML = 'T'
+    //     store2.append(tail)
+    //     storeAll.push(tail.innerHTML)
+    //     console.log(storeAll);
+    // }
+
     function headClick() {
-        let store = document.createElement("div");
+        let store = document.getElementById("store");
         let head = document.createElement("tr");
         head.innerHTML = 'H'
-        // console.log(head.innerHTML);
-
         store.append(head)
-        document.body.append(store)
-        storeAll.push(head.innerHTML)
+        // storeAll.push(head.innerHTML)
         console.log(storeAll);
     }
-
     function tailClick() {
-        
-        let store2 = document.createElement("div")
+        let store2 = document.getElementById("store2")
         let tail = document.createElement("tr")
         tail.innerHTML = 'T'
         store2.append(tail)
-        // console.log(tail.innerHTML);
-        document.body.append(store2)
-        storeAll.push(tail.innerHTML)
+        // storeAll.push(tail.innerHTML)
         console.log(storeAll);
     }
 
-    // let Container = document.getElementById("container")
+    let Container = document.getElementById("container");
 
-    // let head = document.getElementById("head").textContent;
-    // console.log(head);
+    let head = document.getElementById("head").textContent;
+    console.log(head);
 
-    // let tail = document.getElementById("tail").textContent;
-    // console.log(tail);
+    let tail = document.getElementById("tail").textContent;
+    console.log(tail);
 
-
-    // function mainClick() {
-    //     if (allStore !== 'T') {
-    //         let store = document.getElementById("store");
-    //         let head = document.createElement("p");
-    //         head.innerHTML = 'H'
-    //         store.append(head)
-    //         storeAll.push(head.innerHTML)
-    //         console.log(storeAll);
-    //     }
-    //     else {
-    //         let store2 = document.getElementById("store2")
-    //         let tail = document.createElement("p")
-    //         tail.innerHTML = 'T'
-    //         store2.append(tail)
-    //         storeAll.push(tail.innerHTML)
-    //         console.log(storeAll);
-    //     }
-    // }
+    function mainClick() {
+        if (storeAll !== 'T' ) {
+            let store = document.getElementById("store");
+            let head = document.createElement("p");
+            head.innerHTML = 'H'
+            store.append(head)
+            storeAll.push(head.innerHTML)
+            console.log(storeAll);
+        }
+        else {
+            let store2 = document.getElementById("store2")
+            let tail = document.createElement("p")
+            tail.innerHTML = 'T'
+            store2.append(tail)
+            storeAll.push(tail.innerHTML)
+            console.log(storeAll);
+        }
+    }
 
     /*
-Create two button (Head & Tail)
-If you click Head then create 1 column of H	
-If you click Tail then print T on another column
-Like:-   
-    H T H T
-    H T H T
-    H T H T
-*/
+        Create two button (Head & Tail)
+        If you click Head then create 1 column of H	
+        If you click Tail then print T on another column
+        Like:-   H T H T
+                 H T H T
+                 H T H T
+
+
+    */
 </script>
 
 </html>

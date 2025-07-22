@@ -44,7 +44,7 @@
 
       let selectedCountry = document.getElementById("country").value
       // console.log(selectedCountry);
-      let country = Data.find(item => item.name == selectedCountry)
+      let country = Data.filter(item => item.name == selectedCountry)
       if (country) {
         country.States.forEach(state => {
           let option = document.createElement("option")
@@ -52,8 +52,6 @@
           State.appendChild(option)
         })
       }
-
-
     }
     document.getElementById("country").addEventListener("change", getStates);
 
