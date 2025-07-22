@@ -1,0 +1,96 @@
+<<<<<<< HEAD
+=======
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Country, State, City Dropdown</title>
+</head>
+<body>
+
+  <h2>Select Country, State, City</h2>
+
+  <select id="country">
+    <option value=""> Select Country </option>
+  </select>
+
+  <select id="state">
+    <option value="">Select State </option>
+  </select>
+
+  <select id="city">
+    <option value=""> Select City </option>
+  </select>
+
+  <script>
+    let countryData = [];
+
+    // Get countries on page load
+    async function getCountries() {
+      let response = await fetch("https://countriesnow.space/api/v0.1/countries/states");
+      let result = await response.json();
+      countryData = result.data;
+
+      let countrySelect = document.getElementById("country");
+      countryData.forEach(country => {
+        let option = document.createElement("option");
+        option.value = country.name;
+        option.textContent = country.name;
+        countrySelect.appendChild(option);
+      });
+    }
+
+    // Get states of selected country
+    function getStates() {
+      let stateSelect = document.getElementById("state");
+      let citySelect = document.getElementById("city");
+
+      // Clear previous options
+      stateSelect.innerHTML = '';
+      citySelect.innerHTML = '';
+
+      let selectedCountry = document.getElementById("country").value;
+      let country = countryData.find(c => c.name === selectedCountry);
+      if (country) {
+        country.states.forEach(state => {
+          let option = document.createElement("option");
+          option.value = state.name;
+          option.textContent = state.name;
+          stateSelect.appendChild(option);
+        });
+      }
+    }
+
+    // Get cities of selected state
+    async function getCities() {
+      let citySelect = document.getElementById("city");
+      citySelect.innerHTML = ''; // Clear previous cities
+
+      let country = document.getElementById("country").value;
+      let state = document.getElementById("state").value;
+
+      let response = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country, state })
+      });
+
+      let result = await response.json();
+      result.data.forEach(city => {
+        let option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        citySelect.appendChild(option);
+      });
+    }
+
+    // Event listeners
+    document.getElementById("country").addEventListener("change", getStates);
+    document.getElementById("state").addEventListener("change", getCities);
+
+    // Load countries
+    getCountries();
+  </script>
+
+</body>
+</html>
+>>>>>>> ad0287eaf2e5f6a0915c8f4887870b159f4ec3dc
