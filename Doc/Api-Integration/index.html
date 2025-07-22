@@ -1,26 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <title> Task</title>
 </head>
 
 <body>
-    <div id="data"></div>
-</body>
-<script>
+  <select id="country">
+    <option value=""> Select Country </option>
+  </select>
 
-    async function getData() {
-        const url = "https://countriesnow.space/api/v0.1/countries/states";
-        const response = await fetch(url);
-        const json = await response.json();
-        console.log(json);
-        document.getElementById("data").append(json)
+  <select id="state">
+    <option value="">Select State </option>
+  </select>
+
+  <select id="city">
+    <option value=""> Select City </option>
+  </select>
+
+  <script>
+    let Data = [];
+
+    async function getCountry() {
+      let req = await fetch("https://countriesnow.space/api/v0.1/countries/states");
+      let res = await req.json()
+      Data = res.data
+      console.log(Data);
+
+      let countrySelect = document.getElementById("country");
+      Data.forEach(element => {
+        let option = document.createElement("option");
+        option.textContent = element.name
+        // option.value = country.name;
+        // console.log(option.value)
+        countrySelect.append(option)
+      });
     }
-    getData()
 
-</script>
+    function getStates() {
+      let State = document.getElementById("state");
+      let City = document.getElementById("city");
+      console.log(State);
+
+      let selectedCountry = document.getElementById("country").value
+      // console.log(selectedCountry);
+      let country = Data.find(item => item.name == selectedCountry)
+      if (country) {
+        country.States.forEach(state => {
+          let option = document.createElement("option")
+          option.textContent = state.name;
+          State.appendChild(option)
+        })
+      }
+
+
+    }
+    document.getElementById("country").addEventListener("change", getStates);
+
+    getCountry();
+  </script>
+
+</body>
 
 </html>

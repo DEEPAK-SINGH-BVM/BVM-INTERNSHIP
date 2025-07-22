@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Country-State-City Dropdown</title>
+</head>
+
+<body>
+    <h2>Country, State & City Selector</h2>
+
+    <label for="countrySelect">Country:</label>
+    <select id="countrySelect">
+        <option value="">Select Country</option>
+    </select>
+
+    <label for="stateSelect">State:</label>
+    <select id="stateSelect">
+        <option value="">Select State</option>
+    </select>
+
+    <label for="citySelect">City:</label>
+    <select id="citySelect">
+        <option value="">Select City</option>
+    </select>
+
+    <script>
+        const countrySelect = document.getElementById("countrySelect");
+        const stateSelect = document.getElementById("stateSelect");
+        const citySelect = document.getElementById("citySelect");
+
+        let countriesData = [];
+
+        async function loadCountries() {
+
+            const res = await fetch("https://countriesnow.space/api/v0.1/countries/states");
+            const data = await res.json();
+            countriesData = data.data;
+
+            countriesData.forEach(country => {
+                const option = document.createElement("option");
+                option.value = country.name;
+                option.textContent = country.name;
+                countrySelect.appendChild(option);
+            });
+
+        }
+        async function loadCities(country, state) {
+
+            const res = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ country: country, state: state })
+            });
+            const data = await res.json();
+
+            // Clear and populate cities dropdown
+            citySelect.innerHTML = `<option value="">Select City</option>`;
+            if (data.data && Array.isArray(data.data)) {
+                data.data.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            }
+
+        }
+
+        // Event listeners
+        countrySelect.addEventListener("change", () => {
+            const selectedCountry = countrySelect.value;
+            stateSelect.innerHTML = `<option value="">Select State</option>`;
+            citySelect.innerHTML = `<option value="">Select City</option>`;
+
+            if (selectedCountry) {
+                const country = countriesData.find(c => c.name === selectedCountry);
+                if (country && country.states) {
+                    country.states.forEach(state => {
+                        const option = document.createElement("option");
+                        option.value = state.name;
+                        option.textContent = state.name;
+                        stateSelect.appendChild(option);
+                    });
+                }
+            }
+        });
+
+        stateSelect.addEventListener("change", () => {
+            const selectedCountry = countrySelect.value;
+            const selectedState = stateSelect.value;
+            if (selectedCountry && selectedState) {
+                loadCities(selectedCountry, selectedState);
+            }
+        });
+
+        // Load countries on page load
+        loadCountries();
+    </script>
+</body>
+
+</html>
