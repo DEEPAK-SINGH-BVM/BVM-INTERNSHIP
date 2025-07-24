@@ -15,6 +15,8 @@
             align-items: center;
             height: 100vh;
             /* 1vh = 10.8px 100vh = 1080px */
+            font-family:Georgia, 'Times New Roman', Times, serif;
+            font-weight: 800;
         }
 
         .clock {
@@ -40,17 +42,16 @@
             top: 50%;
             transform-origin: 100%;
             translate: all 0.5s;
-            /* transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); */
         }
 
         .hour-hand {
             height: 4px;
-            background-color: aqua;
+            background-color: rgb(0, 0, 0);
         }
 
         .minute-hand {
             height: 3px;
-            background-color: blue;
+            background-color: rgb(119, 119, 119);
         }
 
         .second-hand {
@@ -71,7 +72,6 @@
         .number4  { top: 74%; left: 92%; }
         .number5  { top: 90%; left: 78%; }
         .number6  { top: 97%; left: 50%; }
-
         .number7  { top: 90%; left: 23%; }
         .number8  { top: 74%; left: 8%; }
         .number9  { top: 55%; left: 3%; }

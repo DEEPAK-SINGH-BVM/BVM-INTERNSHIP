@@ -1,11 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    
+    <style>
+        /* .Container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        } */
+
+        /* .btn-container {
+            width: 250px;
+            border: 2px solid black;
+            text-align: center;
+            padding: 10px;
+        } */
+
+        /* .button {
+            width: 50px;
+            height: 50px;
+            margin: 2px;
+        } */
+        /* .display{
+            width: 210px;
+            height: 100px;
+            margin-bottom: 4px;
+        } */
+    </style>
+    <div class="Container">
+        <div class="btn-container">
+            <input type="" id="display" disabled>
+            <button class="button" onclick="number('1')">1</button>
+            <button class="button" onclick="number('2')">2</button>
+            <button class="button" onclick="number('3')">3</button>
+            <button class="button" onclick="number('4')">4</button>
+            <button class="button" onclick="number('5')">5</button>
+            <button class="button" onclick="number('6')">6</button>
+            <button class="button" onclick="number('7')">7</button>
+            <button class="button" onclick="number('8')">8</button>
+            <button class="button" onclick="number('9')">9</button>
+            <button class="button" onclick="number('0')">0</button>
+            <button class="button" onclick="action('+')">+</button>
+            <button class="button" onclick="action('-')">-</button>
+            <button class="button" onclick="action('/')">/</button>
+            <button class="button" onclick="action('*')">*</button>
+            <button class="button" onclick="clearDisplay()">C</button>
+            <button class="button" onclick="Calculate()">=</button>
+        </div>
+    </div>
 </body>
+<script>
+    let currentValues = '';
+    let storeAction = '';
+    let previousValues = '';
+    function number(value) {
+        currentValues += value
+        document.getElementById("display").innerText = currentValues
+        console.log(currentValues);
+    }
+
+    function action(act) {
+        storeAction += act
+        document.getElementById("display").innerText = act
+        console.log(act);
+    }
+    function action(act) {
+        if (currentValues == '') return
+        if (previousValues !== '') {
+            Calculate()
+        }
+        storeAction = act;
+        previousValues = currentValues;
+        currentValues = '';
+        document.getElementById("display").innerText = `${previousValues} ${storeAction}`;
+    }
+    function Calculate() {
+        if (previousValues == '' || currentValues == '') return;
+        let result;
+        let prev = parseFloat(previousValues);
+        let current = parseFloat(currentValues);
+
+        switch (storeAction) {
+            case '+':
+                result = prev + current;
+                break;
+            case '-':
+                result = prev - current;
+                break;
+            case '*':
+                result = prev * current;
+                break;
+            case '/':
+                result = prev / current;
+                break;
+            default:
+                return
+        }
+        currentValues = result.toString();
+        storeAction = '';
+        previousValues = '';
+        document.getElementById("display").value = currentValues
+    }
+    function clearDisplay() {
+        currentValues = '';
+        storeAction = '';
+        document.getElementById("display").innerText = '';
+    }
+</script>
+
 </html>
