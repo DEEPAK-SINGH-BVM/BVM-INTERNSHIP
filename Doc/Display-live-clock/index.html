@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+   <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* 1vh = 10.8px 100vh = 1080px */
+        }
+
+        .clock {
+            height: 300px;
+            width: 300px;
+            border: 2px solid black;
+            border-radius: 50%;
+            padding: 20px;
+        }
+
+        .clock-face {
+            height: 100%;
+            width: 100%;
+            /*left top*/
+            transform: translateY(-3px);
+            border-color: 3px solid blue;
+        }
+
+        .hand {
+            width: 50%;
+            background-color: #5e5e5e;
+            position: absolute;
+            top: 50%;
+            transform-origin: 100%;
+            translate: all 0.5s;
+            /* transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); */
+        }
+
+        /* .hour-hand {
+            height: 4px;
+            background-color: aqua;
+        }
+
+        .minute-hand {
+            height: 3px;
+            background-color: blue;
+        }
+
+        .second-hand {
+            height: 1px;
+            background: red;
+            background-color: #000;
+        } */
+
+        .number {
+            position: absolute;
+            font-size: 24px;
+            transform: translate(-50%, -50%);
+        } 
+
+        .number1  { top: 19%; left: 78%; }
+        .number2  { top: 36%; left: 92%; }
+        .number3  { top: 55%; left: 97%; }
+        .number4  { top: 74%; left: 92%; }
+        .number5  { top: 90%; left: 78%; }
+        .number6  { top: 97%; left: 50%; }
+        .number7  { top: 90%; left: 23%; }
+        .number8  { top: 74%; left: 8%; }
+        .number9  { top: 55%; left: 3%; }
+        .number10 { top: 36%; left: 8%; }
+        .number11 { top: 19%; left: 22%; }
+        .number12 { top: 8%; left: 50%; }
+        
+       
+    </style>
+    <div class="clock">
+        <div class="clock-face">
+            <div Class="number number1">1</div>
+            <div Class="number number2">2</div>
+            <div Class="number number3">3</div>
+            <div Class="number number4">4</div>
+            <div Class="number number5">5</div>
+            <div Class="number number6">6</div>
+            <div class="number number7">7</div>
+            <div class="number number8">8</div>
+            <div class="number number9">9</div>
+            <div class="number number10">10</div>
+            <div class="number number11">11</div>
+            <div class="number number12">12</div>
+            <!-- ================== -->
+            <br><br>
+            <div class="hand hour-hand" id="hour"></div>
+            <div class="hand minute-hand" id="minute"></div>
+            <div class="hand second-hand" id="second"></div>
+        </div>
+    </div>
+</body>
+<script>
+    function setTime() {
+        let now = new Date();
+        // console.log(now);
+        let hour = now.getHours();
+        // console.log(hour);
+        let minute = now.getMinutes();
+        // console.log(minute);
+        let second = now.getSeconds();
+
+        let getHour = ((hour / 12) * 360 + 90);
+        console.log(getHour); // 420deg
+        let getMinutes = ((minute / 60) * 360 + 90);
+        // console.log(getMinutes); // 
+        let getSecond = ((second / 60) * 360 + 90);
+        // console.log(getSecond);
+        
+        document.getElementById("hour").style.transform = `rotate(${getHour}deg)`;
+        document.getElementById("minute").style.transform = `rotate(${getMinutes}deg)`;
+        document.getElementById("second").style.transform = `rotate(${getSecond}deg)`;
+
+        // document.getElementById("hour").innerHTML = `${hour} :`;
+        // document.getElementById("minute").innerHTML = `${minute} :`;
+        // document.getElementById("second").innerHTML = `${second}`
+    }
+    setInterval(setTime, 1000);
+    setTime();
+</script>
+
+</html>

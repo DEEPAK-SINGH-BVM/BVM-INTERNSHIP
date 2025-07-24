@@ -1,87 +1,84 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <title> Task</title>
+  <title>Country </title>
 </head>
-
 <body>
-  <style>
-    select {
-      width: 200px;
-    }
-  </style>
+  <label>Country :</label>
   <select id="country">
-    <option value=""> Select Country </option>
+    <option>Select Country</option>
   </select>
 
+  <label>State :</label>
   <select id="state">
-    <option value="">Select State </option>
+    <option>Select State</option>
   </select>
 
+  <label>City :</label>
   <select id="city">
-    <option value=""> Select City </option>
+    <option>Select City</option>
   </select>
 
   <script>
-    let Data = [];
-
-    async function getCountry() {
-      let req = await fetch("https://countriesnow.space/api/v0.1/countries/states");
-      let res = await req.json()
-
-      Data = res.data
-      console.log(Data);
-
-      let countrySelect = document.getElementById("country");
-      Data.forEach(element => {
-        let option = document.createElement("option");
-        option.textContent = element.name
-        // option.value = element.name;
-        // console.log(option.value)
-        countrySelect.append(option)
-      });
-      //
+    async function selectCountry() {
+      let res = await fetch("https://countriesnow.space/api/v0.1/countries/states");
+      let json = await res.json();
+      let data = json.data;
+      // console.log(data);
+      
+      let Country = document.getElementById("country");
       let State = document.getElementById("state");
-      // let City = document.getElementById("city");
-      // console.log(State, 'state');
+      let City = document.getElementById("city");
+      // console.log(Country);
+      // console.log(State);
+      // console.log(City);
+      
+      data.forEach(country => {
+        let option = document.createElement("option");
+        option.textContent = country.name;
+        Country.append(option);
+        // console.log(option);
+      });
 
-      let selectedCountry = document.getElementById("country").value
-      let country = Data.filter(item => item.name === selectedCountry)
-      if (country) {
-        Data.forEach(state => {
-          let option = document.createElement("option")
-          option.textContent = state.name;
-          console.log(option.textContent);
-          
-          console.log(state);
-          State.append(option)
-        })
-      }
+      Country.addEventListener("change", function () {
+        let selected = Country.value;
+        // console.log(selected);
+        let found = data.find(info => info.name == selected);
+        console.log(found,'FOUND');
+        if (found) {
+          found.states.forEach(state => {
+            let option = document.createElement("option");
+            option.textContent = state.name;
+            State.append(option);
+          });
+        }
+      });
+
+      State.addEventListener("change", async function () {
+        let country = Country.value;
+        // console.log(country);
+        let state = State.value;
+        // console.log(State);
+
+        let cityres = await fetch("https://countriesnow.space/api/v0.1/countries/state/cities", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ country, state })
+        });
+
+        let cityjson = await cityres.json();
+        // console.log(cityJson,'cityJson');
+        
+        cityjson.data.forEach(city => {
+          let option = document.createElement("option");
+          option.textContent = city;
+          City.append(option);
+        });
+      });
     }
 
-    // function getStates() {
-    //   let State = document.getElementById("state");
-    //   // let City = document.getElementById("city");
-    //   console.log(State, 'state');
-
-    //   let selectedCountry = document.getElementById("country").value
-    //   let country = Data.find(item => item.name === selectedCountry)
-    //   if (country) {
-    //     Data.forEach(state => {
-    //       let option = document.createElement("option")
-    //       option.textContent = state.name;
-    //       console.log(state.name);
-
-    //       State.appendChild(option)
-    //     })
-    //   }
-    // }
-    // document.getElementById("country").addEventListener("change", getStates);
-
-    getCountry();
+    selectCountry();
   </script>
 
 </body>
-
 </html>
