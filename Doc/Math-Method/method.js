@@ -15,7 +15,9 @@
 
 // 4) Math.floor
 // Math.floor Show The Value Round-Down
-// console.log(Math.floor(4.9));
+// console.log(Math.floor(4.4));
+// console.log(Math.floor(Math.random()*10+1));
+
 // Output : 4
 
 // 5) Math.trunc
@@ -46,7 +48,7 @@
 // 9) Math.abs
 // Math.abs absolute give negative number to positive number
 // console.log(Math.abs(-64));
-// Output : 64
+// Output : 64n
 
 // 10) Math.sin
 // If you want to use degrees instead of radians, you have to convert degrees to radians

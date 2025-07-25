@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>document</title>
+</head>
+
+<body>
+
+  <style>
+    #container {
+      display: flex;
+      width: 100%;
+    }
+    div {
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+    }
+  </style>
+
+  <button onclick="addBox()">+</button>
+  <button onclick="removeBox()">-</button>
+
+  <div id="container">
+  </div>
+
+  <script>
+    let colors = ["red", "green", "#ff0080", "#ff0040", "#ff00ff", '#bf00ff'
+      ,'#8000ff', '#4000ff', '	#0000ff', '#0040ff', '#0080ff', '#00bfff'
+      ,'#00ffff', '#00ffbf', '#00ff80', '#00ff40', '#00ff00 ', '#40ff00'
+      ,'#80ff00', '#bfff00'];
+
+    let store = [];
+
+    function randomColor() {
+      let randomIndex = Math.floor(Math.random() * colors.length);
+      console.log(randomIndex, 'Random');
+      for (let i = 0; i < colors.length; i++) {
+        console.log(i, 'Index');
+           console.log(colors[i], 'colors[i]');
+        if (i == randomIndex) {
+          // console.log(colors[i], 'Matching');
+          return colors[i]
+        }
+      }
+    }
+    function addBox() {
+      let color = randomColor();
+      let box = document.createElement("div");
+      box.style.backgroundColor = color;
+      // console.log(box, 'box');
+      document.getElementById("container").append(box);
+      store.push(box);
+      // console.log(store);
+    }
+    function removeBox() {
+      let container = document.getElementById("container");
+      if (store.length > 0) {
+        let last = store.pop();
+        // console.log(last ,'last');
+        container.removeChild(last);
+      }
+    }
+  </script>
+
+</body>
+
+</html>
