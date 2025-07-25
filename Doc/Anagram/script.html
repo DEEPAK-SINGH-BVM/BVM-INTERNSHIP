@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let firstString = "Mary";
+    let secondString = "Army";
+    function anagram(first, second) {
+        if (first.length !== second.length) {
+            return false;
+        }
+        let firstValue = first.toLowerCase().split("").sort().join("");
+        console.log(firstValue);
+
+        let secondValue = second.toLowerCase().split("").sort().join("");
+        console.log(secondValue);
+
+        if (firstValue === secondValue) {
+            console.log(`${first} is an anagram of ${second}`);
+        } else {
+            console.log(`${first} is Not anagram of ${second}`);
+        }
+    }
+    // Mary is an anagram of Army
+    console.log(anagram(firstString, secondString));
+</script>
+
+</html>
