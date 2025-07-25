@@ -140,7 +140,7 @@
 //
 
 //  false, "", null,undefined,0
-//  3, true, "JHVH", [], {} , -1
+//  true, "JHVH", [], {} ,1, -1
 
 // for (let i = 0; i <= store.length-1; i++) {
 // //   let showType = Number(store[i]);
