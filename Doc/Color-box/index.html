@@ -28,28 +28,37 @@
 
   <script>
 
-    let colors = ["red", "green", "#ff0080", "#ff0040", "#ff00ff", '#bf00ff'
-      , '#8000ff', '#4000ff', '	#0000ff', '#0040ff', '#0080ff', '#00bfff'
-      , '#00ffff', '#00ffbf', '#00ff80', '#00ff40', '#00ff00 ', '#40ff00'];
+    // let colors = ["red", "green", "#ff0080", "#ff0040", "#ff00ff", '#bf00ff'
+    //   , '#8000ff', '#4000ff', '	#0000ff', '#0040ff', '#0080ff', '#00bfff'
+    //   , '#00ffff', '#00ffbf', '#00ff80', '#00ff40', '#00ff00 ', '#40ff00'];
 
     let store = [];
 
-    function randomColor() {
-      let randomIndex = Math.floor(Math.random() * colors.length);
-      console.log(randomIndex, 'RandomIndex');
+    const getMyColor = () => {
+      let n = (Math.random() * 0xfffff * 1000000).toString(16);
+      return '#' + n.slice(0, 6);
+    };
+    // function randomColor() {
+    // const getMyColor = () => {
+    //   let n = (Math.random() * 0xfffff * 1000000).toString(16);
+    //   return '#' + n.slice(0, 6);
+    // };
+    // let randomIndex = Math.floor(Math.random() * colors.length);
+    // console.log(randomIndex, 'RandomIndex');
 
-      for (let i = 0; i < colors.length; i++) {
-        console.log(i, 'Index');
-        console.log(colors[i], 'colors[i]');
+    // for (let i = 0; i < colors.length; i++) {
+    //   console.log(i, 'Index');
+    //   console.log(colors[i], 'colors[i]');
 
-        if (i == randomIndex) {
-          console.log(colors[i], 'Matching');
-          return colors[i]
-        }
-      }
-    }
+    //   if (i == randomIndex) {
+    //     console.log(colors[i], 'Matching');
+    //     return colors[i]
+    //   }
+    // }
+
+    // }
     function addBox() {
-      let color = randomColor();
+      let color = getMyColor();
       let box = document.createElement("div");
       box.style.backgroundColor = color;
       console.log(box, 'box');
@@ -57,13 +66,13 @@
       document.getElementById("container").append(box);
       store.push(box);
       console.log(store);
-      
+
     }
     function removeBox() {
       let container = document.getElementById("container");
       if (store.length > 0) {
         let last = store.pop();
-        console.log(last ,'last');
+        console.log(last, 'last');
         container.removeChild(last);
       }
     }   
