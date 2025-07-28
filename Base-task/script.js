@@ -34,3 +34,24 @@
 
 // console.log(onlyNumber); // [57, 2, 5, 59]
 // console.log(allValues);  // ["w57", "t2v", "5v", "e59"]
+
+/*
+    
+    let cleanStr = string.replace(/\s/g, '');
+    let chars = cleanStr.split('');
+
+    let count = {};
+
+    chars.forEach(char => {
+        count[char] = (count[char] || 0) + 1;
+    });
+
+    let result = Object.keys(count).map(char => ({
+        name: char,
+        occurrence: count[char]
+    }));
+
+    console.log(result);
+
+
+*/

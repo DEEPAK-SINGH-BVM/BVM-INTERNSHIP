@@ -13,45 +13,37 @@
 <script>
     let string = "farmer is doing farming";
     let res = string.replace(/\s+/g, "");
-    console.log(res,'step1');
-    
-    let obj = res.split("")
-    console.log(obj,'step2');
+    console.log(res, 'step1');
 
-    let extract = [...new Set(obj)]
-    console.log(extract,'step3');
-    
-    // for (let i = 0; i < obj.length; i++) {
-    //     let obj2 = Object.assign({}, obj[i])
-    //     console.log(obj2);
-    // }
-    // let a = ['i'];
-    // let obj = Object.assign({}, b);
-    // console.log(obj);   
+    let array1 = res.split("")
+    console.log(array1, 'step2');
+
+    let reducedArray = array1.reduce((store, value) => {
+        // console.log(store,'[],[{..}],[{...},{...}]');
+        // console.log(value);
+        //  debugger
+        if (store.length == 0) {
+            store.push({ name: value, occurance: 1 })
+            
+        }
+        else if (store.findIndex(f => f.name == value) == - 1) {
+            store.push({ name: value, occurance: 1 })
+        }
+        else {
+            store[store.findIndex(f => f.name == value)].occurance++
+        }
+        return store
+    }, []);
+    console.log(reducedArray)
+
     /*
         I have one string "farmer is doing farming"
         the you need to create array of object like:
         [ { name: 'f', occurance: 2}, {name: 'a', occurance: 2} ..... like
         this for all character written in string you should ignore casing in
         string like : F and f should be same.
-*/
-
-/*
-    let result = OtherWords.map( char =>{
-        return{
-            name : char,
-            occurance: [...spaceRemove].filter(ele => ele == char).length
-        }
-    })
-    console.log(result);
-*/
-//   let string = "farmer is doing farming";
-//     let spaceRemove = string.replace(/\s/g, '')
-// //     // console.log("space remove ==>",spaceRemove);
-
-//     let OtherWords = [...new Set(spaceRemove)];
-//     console.log(OtherWords,'OtherWords');
-
+        let string = "i am farming";
+    */
 </script>
 
 </html>
