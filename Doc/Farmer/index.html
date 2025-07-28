@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let string = "farmer is doing farming";
+    let res = string.replace(/\s+/g, "");
+    console.log(res,'step1');
+    
+    let obj = res.split("")
+    console.log(obj,'step2');
+
+    let extract = [...new Set(obj)]
+    console.log(extract,'step3');
+    
+    // for (let i = 0; i < obj.length; i++) {
+    //     let obj2 = Object.assign({}, obj[i])
+    //     console.log(obj2);
+    // }
+    // let a = ['i'];
+    // let obj = Object.assign({}, b);
+    // console.log(obj);   
+    /*
+        I have one string "farmer is doing farming"
+        the you need to create array of object like:
+        [ { name: 'f', occurance: 2}, {name: 'a', occurance: 2} ..... like
+        this for all character written in string you should ignore casing in
+        string like : F and f should be same.
+*/
+
+/*
+    let result = OtherWords.map( char =>{
+        return{
+            name : char,
+            occurance: [...spaceRemove].filter(ele => ele == char).length
+        }
+    })
+    console.log(result);
+*/
+//   let string = "farmer is doing farming";
+//     let spaceRemove = string.replace(/\s/g, '')
+// //     // console.log("space remove ==>",spaceRemove);
+
+//     let OtherWords = [...new Set(spaceRemove)];
+//     console.log(OtherWords,'OtherWords');
+
+</script>
+
+</html>

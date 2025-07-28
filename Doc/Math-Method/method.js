@@ -69,7 +69,7 @@
 // Math.min provide maximum value of give number
 // console.log(Math.max(10,20,30,40,50,60,70));
 // Output : 70
-
+ 
 // 14) Math.random
 // math.random provide random number
 // console.log(Math.random());
