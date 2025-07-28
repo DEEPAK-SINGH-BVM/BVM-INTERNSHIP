@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    let color = ["Blue", "Green", "Red", "Orange", "Violet", "Indigo", "Yellow", "Green", "Red", "Orange", "Violet", "Indigo", "Yellow", , "Yellow", "Green", "Red", "Orange", "Violet", "Indigo"];
+    for (let i = 0; i < color.length; i++) {
+        //  1 + 1 = 2
+        let pos = i + 1;
+        // debugger
+        // console.log(pos);
+        let ordinal;
+        // let arr = [11, 12, 13]
+        // console.log(arr.includes(11));
+
+        // if (pos % 10 == arr.includes(11)) {
+        //     ordinal = "th";
+        // }
+
+        //  1 % 10 = 1 == 1
+        if (pos == 11 || pos == 12 || pos == 13) {
+            ordinal = "th";
+        }
+        else if (pos % 10 == 1) {
+            ordinal = "st"
+        }
+        else if (pos % 10 == 2) {
+            ordinal = "nd";
+        } else if (pos % 10 == 3) {
+            ordinal = "rd";
+        }
+        else {
+            ordinal = "th";
+        }
+        console.log(`${pos}${ordinal} choice is ${color[i]}.`);
+    }
+</script>
+
+</html>

@@ -15,7 +15,7 @@
     <button onclick="addValue('T')">T</button>
 
     <div id="container">
-        
+
     </div>
     <script>
         let string = "";
@@ -27,13 +27,11 @@
             }
             let box = document.createElement("div");
             box.innerText = value;
+            string = value;
             // console.log(box), 'Box';
             Column.append(box);
-            string = value;
-            console.log(string);
         }
     </script>
-
 </body>
 
 </html>

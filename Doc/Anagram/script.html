@@ -11,26 +11,26 @@
 
 </body>
 <script>
-    let firstString = "Mary";
-    let secondString = "Army";
+    let string1 = "Mary";
+    let string2 = "Army";
     function anagram(first, second) {
         if (first.length !== second.length) {
             return false;
         }
-        let firstValue = first.toLowerCase().split("").sort().join("");
-        console.log(firstValue);
+        let value1 = first.toLowerCase().split("").sort().join("");
+        console.log(value1);
 
-        let secondValue = second.toLowerCase().split("").sort().join("");
-        console.log(secondValue);
+        let value2 = second.toLowerCase().split("").sort().join("");
+        console.log(value2);
 
-        if (firstValue === secondValue) {
+        if (value1 === value2) {
             console.log(`${first} is an anagram of ${second}`);
         } else {
             console.log(`${first} is Not anagram of ${second}`);
         }
     }
     // Mary is an anagram of Army
-    console.log(anagram(firstString, secondString));
+    console.log(anagram(string1, string2));
 </script>
 
 </html>

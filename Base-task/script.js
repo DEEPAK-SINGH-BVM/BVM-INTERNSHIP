@@ -8,6 +8,7 @@
 
 // let result = numbers[0] + numbers[1] - (numbers[2] * numbers[3] / numbers[4]);
 // console.log("Result:", result);
+
 // let text = "w57 t2v 5v e59";
 // let store = text.split(" ");
 // let onlyNumber = [];

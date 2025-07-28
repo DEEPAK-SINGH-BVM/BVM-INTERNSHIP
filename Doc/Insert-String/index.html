@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h6>Insert String at particular position</h6>
+</body>
+<script>
+
+    let str = "we are doing some exercises";
+    let str2 = "Javascript ";
+    let index = 0;
+
+    function insert(str, str2, index) {
+        let res = str.slice(0, idx) + str2 + str.slice(index);
+        return res;
+    }
+    console.log(insert(str, str2, index));
+
+    // Output : Javascript we are doing some exercises
+
+    // let str = "we are doing some exercises";
+    // let str2 = "Javascript ";
+    let i = 18;
+
+    function insert(str, str2, i) {
+        let res = str.slice(0, i) + str2 + str.slice(i);
+        return res
+    }
+    console.log(insert(str, str2, i));
+    // we are doing some Javascript exercises
+
+
+    /*
+    let str = "we are doing some exercises";
+    let str2 = "Javascript ";
+    let i = 18;
+    let res = str.slice(0, i)+ str2 + str.slice(i);
+
+    let res = str.slice(0,i) we are doing some
+    let res = str2 Javascript
+    let res = str.slice(i) exercises
+
+    console.log(res);
+    */
+</script>
+
+</html>

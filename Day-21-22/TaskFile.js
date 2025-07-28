@@ -51,6 +51,8 @@
 // Task 11: Use slice() to extract the first 2 items from fruits
 // not change array length
 // console.log(fruits.slice(1,3));
+// console.log(fruits.length);
+
 // output : [ 'apple', 'grape' ]
 
 // Task 12: Use some() to check if any number is greater than 20
@@ -69,6 +71,8 @@
 
 // Task 14: Use splice() to remove 2 elements starting from index 1
 // console.log(fruits.splice(0,2));
+// console.log(fruits.length);
+
 // output : [ 'banana', 'apple' ]
 
 // Task 15: Use unshift() to add "orange" at the beginning of fruits
