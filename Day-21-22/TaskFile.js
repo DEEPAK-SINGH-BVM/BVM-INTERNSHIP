@@ -204,12 +204,12 @@
 // for (let i = 0; i <= store.length - 1; i++) {
 //   let store2 = store[i].split("");
 //   // console.log(store2);
-  
+
 //   let temp = "";
 //   for (let j = 0; j <= store2.length - 1; j++) {
 //     let number = Number(store2[j]);
 //     // console.log(store2[j]);
-    
+
 //     if (number >= 0 && store2[j] !== "") {
 //       temp += store2[j];
 //       // console.log(store2[j]);
@@ -218,7 +218,10 @@
 //   onlyNumber.push(temp);
 // }
 // console.log(onlyNumber);
+//
+/*
 
+*/
 // Task5 : Create a numeric array and calculate the sum of all elements.
 // let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 // console.log(arr.reduce((a,b)=> a+b));
