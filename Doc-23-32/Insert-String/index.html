@@ -12,34 +12,52 @@
 </body>
 <script>
 
-    let str = "we are doing some exercises";
-    let str2 = "Javascript ";
-    let index = 0;
+    // let str = "we are doing some exercises";
+    // let str2 = "Javascript ";
+    // let index = 0;
 
-    function insert(str, str2, index) {
+    // function insert(str, str2, index) {
         //  Javascript + we are doing some + exercises
-        let res = str.slice(0) + str2 + str.slice(index);
-        return res;
-    }
-    console.log(insert(str, str2, index));
+        // let res = str.slice(0) + str2 + str.slice(index);
+        // return res;
+    // }
+    // console.log(insert(str, str2, index));
 
     // Output : Javascript we are doing some exercises
 
     // let str = "we are doing some exercises";
     // let str2 = "Javascript ";
-    let i = 18;
+    // let i = 18;
 
-    function insert(str, str2, i) {
+    // function insert(str, str2, i) {
         // we are doing some + Javascript + exercises
-        let res = str.slice(0, i) + str2 + str.slice(i);
-        
-        return res;
-    }
-    console.log(insert(str, str2, i));
+        // let res = str.slice(0, i) + str2 + str.slice(i);
+
+        // return res;
+    // }
+    // console.log(insert(str, str2, i));
     // we are doing some Javascript exercises
-    
-    
+
+
     /*
+let str = "a123 9x b78 7k l56";
+let words = str.split(" ");
+let a = [], b = [];
+
+for (let i = 0; i < words.length; i++) {
+  let w = words[i];
+  if (w[0] > "0") a.push(+w.slice(1));
+  else if (w[w.length - 1] > "0") b.push(+w.slice(0, w.length - 1));
+}
+
+let sumA = a.reduce((x, y) => x + y, 0);
+let sumB = b.reduce((x, y) => x + y, 0);
+let avgA = sumA / a.length;
+let avgB = sumB / b.length;
+
+let result = Math.round((sumA - sumB) + (avgA - avgB));
+console.log(result); // 318
+
     let str = "we are doing some exercises";
     let str2 = "Javascript ";
     let i = 18;

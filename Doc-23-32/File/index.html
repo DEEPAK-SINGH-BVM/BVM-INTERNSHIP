@@ -58,17 +58,41 @@
     Input: "a123 9x b78 7k l56"
     Group A → 123, 78, 56 → sumA = 257, avgA = 85.67
     Group B → 9, 7 → sumB = 16, avgB = 8 
+
+}
+
     */
     let string = "a123 9x b78 7k l56";
+    let number = [];
+    // let a = [];
+    // let b = [];
 
+    let temp = "";
     let separate = string.split(" ");
-    console.log(separate);
+    // console.log(separate);
 
-    for (let i = 0; i < separate.length; i++) {
-        let separate2 = separate[i].split("");
-        console.log(separate2);
+    // for (let i = 0; i < separate.length; i++) {
+    //     let separate2 = separate[i].split("");
+    //     console.log(separate2);
+    // }
+    for (let i = 0; i < string.length; i++) {
+        let store = string[i];
+        // if(store[0] > 0);{
+        //     console.log(store[i]);
+        // }
+        // if(store.length - 1 > 0){
+        //     console.log(store[i]);
+        // }
+        // console.log(store, 'store');
+        for (let j = 0; j <= store.length; j++) {
+            let number = Number(store[j]);
+            if (number > 0) {
+                temp += store[j];
+                console.log(store[j]);
+            }
+        }
+        number.push(temp)
     }
-
 </script>
 
 </html>
