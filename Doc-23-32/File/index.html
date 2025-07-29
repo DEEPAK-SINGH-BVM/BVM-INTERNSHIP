@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    /*
+    Input: "a123 9x b78 7k l56"
+
+    Theory: Letter-Position Grouping and Extended 
+    Calculation
+    This task uses a space-separated string where each item contains a number
+    and a letter.
+    The letter can appear at the start or end of the number.
+    Example: "a123" or "78x"
+    
+    1. Grouping
+    
+    If the letter is at the start, put the number in Group A
+
+    If the letter is at the end, put the number in Group B
+    
+    2. Calculation
+    
+    After grouping:
+    123, 78, 56
+    sumA: Total of Group A
+    9, 7
+    sumB: Total of Group B
+    85.67
+    avgA: Average of Group A
+    8
+    avgB: Average of Group B
+    
+    Final Answer
+    To get the final result:
+    //             ( 257  - 16 ) 241 + ( 85.67 - 8 ) 77.67 
+    Final Answer = (sumA - sumB) + (avgA - avgB)
+    //             
+    Subtract  sumA from sumB
+    // 
+    Subtract  avgA from avgB
+
+    //  241 + 77.67 = 318.67
+    Add both results
+
+    Round to the nearest integer
+    // Output : 318
+
+    Example
+    Input: "a123 9x b78 7k l56"
+    Group A → 123, 78, 56 → sumA = 257, avgA = 85.67
+    Group B → 9, 7 → sumB = 16, avgB = 8 
+    */
+    let string = "a123 9x b78 7k l56";
+    
+    let separate = string.split(" ");
+    console.log(separate);
+
+    
+
+</script>
+
+</html>
