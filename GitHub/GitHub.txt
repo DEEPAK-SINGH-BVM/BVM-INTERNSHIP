@@ -46,7 +46,7 @@ For push after changes
 
 
 For Colabrate Use with Team 
-(i)   git pull for use download change on cloud  
+(i)   git pull for use download change on cloud  !!
 (ii)  git branch is use for create sperate working branch 
 (iii) git Merge origin changes to main branch
 (iv)  git Fetch origin for download & git Merge for apply changes
