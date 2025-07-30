@@ -221,61 +221,6 @@
 //
 /*
 
-// Step 2 – Filter (category = "A", quantity >= 3)
-
-let filtered = store.filter(obj => {
-  return obj.category === "A" && obj.quantity >= 3;
-}).map(obj => {
-  return { name: obj.name, quantity: obj.quantity };
-});
-
-console.log(" Step 2 - Filtered:", filtered);
-
-// Step 3 – Group & Count
-let grouped = {};
-
-for (let fruit of filtered) {
-  if (!grouped[fruit.name]) {
-    grouped[fruit.name] = {
-      total: fruit.quantity,
-      count: 1
-    };
-  } else {
-    grouped[fruit.name].total += fruit.quantity;
-    grouped[fruit.name].count += 1;
-  }
-}
-
-console.log(" Step 3 - Grouped:", grouped);
-
-// Step 4 – Final Stats with Percent and Sort
-let finalStats = [];
-let totalAll = 0;
-
-for (let key in grouped) {
-  totalAll += grouped[key].total;
-}
-
-for (let key in grouped) {
-  let total = grouped[key].total;
-  let percent = (total / totalAll) * 100;
-  percent = Math.round(percent * 100) / 100; // round to 2 decimals
-
-  finalStats.push({
-    name: key,
-    total: total,
-    percent: percent
-  });
-}
-
-finalStats.sort((a, b) => {
-  if (b.total === a.total) {
-    return b.percent - a.percent;
-  }
-  return b.total - a.total;
-});
-
-console.log(finalStats);
 */
 // Task5 : Create a numeric array and calculate the sum of all elements.
 // let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
