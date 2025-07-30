@@ -77,6 +77,82 @@ Goal:
 Sort:
 By total (high to low)
 Then by percent (if same)
+/**
+ // Step 1 – Parse & Clean
+  let data = "apple:3:A,banana:5:B,apple:x:A,grape:6:C,mango:7:A,orange:3:A,banana:-2:B";
+
+  let items = data.split(",");
+  let cleaned = [];
+
+  for (let item of items) {
+    let parts = item.split(":");
+    if (parts.length === 3) {
+      let name = parts[0];
+      let quantity = parts[1];
+      let category = parts[2];
+
+      if (quantity > 0) {
+        cleaned.push({ name, quantity: Number(quantity), category });
+      }
+    }
+  }
+
+  console.log(" Step 1 - Cleaned:", cleaned);
+
+  // Step 2 – Filter (category = "A", quantity >= 3)
+  let filtered = cleaned.filter(obj => {
+    return obj.category === "A" && obj.quantity >= 3;
+  }).map(obj => {
+    return { name: obj.name, quantity: obj.quantity };
+  });
+
+  console.log(" Step 2 - Filtered:", filtered);
+
+  // Step 3 – Group & Count
+  let grouped = {};
+
+  for (let fruit of filtered) {
+    if (!grouped[fruit.name]) {
+      grouped[fruit.name] = {
+        total: fruit.quantity,
+        count: 1
+      };
+    } else {
+      grouped[fruit.name].total += fruit.quantity;
+      grouped[fruit.name].count += 1;
+    }
+  }
+
+  console.log(" Step 3 - Grouped:", grouped);
+
+  // Step 4 – Final Stats with Percent and Sort
+  let finalStats = [];
+  let totalAll = 0;
+
+  for (let key in grouped) {
+    totalAll += grouped[key].total;
+  }
+
+  for (let key in grouped) {
+    let total = grouped[key].total;
+    let percent = (total / totalAll) * 100;
+    percent = Math.round(percent * 100) / 100; // round to 2 decimals
+
+    finalStats.push({
+      name: key,
+      total: total,
+      percent: percent
+    });
+  }
+
+  finalStats.sort((a, b) => {
+    if (b.total === a.total) {
+      return b.percent - a.percent;
+    }
+    return b.total - a.total;
+  });
+
+  console.log(" Step 4 - Final Stats:", finalStats);
     */
 </script>
 
