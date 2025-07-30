@@ -2,17 +2,17 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 
 <body>
 
 </body>
 <script>
-    /*
-    // New Task
+  /*
+  // New Task
 🧠 Theory: Categorized Fruit Tracker
 This task processes a long string of fruit data. Each entry looks like 
 “fruit:quantity:category” (e.g. “apple:3:A”). You’ll parse, clean, group, and 
@@ -30,11 +30,11 @@ oMissing parts
 
 🧠 Result:
 [
-  { name: "apple", quantity: 3, category: "A" },
-  { name: "banana", quantity: 5, category: "B" },
-  { name: "grape", quantity: 6, category: "C" },
-  { name: "mango", quantity: 7, category: "A" },
-  { name: "orange", quantity: 3, category: "A" }
+{ name: "apple", quantity: 3, category: "A" },
+{ name: "banana", quantity: 5, category: "B" },
+{ name: "grape", quantity: 6, category: "C" },
+{ name: "mango", quantity: 7, category: "A" },
+{ name: "orange", quantity: 3, category: "A" }
 ]
 
 🧠 Step 2 – Filter
@@ -44,9 +44,9 @@ Goal: Keep only items matching:
 
 🧠 Result:
 [
-  { name: "apple", quantity: 3 },
-  { name: "mango", quantity: 7 },
-  { name: "orange", quantity: 3 }
+{ name: "apple", quantity: 3 },
+{ name: "mango", quantity: 7 },
+{ name: "orange", quantity: 3 }
 ]
 
 🧠 Step 3 – Group & Count
@@ -56,9 +56,9 @@ Goal:
 
 🧠 Result:
 {
-  apple: { total: 3, count: 1 },
-  mango: { total: 7, count: 1 },
-  orange: { total: 3, count: 1 }
+apple: { total: 3, count: 1 },
+mango: { total: 7, count: 1 },
+orange: { total: 3, count: 1 }
 }
 
 🧠 Step 4 – Final Stats
@@ -69,91 +69,109 @@ Goal:
 
 🧠 Result:
 [
-  { name: "mango", total: 7, percent: 50 },
-  { name: "apple", total: 3, percent: 21.43 },
-  { name: "orange", total: 3, percent: 21.43 }
+{ name: "mango", total: 7, percent: 50 },
+{ name: "apple", total: 3, percent: 21.43 },
+{ name: "orange", total: 3, percent: 21.43 }
 ]
 
 Sort:
 By total (high to low)
 Then by percent (if same)
-/**
- // Step 1 – Parse & Clean
-  let data = "apple:3:A,banana:5:B,apple:x:A,grape:6:C,mango:7:A,orange:3:A,banana:-2:B";
 
-  let items = data.split(",");
-  let cleaned = [];
+for...of loop
+Use for: Arrays, strings, maps, sets, or other iterable objects
 
-  for (let item of items) {
-    let parts = item.split(":");
-    if (parts.length === 3) {
-      let name = parts[0];
-      let quantity = parts[1];
-      let category = parts[2];
+for...in loop
+Use for: Objects or arrays when you need keys/indexes.
 
+  */
+
+  let string = "apple:3:A,banana:5:B,apple:x:A,grape:6:C,mango:7:A,orange:3:A,banana:-2:B";
+
+  let items = string.split(",");
+  // console.log(items);
+
+  let store = [];
+
+  for (let i = 0; i < items.length; i++) {
+    let item = items[i];
+    // console.log(item);
+
+    let separate = item.split(":");
+    // console.log(separate);
+    if (separate.length == 3) {
+      let name = separate[0];
+      // console.log(name);
+      let quantity = separate[1];
+      // console.log(quantity);
+      let category = separate[2];
+      // console.log(category);
       if (quantity > 0) {
-        cleaned.push({ name, quantity: Number(quantity), category });
+        store.push({ name: name, quantity: Number(quantity), category: category });
       }
     }
   }
+  // console.log(store);
 
-  console.log(" Step 1 - Cleaned:", cleaned);
-
-  // Step 2 – Filter (category = "A", quantity >= 3)
-  let filtered = cleaned.filter(obj => {
-    return obj.category === "A" && obj.quantity >= 3;
-  }).map(obj => {
-    return { name: obj.name, quantity: obj.quantity };
+  let store2 = [];
+  let filter = store.filter(obj => {
+    return obj.category == "A" && obj.quantity >= 3;
+  })
+  console.log(filter);
+  filter.map(obj => {
+    store2.push({ name: obj.name, quantity: obj.quantity });
   });
+  // console.log(store2)
 
-  console.log(" Step 2 - Filtered:", filtered);
-
-  // Step 3 – Group & Count
-  let grouped = {};
-
-  for (let fruit of filtered) {
-    if (!grouped[fruit.name]) {
-      grouped[fruit.name] = {
-        total: fruit.quantity,
+  let store3 = {};
+  for (let find of filter) {
+    // debugger
+    // console.log(find.name);
+    if (store3[find.name] != [find.name]) {
+        store3[find.name] = {
+        total: find.quantity,
         count: 1
-      };
-    } else {
-      grouped[fruit.name].total += fruit.quantity;
-      grouped[fruit.name].count += 1;
+      }
+      // console.log(find.quantity);
+    }
+    else {
+      store3[find.name].total += find.quantity
+      // console.log(store3[find.name],'working');
+      store3[find.name].count += 1;
     }
   }
 
-  console.log(" Step 3 - Grouped:", grouped);
+// console.log(store3);
 
-  // Step 4 – Final Stats with Percent and Sort
-  let finalStats = [];
-  let totalAll = 0;
+let store4 = [];
+let totalValue = 0;
 
-  for (let key in grouped) {
-    totalAll += grouped[key].total;
-  }
-
-  for (let key in grouped) {
-    let total = grouped[key].total;
-    let percent = (total / totalAll) * 100;
-    percent = Math.round(percent * 100) / 100; // round to 2 decimals
-
-    finalStats.push({
-      name: key,
-      total: total,
-      percent: percent
-    });
-  }
-
-  finalStats.sort((a, b) => {
-    if (b.total === a.total) {
-      return b.percent - a.percent;
-    }
-    return b.total - a.total;
+for (let key in store3) {
+  totalValue += store3[key].total;
+  // console.log(totalValue);
+}
+// console.log(totalValue,'working');  
+for (let key in store3) {
+  let total = store3[key].total;
+  let percent = (total / totalValue) * 100;
+  // console.log(percent,'PERCENT');
+  
+  percent = Math.round(percent * 100) / 100;
+  // console.log(percent,'New PERCENT');
+  
+  store4.push({
+    name: key,
+    total: total,
+    percent: percent
   });
+}
+ 
 
-  console.log(" Step 4 - Final Stats:", finalStats);
-    */
+store4.sort((firstItem, secondItem) => secondItem.total - firstItem.total ,'WORKING');
+// store4.sort((firstItem, secondItem) => firstItem.percent - secondItem.percent,'WORKING');
+// let sortByTotal = store4.sort((a, b) => b.total == a.total ||b.percent - a.percent);
+// console.log(sortByTotal);
+console.log(store4); 
 </script>
 
 </html>
