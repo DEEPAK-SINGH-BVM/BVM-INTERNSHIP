@@ -2,103 +2,158 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
 </head>
 
 <body>
-    <p>
-
-    </p>
+    <p></p>
 </body>
 <script>
-/*
-    🧠 Theory: Categorized Fruit Tracker
-This task processes a long string of fruit data.Each entry looks like
-    "fruit:quantity:category:region"(e.g. "apple:3:A:west").You’ll parse, validate, filter, group,
-    and compute detailed statistics.
-
-🧠 Step 1 – Parse & Clean
-    Input: A comma - separated string
-    Example:
-    "apple:3:A:west,banana:5:B:east,apple:x:A:north,grape:6:C:south,mango:7:A:west,orange:3:A:w
-    est, banana: -2: B: east, apple: 3: A:west"
+    /*
+        🧠 Theory: Categorized Fruit Tracker
+        This task processes a long string of fruit data.Each entry looks like
+        "fruit:quantity:category:region"(e.g. "apple:3:A:west").You’ll parse, validate, filter, group,
+        and compute detailed statistics.
     
-    Tasks:
-    Remove invalid entries:
-    Quantity is not a number
-    Quantity is negative
-    Duplicate entries(same fruit, quantity, and category)
-    Missing or malformed parts
-
-🧠 Output:
-    [
-        { name: "apple", quantity: 3, category: "A", region: "west" },
-        { name: "banana", quantity: 5, category: "B", region: "east" },
-        { name: "grape", quantity: 6, category: "C", region: "south" },
-        { name: "mango", quantity: 7, category: "A", region: "west" },
-        { name: "orange", quantity: 3, category: "A", region: "west" }
-    ]
-
-🧠 Step 2 – Advanced Filtering
-    Goal: Keep only items that match all of the following:
-    Specific category(e.g., "A")
-    Minimum quantity(e.g., ≥ 3)
-    Belongs to a specific region(e.g., "west")
-
-🧠 Output:
-    [{ name: "apple", quantity: 3 }, { name: "mango", quantity: 7 },
-    { name: "orange", quantity: 3 }]
-
-🧠 Step 3 – Group & Analyze by Region
-    Goal:
-    First group data by region(e.g. “east”, “west”)
-    Then within each region, group by fruit name
-    For each fruit, calculate:
-    total quantity
-    count of appearances
-    regionSet – unique list of regions per fruit(optional)
-
-🧠 Output:
-    {
-        west: {
-            apple: { total: 3, count: 1 }, mango: { total: 7, count: 1 },
-            orange: { total: 3, count: 1 }
-        },
-        east: { banana: { total: 5, count: 1 } }
+    🧠 Step 1 – Parse & Clean
+        Input: A comma - separated string
+        Example:
+        "apple:3:A:west,banana:5:B:east,apple:x:A:north,grape:6:C:south,mango:7:A:west,orange:3:A:w
+        est, banana: -2: B: east, apple: 3: A:west"
+        
+        Tasks:
+        Remove invalid entries:
+        Quantity is not a number
+        Quantity is negative
+        Duplicate entries(same fruit, quantity, and category)
+        Missing or malformed parts
+    
+    🧠 Output:
+        [
+            { name: "apple", quantity: 3, category: "A", region: "west" },
+            { name: "banana", quantity: 5, category: "B", region: "east" },
+            { name: "grape", quantity: 6, category: "C", region: "south" },
+            { name: "mango", quantity: 7, category: "A", region: "west" },
+            { name: "orange", quantity: 3, category: "A", region: "west" }
+        ]
+    
+    🧠 Step 2 – Advanced Filtering
+        Goal: Keep only items that match all of the following:
+        Specific category(e.g., "A")
+        Minimum quantity(e.g., ≥ 3)
+        Belongs to a specific region(e.g., "west")
+    
+    🧠 Output:
+        [{ name: "apple", quantity: 3 }, { name: "mango", quantity: 7 },
+        { name: "orange", quantity: 3 }]
+    
+    🧠 Step 3 – Group & Analyze by Region
+        Goal:
+        First group data by region(e.g. “east”, “west”)
+        Then within each region, group by fruit name
+        For each fruit, calculate:
+        total quantity
+        count of appearances
+        regionSet – unique list of regions per fruit(optional)
+    
+    🧠 Output:
+        {
+            west: {
+                apple: { total: 3, count: 1 }, mango: { total: 7, count: 1 },
+                orange: { total: 3, count: 1 }
+            },
+            east: { banana: { total: 5, count: 1 } }
+        }
+    
+    🧠 Step 4 – Final Stats + Sorting
+        Goal:
+        For each region:
+        List fruits with:
+        name, total, count, percent of region total
+        percent rounded to 2 decimals
+        Sort:
+        By total(desc)
+        Then by name(asc)
+    // 
+    🧠 Output:
+        {
+            west: [
+                { name: "mango", total: 7, count: 1, percent: 50 },
+                { name: "apple", total: 3, count: 1, percent: 21.43 },
+                { name: "orange", total: 3, count: 1, percent: 21.43 }
+            ],
+                east: [
+                    { name: "banana", total: 5, count: 1, percent: 100 }
+                ]
+        }
+    🧠 Optional Bonus Challenge
+    Support filtering by seasonal fruits only(if a mapping is given like {
+            mango:
+            'summer', apple: 'winter'
+        })
+    Skip out - of - season fruits dynamically
+    */
+    let string =
+        "apple:3:A:west,banana:5:B:east,apple:x:A:north,grape:6:C:south,mango:7:A:west,orange:3:A:west,banana:-2:B:east,apple:3:A:west";
+    let stringDiv = string.split(",");
+    // console.log(separate);
+    // 
+    let store1 = [];
+    for (let i = 0; i < stringDiv.length; i++) {
+        let item = stringDiv[i];
+        let separate = item.split(":");
+        if (separate.length == 4) {
+            let name = separate[0];
+            let quantity = separate[1];
+            let category = separate[2];
+            let region = separate[3];
+            if (quantity > 0) {
+                store1.push({
+                    name: name,
+                    quantity: Number(quantity),
+                    category: category,
+                    region: region,
+                });
+            }
+        }
     }
 
-🧠 Step 4 – Final Stats + Sorting
-    Goal:
-    For each region:
-    List fruits with:
-    name, total, count, percent of region total
-    percent rounded to 2 decimals
-    Sort:
-    By total(desc)
-    Then by name(asc)
+    // console.log(store1);
+    const key = 'name';
 
-🧠 Output:
-    {
-        west: [
-            { name: "mango", total: 7, count: 1, percent: 50 },
-            { name: "apple", total: 3, count: 1, percent: 21.43 },
-            { name: "orange", total: 3, count: 1, percent: 21.43 }
-        ],
-            east: [
-                { name: "banana", total: 5, count: 1, percent: 100 }
-            ]
+    const store = [...new Map(store1.map(item =>
+        [item[key], item])).values()];
+    console.log(store, 'Unique');
+
+    let store2 = [];
+    let filter = store.filter((obj) => {
+        return obj.category == "A" && obj.quantity >= 3;
+    });
+
+    // console.log(filter);
+    filter.map((obj) => {
+        store2.push({ name: obj.name, quantity: obj.quantity });
+    });
+    console.log(store2, 'STORE2');
+
+    let store3 = {};
+    for (let find of filter) {
+        if (store3[find.name]) {
+
+            // store3[find.name] = {
+            //     region: find.region,
+            //     quantity: find.quantity,
+            //     count: 1,
+            // }
+        } else {
+            store3[find.name].quantity += find.quantity;
+            console.log(store3[find.name], 'working');
+            store3[find.name].count += 1;
+        }
     }
-
-🧠 Optional Bonus Challenge
-Support filtering by seasonal fruits only(if a mapping is given like {
-        mango:
-        'summer', apple: 'winter'
-    })
-Skip out - of - season fruits dynamically
-*/
-let string = "apple:3:A:west,banana:5:B:east,apple:x:A:north,grape:6:C:south,mango:7:A:west,orange:3:A:west,banana:-2:B:east,apple:3:A:west"
+    console.log(store3, 'STORE3');
 </script>
 
 </html>
