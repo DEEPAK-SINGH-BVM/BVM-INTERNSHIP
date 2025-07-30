@@ -140,9 +140,7 @@ Use for: Objects or arrays when you need keys/indexes.
       store3[find.name].count += 1;
     }
   }
-
 // console.log(store3);
-
 let store4 = [];
 let totalValue = 0;
 
@@ -157,7 +155,7 @@ for (let key in store3) {
   // console.log(percent,'PERCENT');
   
   percent = Math.round(percent * 100) / 100;
-  // console.log(percent,'New PERCENT');
+  console.log(percent,'New PERCENT');
   
   store4.push({
     name: key,
@@ -167,11 +165,11 @@ for (let key in store3) {
 }
  
 
-store4.sort((firstItem, secondItem) => secondItem.total - firstItem.total ,'WORKING');
+// store4.sort((firstItem, secondItem) => secondItem.total - firstItem.total ,'WORKING');
 // store4.sort((firstItem, secondItem) => firstItem.percent - secondItem.percent,'WORKING');
 // let sortByTotal = store4.sort((a, b) => b.total == a.total ||b.percent - a.percent);
 // console.log(sortByTotal);
-console.log(store4); 
+// console.log(store4); 
 </script>
 
 </html>
