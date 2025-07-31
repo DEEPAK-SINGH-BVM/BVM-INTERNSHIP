@@ -21,7 +21,7 @@
         Input: A comma - separated string
         Example:
         "apple:3:A:west,banana:5:B:east,apple:x:A:north,grape:6:C:south,mango:7:A:west,orange:3:A:w
-        est, banana: -2: B: east, apple: 3: A:west"
+        est, banana: -2: B: east"
         
         Tasks:
         Remove invalid entries:
@@ -56,8 +56,8 @@
         For each fruit, calculate:
         total quantity
         count of appearances
-        regionSet – unique list of regions per fruit(optional)
-    
+        regionSet – unique list of regions per fruit(optional);
+
     🧠 Output:
         {
             west: {
@@ -66,7 +66,7 @@
             },
             east: { banana: { total: 5, count: 1 } }
         }
-    
+        
     🧠 Step 4 – Final Stats + Sorting
         Goal:
         For each region:
@@ -76,7 +76,6 @@
         Sort:
         By total(desc)
         Then by name(asc)
-    // 
     🧠 Output:
         {
             west: [
@@ -88,72 +87,100 @@
                     { name: "banana", total: 5, count: 1, percent: 100 }
                 ]
         }
-    🧠 Optional Bonus Challenge
-    Support filtering by seasonal fruits only(if a mapping is given like {
-            mango:
-            'summer', apple: 'winter'
-        })
-    Skip out - of - season fruits dynamically
-    */
-    let string =
-        "apple:3:A:west,banana:5:B:east,apple:x:A:north,grape:6:C:south,mango:7:A:west,orange:3:A:west,banana:-2:B:east,apple:3:A:west";
+*/
+    let string = "apple:3:A:west,apple:3:A:west,banana:5:B:east,apple:x:A:north,grape:6:C:south,mango:7:A:west,orange:3:A:west,banana:-2:B:east";
     let stringDiv = string.split(",");
     // console.log(separate);
-    // 
     let store1 = [];
     for (let i = 0; i < stringDiv.length; i++) {
         let item = stringDiv[i];
         let separate = item.split(":");
+        // console.log(separate,);
         if (separate.length == 4) {
             let name = separate[0];
+            console.log(name, 'name');
             let quantity = separate[1];
+            console.log(quantity, 'quantity');
             let category = separate[2];
+            console.log(category, 'category');
             let region = separate[3];
+            console.log(region, 'region');
+
             if (quantity > 0) {
                 store1.push({
-                    name: name,
+                    name,
                     quantity: Number(quantity),
-                    category: category,
-                    region: region,
+                    category,
+                    region,
                 });
+                // console.log(typeof quantity);
             }
         }
     }
-
-    // console.log(store1);
     const key = 'name';
 
-    const store = [...new Map(store1.map(item =>
-        [item[key], item])).values()];
-    console.log(store, 'Unique');
+    const store = [...new Map(store1.map(item => [item[key], item])).values()];
+    console.log(store, 'store');
+
+    const newVar = store1.map(item => {
+        // console.log([item[key], item])
+        return [item[key], item]
+    })
+
+    // console.log(store, 'store');
+        console.log(newVar, 'newVar');
 
     let store2 = [];
-    let filter = store.filter((obj) => {
-        return obj.category == "A" && obj.quantity >= 3;
+    let filter2 = store.filter((obj) => {
+        return (obj.category == "A") && obj.quantity >= 3;
     });
-
-    // console.log(filter);
-    filter.map((obj) => {
+    filter2.map((obj) => {
         store2.push({ name: obj.name, quantity: obj.quantity });
     });
-    console.log(store2, 'STORE2');
 
+    let filter = store.filter((obj) => {
+        return (obj.category == "A" || obj.category == "B") && obj.quantity >= 3;
+    });
+    // console.log(store2, 'STORE2');
     let store3 = {};
     for (let find of filter) {
-        if (store3[find.name]) {
-
-            // store3[find.name] = {
-            //     region: find.region,
-            //     quantity: find.quantity,
-            //     count: 1,
-            // }
-        } else {
-            store3[find.name].quantity += find.quantity;
-            console.log(store3[find.name], 'working');
-            store3[find.name].count += 1;
+        if (!store3[find.region]) {
+            console.log(find.region);
+            store3[find.region] = {};
+        }
+        if (!store3[find.name]) {
+            store3[find.region][find.name] = {
+                total: find.quantity,
+                count: 1
+            };
+            console.log(find.quantity);
         }
     }
-    console.log(store3, 'STORE3');
+    // console.log(store3, 'STORE3');
+
+    let store4 = {};
+    for (let key in store3) {
+        // debugger    
+        let storeFruits = store3[key];
+        // console.log(storeFruits,'storeFruits');
+        let regionTotal = 0;
+        for (let fruit in storeFruits) {
+            regionTotal += storeFruits[fruit].total;
+        }
+        let result = [];
+        for (let fruit in storeFruits) {
+            // console.log(storeFruits,'storeFruits');
+            let { total, count } = storeFruits[fruit];
+            let percent = (total / regionTotal) * 100;
+            // console.log(percent);
+            percent = Math.round(percent * 100) / 100;
+            // console.log(percent);
+            result.push({ name: fruit, total, count, percent });
+        }
+        result.sort((a, b) => b.total - a.total);
+        store4[key] = result;
+    }
+    // console.log(store4, 'STORE4');
 </script>
 
 </html>

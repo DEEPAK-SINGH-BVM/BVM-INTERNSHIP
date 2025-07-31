@@ -83,9 +83,7 @@ Use for: Arrays, strings, maps, sets, or other iterable objects
 
 for...in loop
 Use for: Objects or arrays when you need keys/indexes.
-
-  */
-
+*/
   let string = "apple:3:A,banana:5:B,apple:x:A,grape:6:C,mango:7:A,orange:3:A,banana:-2:B";
 
   let items = string.split(",");
@@ -128,7 +126,7 @@ Use for: Objects or arrays when you need keys/indexes.
     // debugger
     // console.log(find.name);
     if (store3[find.name] != [find.name]) {
-        store3[find.name] = {
+      store3[find.name] = {
         total: find.quantity,
         count: 1
       }
@@ -140,36 +138,36 @@ Use for: Objects or arrays when you need keys/indexes.
       store3[find.name].count += 1;
     }
   }
-// console.log(store3);
-let store4 = [];
-let totalValue = 0;
+  // console.log(store3);
+  let store4 = [];
+  let totalValue = 0;
 
-for (let key in store3) {
-  totalValue += store3[key].total;
-  // console.log(totalValue);
-}
-// console.log(totalValue,'working');  
-for (let key in store3) {
-  let total = store3[key].total;
-  let percent = (total / totalValue) * 100;
-  // console.log(percent,'PERCENT');
-  
-  percent = Math.round(percent * 100) / 100;
-  console.log(percent,'New PERCENT');
-  
-  store4.push({
-    name: key,
-    total: total,
-    percent: percent
-  });
-}
- 
+  for (let key in store3) {
+    totalValue += store3[key].total;
+    // console.log(totalValue);
+  }
+  // console.log(totalValue,'working');  
+  for (let key in store3) {
+    let total = store3[key].total;
+    let percent = (total / totalValue) * 100;
+    // console.log(percent,'PERCENT');
 
-// store4.sort((firstItem, secondItem) => secondItem.total - firstItem.total ,'WORKING');
-// store4.sort((firstItem, secondItem) => firstItem.percent - secondItem.percent,'WORKING');
-// let sortByTotal = store4.sort((a, b) => b.total == a.total ||b.percent - a.percent);
-// console.log(sortByTotal);
-// console.log(store4); 
+    percent = Math.round(percent * 100) / 100;
+    console.log(percent, 'New PERCENT');
+
+    store4.push({
+      name: key,
+      total: total,
+      percent: percent
+    });
+  }
+
+
+  // store4.sort((firstItem, secondItem) => secondItem.total - firstItem.total ,'WORKING');
+  // store4.sort((firstItem, secondItem) => firstItem.percent - secondItem.percent,'WORKING');
+  // let sortByTotal = store4.sort((a, b) => b.total == a.total ||b.percent - a.percent);
+  // console.log(sortByTotal);
+  // console.log(store4); 
 </script>
 
 </html>
