@@ -69,28 +69,52 @@
 
 //App.js
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
-import Contact from "./Pages/Contact";
-import Login from "./Pages/Login";
-import PrivateRoutes from "./utils/PrivateRoutes";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import Home from "./Pages/Home";
+// import Contact from "./Pages/Contact";
+// import Login from "./Pages/Login";
+// import PrivateRoutes from "./utils/PrivateRoutes";
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <Router>
+//         <Routes>
+//           <Route element={<PrivateRoutes />}>
+//             {/* <Route element={<Home />} path="/" exact /> */}
+//             {/* <Route path="/" element={<Home />} /> */}
+//             <Route path="/Contact" element={<Contact />} />
+//           </Route>
+
+//           {/* <Route element={<Login />} path="/login" /> */}
+//           <Route path="/login" element={<Login />} />
+//         </Routes>
+//       </Router>
+//     </div>
+//   );
+// }
+
+// export default App;
+
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Home from "./Home";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
 
 function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Routes>
-          <Route element={<PrivateRoutes />}>
-            {/* <Route element={<Home />} path="/" exact /> */}
-            {/* <Route path="/" element={<Home />} /> */}
-            <Route path="/Contact" element={<Contact />} />
-          </Route>
+  const isLoggedIn = false; 
 
-          {/* <Route element={<Login />} path="/login" /> */}
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </Router>
-    </div>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

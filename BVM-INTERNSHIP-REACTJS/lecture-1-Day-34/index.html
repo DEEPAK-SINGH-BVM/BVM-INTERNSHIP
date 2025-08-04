@@ -57,8 +57,37 @@
             * LifeCycle Methods = (Mounting , Updating , UnMounting)
         
         9) What is UseSate
-            => UseSate is Use for manage sate
-        -->
+            => UseSate is Use for manage state
+            (current State) , (update State) (initial value)
+            const [count, setCount] = useState(0);
+
+        10) What is useEffect
+            => useEffect is allow you to perform side effect in you components 
+                For Example : fetching data, directly updating the DOM, and timers.
+        
+        11) What is Context 
+            => React Context is a way to manage state Globally  
+            To do this without Context, we will need to pass the state as "props" through each nested component. This is called
+            "prop drilling".
+        
+        12) What is useRef
+            => The useRef Hook allows you to persist values between renders.
+            It can be used to store a mutable value that does not cause a re-render when updated.
+            It can be used to access a DOM element directly
+            
+        13) What is useReducer'
+            => useReducer is a alternative of useState it handle Complex logic
+               useReducer accept two argument 
+               To update what’s on the screen, call dispatch 
+               The dispatch function returned by useReducer lets you update the state to a different value and trigger a re-render.
+        
+        14) What is useCallback
+            => The useCallback Hook is a built-in React Hook that memoizes(computations are only executed when necessary) a callback function 
+                The useCallback Hook only runs when one of its dependencies update.
+
+        15) What is useMemo
+            => The React Memo hook Return Memoizes Value , it run only when dependencies update
+            
     </h1>
 </body>
 
