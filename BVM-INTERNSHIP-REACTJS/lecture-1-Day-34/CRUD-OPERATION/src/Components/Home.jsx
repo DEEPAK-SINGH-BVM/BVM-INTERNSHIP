@@ -178,6 +178,7 @@ const CrudApp = () => {
               <td>
                 <button>Edit</button>
                 <button>Delete</button>
+                
               </td>
             </tr>
           </tbody>
