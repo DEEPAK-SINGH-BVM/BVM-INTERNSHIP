@@ -22,6 +22,7 @@ const Program2 = () => {
       <h2>Without useCallback Hook</h2>
       <p>{cnt}</p>
       <p>{num}</p>
+      
       <button onClick={incCnt}>Increase Counter</button>
       <button onClick={decCnt}>Decrease Counter</button>
       <button onClick={incNum}>Increase Number</button>
