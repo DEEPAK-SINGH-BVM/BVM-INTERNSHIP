@@ -20,10 +20,18 @@ import React, { useState } from "react";
 const Counter = () => {
   const [count, setCount] = useState(0);
   function handleClickPlus() {
-    setCount(count + 1);
+    // setCount(count + 1);
+    setCount((pre) => {
+      console.log(pre);
+      return pre + 1;
+    });
   }
   function handleClick() {
     setCount(count - 1);
+    setCount((dec)=>{
+      console.log(dec);
+      return dec - 1
+    })
   }
   return (
     <div>
