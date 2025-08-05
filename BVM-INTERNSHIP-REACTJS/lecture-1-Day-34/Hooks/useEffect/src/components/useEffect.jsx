@@ -72,7 +72,7 @@ function RandomUserList() {
       console.log(response);
     };
     fetchData();
-  },[]);
+  }, []);
 
   return (
     <div>

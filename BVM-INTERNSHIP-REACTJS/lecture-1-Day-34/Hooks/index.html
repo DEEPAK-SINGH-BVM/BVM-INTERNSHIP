@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Introduction</title>
+</head>
+
+<body>
+    <h1>
+
+        <!-- 
+            URL ('https://medium.com/zestgeek/unveiling-reacts-usedebugvalue-hook-simplifying-debugging-with-examples-015a1af72678')
+            * npm view react version
+            * ReactJs is Build by FaceBook
+        1) What is ReactJS
+            => React is a JavaScript Library use for Making UserInterFace
+               React is use to build Single Page Application 
+               React allow to make Reusable UI components 
+
+        2) How Does ReactJS Work 
+            => Instead of manipulating the browser's DOM Directly React Create a Virtual DOM in Memory,
+            where it does all the necessary manipulating , before making the changes in browser DOM  
+
+        3) What is JSX  
+            => JSX is JavaScript XML
+            which helps to Write HTML Code in React
+
+        4) What is Components 
+            => Components are independent and reusable bits of code. They serve the same purpose as JavaScript functions, but work in
+            isolation and return HTML.
+
+        5) What are Props 
+            => Props are argument to pass react Components
+
+        6) What are events 
+            => Just like DOM Event , React can perform Action base on Events
+               React has Same Event onclick onchange etc
+            DIFFERENCE:
+               In React Events are written in camelCase Syntax (onClick , OnChanges)
+               In React Events are written in Curly Brackets
+               onclick="shoot()" ===> onClick={shoot}
+            EXAMPLE:   
+               <button onclick="shoot()">Click</button>      
+               <button onClick={shoot}>Click</button>
+
+        7) React Router
+            => Setup Key : npm i -D react-router-dom@latest
+        i)  Conditional Router : causes entities to choose a routing based on some condition (usually a name or other entity )
+        ii) Protected Router   : Protected routes are routes within a React application that require authentication or authorization before allowing access to specific components or views.
+        
+        * Authentication : is a process to verify the users are attempting to access to the application username-password authentication .
+        * Authorization  : users have the necessary permissions to access specific resources or perform certain actions within the application
+        
+        8) What is Hooks
+            => Hooks Allow to allow function Components to have Access to state and allow Other React Feature
+            * LifeCycle Methods = (Mounting , Updating , UnMounting)
+        
+        9) What is UseSate
+            => UseSate is Use for manage state
+            (current State) , (update State) (initial value)
+            const [count, setCount] = useState(0);
+
+        10) What is useEffect
+            => useEffect is allow you to perform side effect in you components 
+                For Example : fetching data, directly updating the DOM, and timers.
+        
+        11) What is Context 
+            => React Context is a way to manage state Globally  
+            To do this without Context, we will need to pass the state as "props" through each nested component. This is called
+            "prop drilling".
+        
+        12) What is useRef
+            => The useRef Hook allows you to persist values between renders.
+            It can be used to store a mutable value that does not cause a re-render when updated.
+            It can be used to access a DOM element directly
+            
+        13) What is useReducer'
+            => useReducer is a alternative of useState it handle Complex logic
+               useReducer accept two argument 
+               To update what’s on the screen, call dispatch 
+               The dispatch function returned by useReducer lets you update the state to a different value and trigger a re-render.
+        
+        14) What is useCallback
+            => The useCallback Hook is a built-in React Hook that memoizes(computations are only executed when necessary) a callback function 
+                The useCallback Hook only runs when one of its dependencies update.
+
+        15) What is useMemo
+            => The React Memo hook Return Memoizes Value , it run only when dependencies update
+   
+        16) what is LayOutEffect
+            => useLayOutEffect is similar to useEffect , it executed sync after all DOM mutations , 
+               This makes it useful for manipulating the DOM immediately after a component is rendered
+        
+       17) What is useDebug
+            => useDebugValue is a hook that allows you to display custom debugging information for custom hooks 
+
+       18) What is useImperativeHandle
+            => he useImperativeHandle hook allows you to customize the instance value that is exposed to parent components when using ref,
+               it don't want to expose all of the internal implementation details of a child component
+               two arguments: the ref object and a callback function that returns an object
+
+       19) What is Custom Hook
+            => React Custom Hooks are reusable functions that start with "use". They let you extract logic (like fetching data or
+            managing state) from a component and share it across others. This keeps components clean and organized, promoting better
+            code maintainability
+        
+    </h1>
+</body>
+
+</html>
