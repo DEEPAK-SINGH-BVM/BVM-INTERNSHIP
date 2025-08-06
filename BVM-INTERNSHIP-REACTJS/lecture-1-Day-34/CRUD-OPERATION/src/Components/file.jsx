@@ -13,8 +13,8 @@ const CrudApp = () => {
     const [editIndex, setEditIndex] = useState(null);
 
     function inputHandle(e) {
-        const { name, value } = e.target; // get name and value from input
-        setProduct({ ...product, [name]: value }); // update form state
+        const { name, value } = e.target;
+        setProduct({ ...product, [name]: value }); 
     }
 
     function submitHandle(e) {
@@ -23,12 +23,12 @@ const CrudApp = () => {
         if (editIndex === null) {
             setList([...list, product]);
         } else {
-            // Update product at editIndex using map
+        
             setList(list.map((item, index) =>
-                //updated : Org 
+       
                 index === editIndex ? product : item
             ));
-            setEditIndex(null); // Exit edit mode
+            setEditIndex(null);
         }
         setProduct(Product);
     }
@@ -41,12 +41,12 @@ const CrudApp = () => {
 
     function deleteItem(index) {
         list.splice(index, 1);
-        // console.log(list);
+ 
         setList([...list]);
     }
      function deleteItem(index) {
         const remainingItems = list.filter((item, currentIndex) => currentIndex !== index);
-        setList(remainingItems); // update the list with remaining items
+        setList(remainingItems); 
     }
 
     return (

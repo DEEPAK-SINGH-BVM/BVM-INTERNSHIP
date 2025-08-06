@@ -1,51 +1,53 @@
 import React, { useState } from "react";
 
-const CrudApp2 = () => {
-  const Product = {
-    name: "",
-  };
+const CrudApp = () => {
+    const Product = {
+        name: "",
+      
+    };
+
+    const [product, setProduct] = useState(Product);
+    const [list, setList] = useState([]);
+
+    function inputHandle(e) {
+        const { name, value } = e.target;
+        setProduct({ ...product, [name]: value }); 
+    }
+
+    function submitHandle(e) {
+        e.preventDefault();
+        setList([...list, product]);
+        setProduct(Product);
+    }
+
+    function deleteItem(index) {
+        list.splice(index, 1);
  
-  const [product, setProduct] = useState(Product);
-   console.log(product);
-  
-  const [list, setList] = useState([]); 
+        setList([...list]);
+    }
+     function deleteItem(index) {
+        const remainingItems = list.filter((item, currentIndex) => currentIndex !== index);
+        setList(remainingItems); 
+    }
 
-  function inputHandle(e) {
-    const { name, value } = e.target;
-    setProduct({ ...product, [name]: value });
-  }
-
-  function submitHandle(e) {
-    e.preventDefault();
-    setList([...list, product]);
-    setProduct(Product);
-  }
-
-  return (
-    <div>
-
-      <form onSubmit={submitHandle}>
-        <input type="text" name="name" placeholder="Name" value={product.name} onChange={inputHandle} />
-
-        <button type="submit">Add</button>
-      </form>
-      <hr />
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.map((item, index) => (
-            <tr key={index}>
-              <td>{item.name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+    return (
+        <div>
+            <h2>Submit Form</h2>
+            <form onSubmit={submitHandle}>
+                <input type="text" name="name" placeholder="Name" value={product.name} onChange={inputHandle} />
+                <button type="submit">Add</button>
+            </form>
+            <hr />
+            {list.map((item, index) => (
+                <div key={index}>
+                    <p>
+                        {item.name} 
+                    </p>
+                    <button onClick={() => deleteItem(index)}>Delete</button>
+                </div>
+            ))}
+        </div>
+    );
 };
 
-export default CrudApp2;
+export default CrudApp;

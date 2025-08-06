@@ -14,6 +14,20 @@ const CrudApp = () => {
   //     fontSize: 14,
   //   },
   // }));
+
+  // const inputHandle = (e) => {
+  //   const { name, value, type, checked } = e.target;
+
+  //   if (name === "language") {
+  //     let langs = user.language || [];
+  //     if (checked) langs.push(value);
+  //     else langs = langs.filter((l) => l !== value);
+  //     setUser({ ...user, language: langs });
+  //   } else {
+  //     setUser({ ...user, [name]: value });
+  //   }
+  // };
+
   // Material UI
   // const UserDetails = {
   //   name: "",
@@ -43,6 +57,7 @@ const CrudApp = () => {
   //   setList([...list, user]);
   //   setUser(UserDetails);
   // }
+
   const User = {
     name: "",
     last: "",
@@ -53,16 +68,63 @@ const CrudApp = () => {
     date: "",
     country: "",
     language: "",
+    image:[]
   };
 
   const [user, setUser] = useState(User);
-  console.log(user);
+    const [image, setImage] = useState(User);
 
+
+    function imageHandler(e) {
+      let imageTarget = e.target.files;
+      // console.log("image target ==>",imageTarget);
+      if (imageTarget && imageTarget[0]) {
+        // let check = (URL.createObjectURL(imageTarget[0]))
+        // console.log("check ==>",check);
+        setImage(URL.createObjectURL(imageTarget[0]));
+      }
+    }
+  // console.log(user);
   const [list, setList] = useState([]);
 
-  function inputHandle(e) {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+  // function inputHandle(e) {
+  //   const { name, value, checked } = e.target;
+  //   if (name == "language") {
+  //     let languages = user.language || [];
+  //     if (checked) {
+  //       languages.push(value);
+  //     } else {
+  //       languages = languages.filter((lang) => lang != value);
+  //       setUser({ ...user, language: languages });
+  //     }
+  //   }
+  //   setUser({ ...user, [name]: value });
+  // }
+
+  const inputHandle = (e) => {
+    const { name, value, checked } = e.target;
+
+    if (name === "language") {
+      let langs = user.language || [];
+      if (checked) langs.push(value);
+      else langs = langs.filter((l) => l !== value);
+      setUser({ ...user, language: langs });
+    } else {
+      setUser({ ...user, [name]: value });
+    }
+  };
+
+  function deleteItem(index) {
+    list.splice(index, 1);
+
+    setList([...list]);
+  }
+  function deleteItem(index) {
+    const remainingItems = list.filter(
+      (item, currentIndex) => currentIndex !== index
+    );
+
+    setList(remainingItems);
   }
 
   function submitHandle(e) {
@@ -155,11 +217,14 @@ const CrudApp = () => {
             <div className="ml-12 ">
               <label>Select Gender :</label>
               <select
-                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
+                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
                 name="gender"
                 value={user.gender}
                 onChange={inputHandle}
               >
+                <option value="" select disabled hidden>
+                  Select Gender
+                </option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
@@ -185,11 +250,14 @@ const CrudApp = () => {
                   <label>Select Country :</label>
 
                   <select
-                    className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
+                    className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
                     name="country"
                     value={user.country}
                     onChange={inputHandle}
                   >
+                    <option value="" select disabled hidden>
+                      Select Country
+                    </option>
                     <option value="usa">USA</option>
                     <option value="china">China</option>
                     <option value="india">India</option>
@@ -229,16 +297,20 @@ const CrudApp = () => {
               {/* <span className="text-red-400">Select Language Error</span> */}
             </div>
 
-            {/*  */}
+            {/* */}
             <br />
             <div className="ml-10">
               <label>Select Profile Pic : </label>
-              <input className="text-red-400" type="file" />
+              <input
+                className="text-red-400"
+                type="file"
+                onChange={imageHandler}
+              />
             </div>
             <br />
             <button
               type="submit"
-              className="h-[50px] w-[450px] bg-blue-500 text-white mb-5 rounded ml-7"
+              className="h-[50px] w-[450px] bg-blue-500 text-white mb-5 rounded ml-7 cursor-pointer"
             >
               <b>SUBMIT</b>
             </button>
@@ -276,16 +348,16 @@ const CrudApp = () => {
         <table className="border-separate border border-gray-400 ">
           <thead>
             <tr>
-              <th className="border border-gray-300 ">Name</th>
-              <th className="border border-gray-300 ">Last Name</th>
-              <th className="border border-gray-300 ">Roll No</th>
-              <th className="border border-gray-300 ">Email</th>
-              <th className="border border-gray-300 ">Contact No.</th>
-              <th className="border border-gray-300 ">Gender</th>
-              <th className="border border-gray-300 ">Date Of Birth</th>
-              <th className="border border-gray-300 ">Country</th>
-              <th className="border border-gray-300 ">Language</th>
-              <th className="border border-gray-300 ">Action</th>
+              <th className="border border-gray-300 p-2">Name</th>
+              <th className="border border-gray-300 p-2">Last Name</th>
+              <th className="border border-gray-300 p-2">Roll No</th>
+              <th className="border border-gray-300 p-2">Email</th>
+              <th className="border border-gray-300 p-2">Contact No.</th>
+              <th className="border border-gray-300 p-2">Gender</th>
+              <th className="border border-gray-300 p-2">Date Of Birth</th>
+              <th className="border border-gray-300 p-2">Country</th>
+              <th className="border border-gray-300 p-2">Language</th>
+              <th className="border border-gray-300 p-2">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -300,6 +372,22 @@ const CrudApp = () => {
                   <td>{item.gender}</td>
                   <td>{item.date}</td>
                   <td>{item.country}</td>
+                  <td>
+                    <img src alt="" />
+                  </td>
+
+                  <td>{item.language}</td>
+                  <td>
+                    <button
+                      className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer"
+                      onClick={() => deleteItem(index)}
+                    >
+                      Delete
+                    </button>
+                    <button className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-500 text-white cursor-pointer">
+                      Edit
+                    </button>
+                  </td>
                 </tr>
               ),
               console.log(list.name, "LOG")
