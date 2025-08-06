@@ -1,6 +1,68 @@
-import React, { useState } from "react";
+import  { useState } from "react";
+import { styled } from "@mui/material/styles";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+
 import "./Home.css";
 const CrudApp = () => {
+  // MATERIAL UI
+  // const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  //   [`&.${tableCellClasses.head}`]: {
+  //     backgroundColor: theme.palette.common.black,
+  //     color: theme.palette.common.white,
+  //   },
+  //   [`&.${tableCellClasses.body}`]: {
+  //     fontSize: 14,
+  //   },
+  // }));
+  // Material UI
+  // const UserDetails = {
+  //   name: "",
+  //   last: "",
+  //   rollNo: "",
+  //   email: "",
+  //   contact: "",
+  //   gender: "",
+  //   data: "",
+  //   country: "",
+  //   language: "",
+  // };
+  // console.log(UserDetails);
+  
+  // const [user, setUser] = useState(UserDetails);
+  // console.log(user);
+  
+  // const [list, setList] = useState([]);
+
+  // function inputHandler(e) {
+  //   const { name, value } = e.target;
+  //   setUser({...user, [name]: value });
+  // }
+
+  // function submitHandle(e) {
+  //   e.preventDefault();
+  //   setList([...list, user]);
+  //   setUser(UserDetails);
+  // }
+    const User = {
+      name: "",
+    };
+   
+    const [user, setUser] = useState(User);
+     console.log(user);
+    
+    const [list, setList] = useState([]); 
+  
+    function inputHandle(e) {
+      const { name, value } = e.target;
+      setUser({ ...user, [name]: value });
+    }
+  
+    function submitHandle(e) {
+      e.preventDefault();
+      setList([...list, user]);
+      setUser(User);
+    }
+  
   // const <UserDetails></UserDetails>
   return (
     <div className="pt-15">
@@ -10,27 +72,21 @@ const CrudApp = () => {
           <div className="flex justify-center">
             <h2 className="mt-3 text-3xl font-bold">SUBMIT FORM</h2>
           </div>
-          <form>
+          <form onSubmit={submitHandle}>
             <div className="flex p-6">{/* Children 2 */}</div>
             <div className="child ml-12">
               <label>Enter Name :</label>
-              <input
-                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
-                type="text"
-                placeholder="Enter Name"
+              <input className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2" type="text" name="name" placeholder="Name" value={user.name} onChange={inputHandle}
               />
               <br />
-              <span className=" text-red-400">Name Error</span>
+              {/* <span className=" text-red-400">Name Error</span> */}
             </div>
             <div className="child ml-12">
               <label>Enter Last Name :</label>
-              <input
-                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
-                type="text"
-                placeholder="Enter Last Name"
+             <input className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2" type="text" name="last" placeholder="Enter Last Name" value={user.last} onChange={inputHandle}
               />
               {/* <br /> */}
-              <span className=" text-red-400">LastName </span>
+              {/* <span className=" text-red-400">LastName </span> */}
             </div>
             <div className="flex p-6 ml-5">
               <div>
@@ -40,8 +96,9 @@ const CrudApp = () => {
                   className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                   type="number"
                   placeholder="Enter Roll No"
+                  // onChange={inputHandler}
                 />
-                <span className=" text-red-400">Roll No Error</span>
+                {/* <span className=" text-red-400">Roll No Error</span> */}
               </div>
               <div>
                 <div>
@@ -51,8 +108,9 @@ const CrudApp = () => {
                     className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                     type="email"
                     placeholder="Enter Email"
+                    // onChange={inputHandler}
                   />
-                  <span className=" text-red-400">Email Error</span>
+                  {/* <span className=" text-red-400">Email Error</span> */}
                 </div>
               </div>
             </div>
@@ -63,9 +121,10 @@ const CrudApp = () => {
                 type="number"
                 className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                 placeholder="Enter Contact"
+                // onChange={inputHandler}
               />
               <br />
-              <span className=" text-red-400">Enter Contact Error</span>
+              {/* <span className=" text-red-400">Enter Contact Error</span> */}
             </div>
 
             <div className="ml-12 ">
@@ -78,7 +137,7 @@ const CrudApp = () => {
                 <option value="female">Female</option>
               </select>
               <br />
-              <span className=" text-red-400">Select Gender Error</span>
+              {/* <span className=" text-red-400">Select Gender Error</span> */}
             </div>
             <div className="flex p-6 ml-5">
               <div>
@@ -87,9 +146,10 @@ const CrudApp = () => {
                 <input
                   className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                   type="date"
+                  // onChange={inputHandler}
                 />
 
-                <span className=" text-red-400">Date Of Birth Error</span>
+                {/* <span className=" text-red-400">Date Of Birth Error</span> */}
               </div>
               <div>
                 <div>
@@ -104,7 +164,7 @@ const CrudApp = () => {
                     <option value="india">India</option>
                   </select>
 
-                  <span className=" text-red-400">Select Country Error</span>
+                  {/* <span className=" text-red-400">Select Country Error</span> */}
                 </div>
               </div>
             </div>
@@ -116,6 +176,7 @@ const CrudApp = () => {
                 className="checkBox h-4 w-10"
                 name="language"
                 value="english"
+                // onChange={inputHandler}
               />
               <label>English</label>
               <input
@@ -123,6 +184,7 @@ const CrudApp = () => {
                 className="checkBox h-4 w-10"
                 name="language"
                 value="hindi"
+                // onChange={inputHandler}
               />
               <label>Hindi</label>
               <input
@@ -130,10 +192,11 @@ const CrudApp = () => {
                 className="checkBox h-4 w-10"
                 name="language"
                 value="gujarati"
+                // onChange={inputHandler }
               />
               <label>Gujarati</label>
               <br />
-              <span className="text-red-400">Select Language Error</span>
+              {/* <span className="text-red-400">Select Language Error</span> */}
             </div>
 
             {/*  */}
@@ -144,7 +207,7 @@ const CrudApp = () => {
             </div>
             <br />
             <button
-              type="submit "
+              type="submit"
               className="h-[50px] w-[450px] bg-blue-500 text-white mb-5 rounded ml-7"
             >
               <b>SUBMIT</b>
@@ -156,7 +219,7 @@ const CrudApp = () => {
       <br />
       <br /> <br />
       <div className="flex justify-center items-center text-center text-lg">
-        <table className="border-separate border border-gray-400 ">
+        {/* <table className="border-separate border border-gray-400 ">
           <thead>
             <tr className="">
               <th className="border border-gray-300 m-10">Profile Pic</th>
@@ -173,23 +236,36 @@ const CrudApp = () => {
             </tr>
           </thead>
           <tbody>
-            {/* <tr>
-                <td>?</td>
-                <td>React</td>
-                <td>JS</td>
-                <td>1</td>
-                <td>React@gmail.com</td>
-                <td>894593457</td>
-                <td>Male</td>
-                <td>22/11/2002</td>
-                <td>India</td>
-                <td>English</td>
-
-                <td>
-                  <button>Edit</button>
-                  <button>Delete</button>
-                </td>
-              </tr> */}
+            {list.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table> */}
+        <table className="border-separate border border-gray-400 ">
+          <thead>
+            <tr>
+              <th className="border border-gray-300 ">Name</th>
+              <th className="border border-gray-300 ">Last Name</th>
+              <th className="border border-gray-300 ">Roll No</th>
+              <th className="border border-gray-300 ">Email</th>
+              <th className="border border-gray-300 ">Contact No.</th>
+              <th className="border border-gray-300 ">Gender</th>
+              <th className="border border-gray-300 ">Date Of Birth</th>
+              <th className="border border-gray-300 ">Country</th>
+              <th className="border border-gray-300 ">Language</th>
+              <th className="border border-gray-300 ">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {list.map((item, index) => ( 
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.last}</td>
+              </tr>
+              
+            ),console.log(list.name,"LOG"))}
           </tbody>
         </table>
       </div>
