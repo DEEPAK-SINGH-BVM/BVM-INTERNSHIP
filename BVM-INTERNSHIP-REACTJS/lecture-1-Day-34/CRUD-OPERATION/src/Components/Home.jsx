@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
@@ -27,10 +27,10 @@ const CrudApp = () => {
   //   language: "",
   // };
   // console.log(UserDetails);
-  
+
   // const [user, setUser] = useState(UserDetails);
   // console.log(user);
-  
+
   // const [list, setList] = useState([]);
 
   // function inputHandler(e) {
@@ -43,26 +43,34 @@ const CrudApp = () => {
   //   setList([...list, user]);
   //   setUser(UserDetails);
   // }
-    const User = {
-      name: "",
-    };
-   
-    const [user, setUser] = useState(User);
-     console.log(user);
-    
-    const [list, setList] = useState([]); 
-  
-    function inputHandle(e) {
-      const { name, value } = e.target;
-      setUser({ ...user, [name]: value });
-    }
-  
-    function submitHandle(e) {
-      e.preventDefault();
-      setList([...list, user]);
-      setUser(User);
-    }
-  
+  const User = {
+    name: "",
+    last: "",
+    rollNo: "",
+    email: "",
+    contact: "",
+    gender: "",
+    date: "",
+    country: "",
+    language: "",
+  };
+
+  const [user, setUser] = useState(User);
+  console.log(user);
+
+  const [list, setList] = useState([]);
+
+  function inputHandle(e) {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  }
+
+  function submitHandle(e) {
+    e.preventDefault();
+    setList([...list, user]);
+    setUser(User);
+  }
+
   // const <UserDetails></UserDetails>
   return (
     <div className="pt-15">
@@ -76,14 +84,26 @@ const CrudApp = () => {
             <div className="flex p-6">{/* Children 2 */}</div>
             <div className="child ml-12">
               <label>Enter Name :</label>
-              <input className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2" type="text" name="name" placeholder="Name" value={user.name} onChange={inputHandle}
+              <input
+                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
+                type="text"
+                name="name"
+                placeholder="Name"
+                value={user.name}
+                onChange={inputHandle}
               />
               <br />
               {/* <span className=" text-red-400">Name Error</span> */}
             </div>
             <div className="child ml-12">
               <label>Enter Last Name :</label>
-             <input className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2" type="text" name="last" placeholder="Enter Last Name" value={user.last} onChange={inputHandle}
+              <input
+                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
+                type="text"
+                name="last"
+                placeholder="Enter Last Name"
+                value={user.last}
+                onChange={inputHandle}
               />
               {/* <br /> */}
               {/* <span className=" text-red-400">LastName </span> */}
@@ -91,12 +111,13 @@ const CrudApp = () => {
             <div className="flex p-6 ml-5">
               <div>
                 <label>Roll No :</label>
-
                 <input
                   className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
-                  type="number"
+                  type="Number"
+                  name="rollNo"
                   placeholder="Enter Roll No"
-                  // onChange={inputHandler}
+                  value={user.rollNo}
+                  onChange={inputHandle}
                 />
                 {/* <span className=" text-red-400">Roll No Error</span> */}
               </div>
@@ -107,10 +128,12 @@ const CrudApp = () => {
                   <input
                     className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                     type="email"
+                    name="email"
                     placeholder="Enter Email"
-                    // onChange={inputHandler}
+                    value={user.email}
+                    onChange={inputHandle}
                   />
-                  {/* <span className=" text-red-400">Email Error</span> */}
+                  {/*  <span className=" text-red-400">Email Error</span> */}
                 </div>
               </div>
             </div>
@@ -118,10 +141,12 @@ const CrudApp = () => {
             <div className="ml-12">
               <label>Enter Contact No. :</label>
               <input
-                type="number"
                 className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
-                placeholder="Enter Contact"
-                // onChange={inputHandler}
+                type="number"
+                name="contact"
+                placeholder="Enter Contact "
+                value={user.contact}
+                onChange={inputHandle}
               />
               <br />
               {/* <span className=" text-red-400">Enter Contact Error</span> */}
@@ -131,7 +156,9 @@ const CrudApp = () => {
               <label>Select Gender :</label>
               <select
                 className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
-                name=""
+                name="gender"
+                value={user.gender}
+                onChange={inputHandle}
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -146,9 +173,11 @@ const CrudApp = () => {
                 <input
                   className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                   type="date"
-                  // onChange={inputHandler}
+                  name="date"
+                  placeholder="Enter Date Of Birth "
+                  value={user.date}
+                  onChange={inputHandle}
                 />
-
                 {/* <span className=" text-red-400">Date Of Birth Error</span> */}
               </div>
               <div>
@@ -157,7 +186,9 @@ const CrudApp = () => {
 
                   <select
                     className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
-                    name=""
+                    name="country"
+                    value={user.country}
+                    onChange={inputHandle}
                   >
                     <option value="usa">USA</option>
                     <option value="china">China</option>
@@ -176,7 +207,6 @@ const CrudApp = () => {
                 className="checkBox h-4 w-10"
                 name="language"
                 value="english"
-                // onChange={inputHandler}
               />
               <label>English</label>
               <input
@@ -259,13 +289,21 @@ const CrudApp = () => {
             </tr>
           </thead>
           <tbody>
-            {list.map((item, index) => ( 
-              <tr key={index}>
-                <td>{item.name}</td>
-                <td>{item.last}</td>
-              </tr>
-              
-            ),console.log(list.name,"LOG"))}
+            {list.map(
+              (item, index) => (
+                <tr key={index}>
+                  <td>{item.name}</td>
+                  <td>{item.last}</td>
+                  <td>{item.rollNo}</td>
+                  <td>{item.email}</td>
+                  <td>{item.contact}</td>
+                  <td>{item.gender}</td>
+                  <td>{item.date}</td>
+                  <td>{item.country}</td>
+                </tr>
+              ),
+              console.log(list.name, "LOG")
+            )}
           </tbody>
         </table>
       </div>
