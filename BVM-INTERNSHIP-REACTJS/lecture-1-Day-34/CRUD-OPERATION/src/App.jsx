@@ -1,17 +1,13 @@
-import CustomizedTables from "./Components/appBar";
-import SearchAppBar from "./Components/appBar";
+
 import CrudApp from "./Components/Home";
-import CrudApp2 from "./Components/try";
-import ButtonUsage from "./demo";
+// import Form from "./Components/try";
+// import MultiCheckboxForm from "./Components/try2";
 
 function App() {
   return (
     <div>
-      <CrudApp />
-      {/* <CrudApp2/> */}
-      {/* <ButtonUsage/> */}
-      {/* <SearchAppBar/> */}
-      {/* <CustomizedTables/> */}
+      <CrudApp/>
+      {/* <Form/> */}
     </div>
   );
 }

@@ -1,53 +1,66 @@
+// Form.js
 import React, { useState } from "react";
 
-const CrudApp = () => {
-    const Product = {
-        name: "",
-      
-    };
+function Form() {
+  const [formData, setFormData] = useState({
+    username: "",
+  });
 
-    const [product, setProduct] = useState(Product);
-    const [list, setList] = useState([]);
+  const [errors, setErrors] = useState({});
 
-    function inputHandle(e) {
-        const { name, value } = e.target;
-        setProduct({ ...product, [name]: value }); 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newErrors = validateForm(formData);
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      console.log("Form submitted successfully!");
+    } else {
+      console.log("Form submission failed due to validation errors.");
     }
+  };
 
-    function submitHandle(e) {
-        e.preventDefault();
-        setList([...list, product]);
-        setProduct(Product);
-    }
+  const validateForm = (data) => {
+    const errors = {};
 
-    function deleteItem(index) {
-        list.splice(index, 1);
- 
-        setList([...list]);
+    if (!data.username.trim()) {
+      errors.username = "Username is required";
+    } else if (data.username.length < 4) {
+      errors.username = "Username must be at least 4 characters long";
     }
-     function deleteItem(index) {
-        const remainingItems = list.filter((item, currentIndex) => currentIndex !== index);
-        setList(remainingItems); 
-    }
+    return errors;
+  };
 
-    return (
+  return (
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
         <div>
-            <h2>Submit Form</h2>
-            <form onSubmit={submitHandle}>
-                <input type="text" name="name" placeholder="Name" value={product.name} onChange={inputHandle} />
-                <button type="submit">Add</button>
-            </form>
-            <hr />
-            {list.map((item, index) => (
-                <div key={index}>
-                    <p>
-                        {item.name} 
-                    </p>
-                    <button onClick={() => deleteItem(index)}>Delete</button>
-                </div>
-            ))}
+          <label className="form-label">Username:</label>
+          <input
+            className="form-input"
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+          />
+          {errors.username && (
+            <span className="error-message">{errors.username}</span>
+          )}
         </div>
-    );
-};
+        <button className="submit-button" type="submit">
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+}
 
-export default CrudApp;
+export default Form;

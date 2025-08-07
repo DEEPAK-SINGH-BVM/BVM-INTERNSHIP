@@ -5,7 +5,6 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import "./Home.css";
 const CrudApp = () => {
   // MATERIAL UI
-  // Searching base on (NAME & LAST-NAME)
   // const StyledTableCell = styled(TableCell)(({ theme }) => ({
   //   [`&.${tableCellClasses.head}`]: {
   //     backgroundColor: theme.palette.common.black,
@@ -17,6 +16,34 @@ const CrudApp = () => {
   // }));
 
   // Material UI
+  // const UserDetails = {
+  //   name: "",
+  //   last: "",
+  //   rollNo: "",
+  //   email: "",
+  //   contact: "",
+  //   gender: "",
+  //   data: "",
+  //   country: "",
+  //   language: "",
+  // };
+  // console.log(UserDetails);
+
+  // const [user, setUser] = useState(UserDetails);
+  // console.log(user);
+
+  // const [list, setList] = useState([]);
+
+  // function inputHandler(e) {
+  //   const { name, value } = e.target;
+  //   setUser({...user, [name]: value });
+  // }
+
+  // function submitHandle(e) {
+  //   e.preventDefault();
+  //   setList([...list, user]);
+  //   setUser(UserDetails);
+  // }
 
   const User = {
     name: "",
@@ -27,110 +54,64 @@ const CrudApp = () => {
     gender: "",
     date: "",
     country: "",
-    language: [],
+    language: "",
     image: "",
   };
 
+  // const [user, setUser] = useState(User);
+
   const [user, setUser] = useState(User);
-
-  const [editIndex, setEditIndex] = useState(null);
-  
-  const [errors, setErrors] = useState({});
-
-  console.log(editIndex, "EditIndex");
-
-  console.log(user, "USER");
-
   const [list, setList] = useState([]);
+
+
   const imageHandler = (e) => {
     const file = e.target.files[0];
-    // console.log(file,'FILES ');
-    const imgURL = URL.createObjectURL(file);
-    // console.log(imgURL,"IMAGE URL ");
-    setUser({ ...user, image: imgURL });
+    if (file) {
+      const imgURL = URL.createObjectURL(file);
+      setUser({ ...user, image: imgURL });
+    }
   };
 
   const inputHandle = (e) => {
     const { name, value } = e.target;
-    // console.log(name);
-    // console.log(value);
     setUser({ ...user, [name]: value });
-    // console.log(name,value);
-  };
-  const inputHandleLanguage = (e) => {
-    const { name, value } = e.target;
-    console.log(name, "NAME");
-    console.log(value, "VALUE");
-    if (name == "language") {
-      const current = user.language || [];
-      console.log(current, "CURRENT");
-      console.log("CURRENT");
-      let updated = [];
-      console.log(updated, "UPDATE");
-      updated = [...current, value];
-      setUser({ ...user, [name]: updated });
-    }
   };
 
-  function editItem(index) {
-    setUser(list[index]);
-    setEditIndex(index);
-  }
   function deleteItem(index) {
     list.splice(index, 1);
-    // console.log(index);
+
     setList([...list]);
-    // console.log(...list,'LIST');
   }
+  function deleteItem(index) {
+    const remainingItems = list.filter(
+      (item, currentIndex) => currentIndex !== index
+    );
+
+    setList(remainingItems);
+  }
+
 
   function submitHandle(e) {
     e.preventDefault();
-    const newErrors = validateForm(User);
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted successfully!");
-      setEditIndex(null);
-    } else {
-      console.log("Form submission failed due to validation errors.");
-    }
-    if (editIndex !== null) {
-      list[editIndex] = user;
-      // console.log(user,'EDIT-INDEX');
-      // setList([...list]);
-      setEditIndex(null);
-    } else {
-      setList([...list, user]);
-    }
+    setList([...list, user]);
+    setUser({ name: "", image: "" });
     setUser(User);
-    // console.log("working");
   }
-
-  const validateForm = (data) => {
-    const errors = {};
-
-    if (data.name.length < 4) {
-      errors.name = "Username must be at least 4 characters long";
-    }
-    return errors;
-  };
-
+  // const <UserDetails></UserDetails>
   return (
     <div className="pt-15">
       {/* <h1 className="text-3xl font-bold underline text-red-400">Hello world!</h1> */}
-      <div className="flex justify-center items-center ">
+      <div className="parentBox flex justify-center items-center ">
         <div className="border-1 border-gray-300 text-lg w-[500px] shadow-2xl rounded-xl ">
           <div className="flex justify-center">
-            <h2 className="error-message mt-6 text-3xl font-bold">
-              SUBMIT FORM
-            </h2>
+            <h2 className="mt-3 text-3xl font-bold">SUBMIT FORM</h2>
           </div>
           <form onSubmit={submitHandle}>
-            <div className="flex p-3">{/* Children 2 */}</div>
+            <div className="flex p-6">{/* Children 2 */}</div>
             <div className="child ml-12">
               <label>Enter Name :</label>
               <input
-                className="w-[400px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
+                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                 type="text"
                 name="name"
                 placeholder="Name"
@@ -139,12 +120,11 @@ const CrudApp = () => {
               />
               <br />
               {/* <span className=" text-red-400">Name Error</span> */}
-              <span className="error-message  text-red-400">{errors.name}</span>
             </div>
             <div className="child ml-12">
               <label>Enter Last Name :</label>
               <input
-                className="w-[400px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
+                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                 type="text"
                 name="last"
                 placeholder="Enter Last Name"
@@ -158,7 +138,7 @@ const CrudApp = () => {
               <div>
                 <label>Roll No :</label>
                 <input
-                  className="w-[200px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
+                  className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                   type="Number"
                   name="rollNo"
                   placeholder="Enter Roll No"
@@ -170,8 +150,9 @@ const CrudApp = () => {
               <div>
                 <div>
                   <label>Email :</label>
+
                   <input
-                    className="w-[200px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
+                    className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                     type="email"
                     name="email"
                     placeholder="Enter Email"
@@ -186,7 +167,7 @@ const CrudApp = () => {
             <div className="ml-12">
               <label>Enter Contact No. :</label>
               <input
-                className="w-[400px] border-2 border-gray-400 rounded h-10 mt-2 pl-2 "
+                className="w-[400px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                 type="number"
                 name="contact"
                 placeholder="Enter Contact "
@@ -219,14 +200,14 @@ const CrudApp = () => {
                 <label>Date Of Birth :</label>
 
                 <input
-                  className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 pl-10 "
+                  className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2"
                   type="date"
                   name="date"
                   placeholder="Enter Date Of Birth "
                   value={user.date}
                   onChange={inputHandle}
                 />
-                {/* batav  <span className=" text-red-400">Date Of Birth Error</span> */}
+                {/* <span className=" text-red-400">Date Of Birth Error</span> */}
               </div>
               <div>
                 <div>
@@ -258,7 +239,6 @@ const CrudApp = () => {
                 className="checkBox h-4 w-10"
                 name="language"
                 value="english"
-                onChange={inputHandleLanguage}
               />
               <label>English</label>
               <input
@@ -266,7 +246,7 @@ const CrudApp = () => {
                 className="checkBox h-4 w-10"
                 name="language"
                 value="hindi"
-                onChange={inputHandleLanguage}
+                // onChange={inputHandler}
               />
               <label>Hindi</label>
               <input
@@ -274,14 +254,16 @@ const CrudApp = () => {
                 className="checkBox h-4 w-10"
                 name="language"
                 value="gujarati"
-                onChange={inputHandleLanguage}
+                // onChange={inputHandler }
               />
               <label>Gujarati</label>
               <br />
               {/* <span className="text-red-400">Select Language Error</span> */}
             </div>
+
+            {/* */}
             <br />
-            <div className="ml-10 ">
+            <div className="ml-10">
               <label>Select Profile Pic : </label>
               {/* <input
                 className="text-red-400"
@@ -303,37 +285,6 @@ const CrudApp = () => {
       </div>
       <br />
       <br /> <br />
-      <div>
-        {/* Filter Section */}
-        <div className="flex justify-center items-center p-10">
-          <div className="text-lg">
-            <select
-              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
-              name="country"
-              value={user.country}
-              onChange={inputHandle}
-            >
-              <option value="" select disabled hidden>
-                Select Gender
-              </option>
-              <option value="male">Male</option>
-            </select>
-          </div>
-          <div className="text-lg">
-            <select
-              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
-              name="country"
-              value={user.country}
-              onChange={inputHandle}
-            >
-              <option value="" select disabled hidden>
-                Select Gender
-              </option>
-              <option value="male">Male</option>
-            </select>
-          </div>
-        </div>
-      </div>
       <div className="flex justify-center items-center text-center text-lg">
         {/* <table className="border-separate border border-gray-400 ">
           <thead>
@@ -350,7 +301,7 @@ const CrudApp = () => {
               <th className="border border-gray-300 ">Language</th>
               <th className="border border-gray-300 ">Action</th>
             </tr>
-            </thead>
+          </thead>
           <tbody>
             {list.map((item, index) => (
               <tr key={index}>
@@ -377,41 +328,46 @@ const CrudApp = () => {
               <th className="border border-gray-300 p-2">Country</th>
               <th className="border border-gray-300 p-2">Language</th>
               <th className="border border-gray-300 p-2">Profile</th>
-              <th className="border border-gray-300 p-2 w-[200px]">Action</th>
+              <th className="border border-gray-300 p-2">Action</th>
             </tr>
           </thead>
           <tbody>
-            {list.map((item, index) => (
-              <tr key={index}>
-                <td>{item.name}</td>
-                <td>{item.last}</td>
-                <td>{item.rollNo}</td>
-                <td>{item.email}</td>
-                <td>{item.contact}</td>
-                <td>{item.gender}</td>
-                <td>{item.date}</td>
-                <td>{item.country}</td>
-                <td>{item.language}</td>
-                <td>
-                  <img src={item.image} alt="Profile" width="50" height="50" />
-                </td>
+            {list.map(
+              (item, index) => (
+                <tr key={index}>
+                  <td>{item.name}</td>
+                  <td>{item.last}</td>
+                  <td>{item.rollNo}</td>
+                  <td>{item.email}</td>
+                  <td>{item.contact}</td>
+                  <td>{item.gender}</td>
+                  <td>{item.date}</td>
+                  <td>{item.country}</td>
+                  <td>
+                    <img
+                      src={item.image}
+                      alt="Profile"
+                      width="50"
+                      height="50"
+                    />
+                  </td>
 
-                <td>
-                  <button
-                    className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer"
-                    onClick={() => deleteItem(index)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-500 text-white cursor-pointer"
-                    onClick={() => editItem(index)}
-                  >
-                    Edit
-                  </button>
-                </td>
-              </tr>
-            ))}
+                  <td>{item.language}</td>
+                  <td>
+                    <button
+                      className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer"
+                      onClick={() => deleteItem(index)}
+                    >
+                      Delete
+                    </button>
+                    <button className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-500 text-white cursor-pointer">
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ),
+              console.log(list.name, "LOG")
+            )}
           </tbody>
         </table>
       </div>
