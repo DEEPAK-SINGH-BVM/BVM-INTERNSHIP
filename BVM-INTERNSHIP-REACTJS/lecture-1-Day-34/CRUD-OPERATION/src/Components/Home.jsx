@@ -5,6 +5,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import "./Home.css";
 const CrudApp = () => {
   // MATERIAL UI
+  // The test() method returns true if it finds a match, otherwise false
   // Searching base on (NAME & LAST-NAME)
   // const StyledTableCell = styled(TableCell)(({ theme }) => ({
   //   [`&.${tableCellClasses.head}`]: {
@@ -34,7 +35,7 @@ const CrudApp = () => {
   const [user, setUser] = useState(User);
 
   const [editIndex, setEditIndex] = useState(null);
-  
+
   const [errors, setErrors] = useState({});
 
   console.log(editIndex, "EditIndex");
@@ -42,6 +43,7 @@ const CrudApp = () => {
   console.log(user, "USER");
 
   const [list, setList] = useState([]);
+
   const imageHandler = (e) => {
     const file = e.target.files[0];
     // console.log(file,'FILES ');
@@ -88,19 +90,15 @@ const CrudApp = () => {
     const newErrors = validateForm(User);
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length === 0) {
-      console.log("Form submitted successfully!");
-      setEditIndex(null);
-    } else {
-      console.log("Form submission failed due to validation errors.");
-    }
     if (editIndex !== null) {
       list[editIndex] = user;
       // console.log(user,'EDIT-INDEX');
       // setList([...list]);
+      //
       setEditIndex(null);
     } else {
       setList([...list, user]);
+      // setUser(User);
     }
     setUser(User);
     // console.log("working");
@@ -108,16 +106,43 @@ const CrudApp = () => {
 
   const validateForm = (data) => {
     const errors = {};
-
-    if (data.name.length < 4) {
-      errors.name = "Username must be at least 4 characters long";
+    if (!data.name) {
+      errors.name = "name is required !!";
+    }
+    if (!data.last) {
+      errors.last = "Last name is required !!";
+    }
+    if (!data.rollNo) {
+      errors.rollNo = "RollNo is required !!";
+    }
+    if (!data.email) {
+      errors.email = "Email is required !!";
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+      errors.email = "Email is invalid !!";
+    }
+    if (!data.contact) {
+      errors.contact = "Contact is required !!";
+    } else if (data.contact >= 10) {
+      errors.contact = "Enter Contact Length 10 !!";
+    }
+    if (!data.gender) {
+      errors.gender = "Gender is required !!";
+    }
+    if (!data.date) {
+      errors.date = "DOB is required !!";
+    }
+    if (!data.country) {
+      errors.country = "Country is required !!";
+    }
+    if (!data.language) {
+      errors.language = "At List One Language is required !!";
     }
     return errors;
   };
 
   return (
     <div className="pt-15">
-      {/* <h1 className="text-3xl font-bold underline text-red-400">Hello world!</h1> */}
+      {/*  <h1 className="text-3xl font-bold underline text-red-400">Hello world!</h1> */}
       <div className="flex justify-center items-center ">
         <div className="border-1 border-gray-300 text-lg w-[500px] shadow-2xl rounded-xl ">
           <div className="flex justify-center">
@@ -128,7 +153,19 @@ const CrudApp = () => {
           <form onSubmit={submitHandle}>
             <div className="flex p-3">{/* Children 2 */}</div>
             <div className="child ml-12">
-              <label>Enter Name :</label>
+              <input
+                className="w-[400px] border-2 border-gray-400 rounded h-10  mt-2 pl-2"
+                type="text"
+                name="name"
+                placeholder="Name"
+                value={User.name}
+                onChange={inputHandle}
+              />
+              <br />
+
+              <span className="error-message text-red-400">{errors.name}</span>
+
+              {/* <label>Enter Name :</label>
               <input
                 className="w-[400px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
                 type="text"
@@ -136,10 +173,8 @@ const CrudApp = () => {
                 placeholder="Name"
                 value={user.name}
                 onChange={inputHandle}
-              />
+              /> */}
               <br />
-              {/* <span className=" text-red-400">Name Error</span> */}
-              <span className="error-message  text-red-400">{errors.name}</span>
             </div>
             <div className="child ml-12">
               <label>Enter Last Name :</label>
@@ -151,8 +186,8 @@ const CrudApp = () => {
                 value={user.last}
                 onChange={inputHandle}
               />
-              {/* <br /> */}
-              {/* <span className=" text-red-400">LastName </span> */}
+              <br />
+              <span className="error-message text-red-400">{errors.last}</span>
             </div>
             <div className="flex p-6 ml-5">
               <div>
@@ -165,7 +200,8 @@ const CrudApp = () => {
                   value={user.rollNo}
                   onChange={inputHandle}
                 />
-                {/* <span className=" text-red-400">Roll No Error</span> */}
+                <br />
+                <span className=" text-red-400">{errors.rollNo}</span>
               </div>
               <div>
                 <div>
@@ -178,7 +214,8 @@ const CrudApp = () => {
                     value={user.email}
                     onChange={inputHandle}
                   />
-                  {/*  <span className=" text-red-400">Email Error</span> */}
+                  <br />
+                  <span className=" text-red-400">{errors.rollNo}</span>
                 </div>
               </div>
             </div>
@@ -194,7 +231,7 @@ const CrudApp = () => {
                 onChange={inputHandle}
               />
               <br />
-              {/* <span className=" text-red-400">Enter Contact Error</span> */}
+              <span className=" text-red-400">{errors.contact}</span>
             </div>
 
             <div className="ml-12 ">
@@ -212,7 +249,7 @@ const CrudApp = () => {
                 <option value="female">Female</option>
               </select>
               <br />
-              {/* <span className=" text-red-400">Select Gender Error</span> */}
+              <span className=" text-red-400">{errors.gender}</span>
             </div>
             <div className="flex p-6 ml-5">
               <div>
@@ -226,7 +263,7 @@ const CrudApp = () => {
                   value={user.date}
                   onChange={inputHandle}
                 />
-                {/* batav  <span className=" text-red-400">Date Of Birth Error</span> */}
+                <span className=" text-red-400">{errors.date}</span>
               </div>
               <div>
                 <div>
@@ -246,7 +283,7 @@ const CrudApp = () => {
                     <option value="india">India</option>
                   </select>
 
-                  {/* <span className=" text-red-400">Select Country Error</span> */}
+                  <span className=" text-red-400">{errors.country}</span>
                 </div>
               </div>
             </div>
@@ -278,7 +315,7 @@ const CrudApp = () => {
               />
               <label>Gujarati</label>
               <br />
-              {/* <span className="text-red-400">Select Language Error</span> */}
+              <span className=" text-red-400">{errors.language}</span>
             </div>
             <br />
             <div className="ml-10 ">
@@ -310,27 +347,40 @@ const CrudApp = () => {
             <select
               className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
               name="country"
-              value={user.country}
-              onChange={inputHandle}
             >
-              <option value="" select disabled hidden>
-                Select Gender
-              </option>
+              <option value="">Select Gender</option>
               <option value="male">Male</option>
+              <option value="female">Female</option>
             </select>
           </div>
-          <div className="text-lg">
+          <div className="text-lg m-3">
             <select
               className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
               name="country"
-              value={user.country}
-              onChange={inputHandle}
             >
-              <option value="" select disabled hidden>
-                Select Gender
-              </option>
-              <option value="male">Male</option>
+              <option value="">Select Country</option>
+              <option value="usa">USA</option>
+              <option value="india">India</option>
+              <option value="china">China</option>
             </select>
+          </div>
+          <div className="text-lg m-3">
+            <select
+              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
+              name="country"
+            >
+              <option value="">Select Language</option>
+              <option value="hindi">Hindi</option>
+              <option value="english">English</option>
+              <option value="gujarati">Gujarati</option>
+            </select>
+          </div>
+          <div className="text-lg m-3">
+            <input
+              type="text"
+              placeholder="Search Name"
+              className="w-[200px] border-2 border-gray-400 rounded h-10 p-2 mt-2 cursor-pointer"
+            />
           </div>
         </div>
       </div>
