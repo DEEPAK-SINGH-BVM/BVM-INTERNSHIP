@@ -3,8 +3,10 @@ import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import "./Home.css";
+import { NearMe } from "@mui/icons-material";
 const CrudApp = () => {
-  // MATERIAL UI
+  // MATERIAL UI UPDATED
+  // Errors : Number Regex not WORK in (First & last Name) SEARCH  With first & last name
   // The test() method returns true if it finds a match, otherwise false
   // Searching base on (NAME & LAST-NAME)
   // const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -15,7 +17,7 @@ const CrudApp = () => {
   //   [`&.${tableCellClasses.body}`]: {
   //     fontSize: 14,
   //   },
-  // }));
+  // }));name
 
   // Material UI
 
@@ -33,14 +35,24 @@ const CrudApp = () => {
   };
 
   const [user, setUser] = useState(User);
-
   const [editIndex, setEditIndex] = useState(null);
-
   const [errors, setErrors] = useState({});
+  const [filters, setFilters] = useState({});
+   const [filteredUsers, setFilteredUsers] = useState(user);
 
-  console.log(editIndex, "EditIndex");
+  const handleInputChange = (e) => {
+    const searchTerm = e.target.value;
+    setSearchItem(searchTerm);
 
-  console.log(user, "USER");
+    const filteredItems = user.filter((users) =>
+      users.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredUsers(filteredItems);
+  };
+  // console.log(editIndex, "EditIndex");
+  const [searchItem, setSearchItem] = useState("");
+  // console.log(user, "USER");
 
   const [list, setList] = useState([]);
 
@@ -59,21 +71,42 @@ const CrudApp = () => {
     setUser({ ...user, [name]: value });
     // console.log(name,value);
   };
+  // const inputHandleLanguage = (e) => {
+  //   const { name, value, checked } = e.target;
+  //   console.log(name, "NAME");
+  //   console.log(value, "VALUE");
+  //   // console.log(checked,'CHECKED');
+
+  //   if (name === "language") {
+  //     const current = user.language;
+  //     // console.log(current,'CURRENT');
+  //     let updated = [];
+  //     if (checked) {
+  //       console.log(checked, "CHECKED");
+  //       updated = [...current, value];
+  //       console.log(updated, "UPDATE");
+  //     } else {
+  //       updated = current.filter((lang) => lang !== value);
+  //       console.log("Else Update", updated);
+  //     }
+  //     setUser({ ...user, [name]: updated });
+  //   }
+  // };
   const inputHandleLanguage = (e) => {
-    const { name, value } = e.target;
-    console.log(name, "NAME");
-    console.log(value, "VALUE");
-    if (name == "language") {
+    const { name, value, checked } = e.target;
+    if (name === "language") {
       const current = user.language || [];
-      console.log(current, "CURRENT");
-      console.log("CURRENT");
       let updated = [];
-      console.log(updated, "UPDATE");
-      updated = [...current, value];
+
+      if (checked) {
+        updated = [...current, value];
+      } else {
+        updated = current.filter((lang) => lang !== value);
+      }
+
       setUser({ ...user, [name]: updated });
     }
   };
-
   function editItem(index) {
     setUser(list[index]);
     setEditIndex(index);
@@ -85,61 +118,82 @@ const CrudApp = () => {
     // console.log(...list,'LIST');
   }
 
-  function submitHandle(e) {
+  // const submitHandle = (e) => {
+  //   e.preventDefault();
+  //   const formErrors = validateForm(user);
+  //   setErrors(formErrors);
+  //   if (Object.keys(formErrors).length > 0) return;
+  //   console.log(formErrors, "Object Key");
+  //   console.log("Working");
+
+  //   if (editIndex !== null) {
+  //     const updatedList = [...list];
+  //     updatedList[editIndex] = user;
+  //     setList(updatedList);
+  //     setEditIndex(null);
+  //   } else {
+  //     setList([...list, user]);
+  //   }
+
+  //   setUser(User);
+  //   setErrors({});
+  // };
+  const submitHandle = (e) => {
     e.preventDefault();
-    const newErrors = validateForm(User);
-    setErrors(newErrors);
+    const formErrors = validateForm(user);
+    setErrors(formErrors);
+    if (Object.keys(formErrors).length > 0) return;
 
     if (editIndex !== null) {
-      list[editIndex] = user;
-      // console.log(user,'EDIT-INDEX');
-      // setList([...list]);
-      //
+      const updatedList = [...list];
+      updatedList[editIndex] = user;
+      setList(updatedList);
       setEditIndex(null);
     } else {
       setList([...list, user]);
-      // setUser(User);
     }
     setUser(User);
-    // console.log("working");
-  }
-
+    setErrors({});
+  };
   const validateForm = (data) => {
     const errors = {};
     if (!data.name) {
-      errors.name = "name is required !!";
+      errors.name = "First Name is required!";
+    } else if (!/[^0-9]/g.test(data.name)) {
+      errors.name = "Number is Not Required!";
     }
-    if (!data.last) {
-      errors.last = "Last name is required !!";
-    }
-    if (!data.rollNo) {
-      errors.rollNo = "RollNo is required !!";
-    }
+
+    if (!data.last) errors.last = "Last name is required!";
+    if (!data.rollNo) errors.rollNo = "Roll No is required!";
     if (!data.email) {
-      errors.email = "Email is required !!";
+      errors.email = "Email is required!";
     } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-      errors.email = "Email is invalid !!";
+      errors.email = "Invalid email!";
     }
     if (!data.contact) {
-      errors.contact = "Contact is required !!";
-    } else if (data.contact >= 10) {
-      errors.contact = "Enter Contact Length 10 !!";
+      errors.contact = "Contact is required!";
+    } else if (data.contact.length !== 10) {
+      errors.contact = "Contact must be 10 digits!";
     }
-    if (!data.gender) {
-      errors.gender = "Gender is required !!";
-    }
-    if (!data.date) {
-      errors.date = "DOB is required !!";
-    }
-    if (!data.country) {
-      errors.country = "Country is required !!";
-    }
-    if (!data.language) {
-      errors.language = "At List One Language is required !!";
+    if (!data.gender) errors.gender = "Gender is required!";
+    if (!data.date) errors.date = "DOB is required!";
+    if (!data.country) errors.country = "Country is required!";
+    if (!data.language || data.language.length === 0) {
+      errors.language = "Select at least one language!";
     }
     return errors;
   };
+  const filteredList = list.filter((item) => {
+    const Gender = !filters.gender || item.gender == filters.gender;
+    // console.log(Gender, " GENDER");
+    const Country = !filters.country || item.country == filters.country;
+    // console.log(Country, " GENDER");
+    const Language =
+      !filters.language || item.language.includes(filters.language);
+    // console.log(Language, " GENDER");
 
+    return Gender && Country && Language;
+  });
   return (
     <div className="pt-15">
       {/*  <h1 className="text-3xl font-bold underline text-red-400">Hello world!</h1> */}
@@ -152,28 +206,19 @@ const CrudApp = () => {
           </div>
           <form onSubmit={submitHandle}>
             <div className="flex p-3">{/* Children 2 */}</div>
+
             <div className="child ml-12">
+              <label>Enter First Name :</label>
               <input
                 className="w-[400px] border-2 border-gray-400 rounded h-10  mt-2 pl-2"
                 type="text"
                 name="name"
-                placeholder="Name"
-                value={User.name}
+                placeholder="Enter First Name "
+                value={user.name}
                 onChange={inputHandle}
               />
               <br />
-
               <span className="error-message text-red-400">{errors.name}</span>
-
-              {/* <label>Enter Name :</label>
-              <input
-                className="w-[400px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
-                type="text"
-                name="name"
-                placeholder="Name"
-                value={user.name}
-                onChange={inputHandle}
-              /> */}
               <br />
             </div>
             <div className="child ml-12">
@@ -215,7 +260,7 @@ const CrudApp = () => {
                     onChange={inputHandle}
                   />
                   <br />
-                  <span className=" text-red-400">{errors.rollNo}</span>
+                  <span className=" text-red-400">{errors.email}</span>
                 </div>
               </div>
             </div>
@@ -242,7 +287,7 @@ const CrudApp = () => {
                 value={user.gender}
                 onChange={inputHandle}
               >
-                <option value="" select disabled hidden>
+                <option value="" disabled>
                   Select Gender
                 </option>
                 <option value="male">Male</option>
@@ -275,7 +320,7 @@ const CrudApp = () => {
                     value={user.country}
                     onChange={inputHandle}
                   >
-                    <option value="" select disabled hidden>
+                    <option value="" disabled>
                       Select Country
                     </option>
                     <option value="usa">USA</option>
@@ -295,28 +340,31 @@ const CrudApp = () => {
                 className="checkBox h-4 w-10"
                 name="language"
                 value="english"
+                checked={user.language.includes("english")}
                 onChange={inputHandleLanguage}
               />
-              <label>English</label>
+              English
               <input
                 type="checkbox"
-                className="checkBox h-4 w-10"
                 name="language"
                 value="hindi"
+                className="checkBox h-4 w-10"
+                checked={user.language.includes("hindi")}
                 onChange={inputHandleLanguage}
               />
-              <label>Hindi</label>
+              Hindi
               <input
                 type="checkbox"
-                className="checkBox h-4 w-10"
                 name="language"
                 value="gujarati"
+                className="checkBox h-4 w-10"
+                checked={user.language.includes("gujarati")}
                 onChange={inputHandleLanguage}
               />
-              <label>Gujarati</label>
-              <br />
-              <span className=" text-red-400">{errors.language}</span>
+              Gujarati
+              {errors.language && <p>{errors.language}</p>}
             </div>
+
             <br />
             <div className="ml-10 ">
               <label>Select Profile Pic : </label>
@@ -346,9 +394,13 @@ const CrudApp = () => {
           <div className="text-lg">
             <select
               className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
-              name="country"
+              name="gender"
+              // value={filters.gender}
+              onChange={(e) =>
+                setFilters({ ...filters, gender: e.target.value })
+              }
             >
-              <option value="">Select Gender</option>
+              <option value="">All Genders</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
@@ -357,6 +409,10 @@ const CrudApp = () => {
             <select
               className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
               name="country"
+              // value={filters.gender}
+              onChange={(e) =>
+                setFilters({ ...filters, country: e.target.value })
+              }
             >
               <option value="">Select Country</option>
               <option value="usa">USA</option>
@@ -367,7 +423,10 @@ const CrudApp = () => {
           <div className="text-lg m-3">
             <select
               className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
-              name="country"
+              name="language"
+              onChange={(e) =>
+                setFilters({ ...filters, language: e.target.value })
+              }
             >
               <option value="">Select Language</option>
               <option value="hindi">Hindi</option>
@@ -378,42 +437,19 @@ const CrudApp = () => {
           <div className="text-lg m-3">
             <input
               type="text"
-              placeholder="Search Name"
-              className="w-[200px] border-2 border-gray-400 rounded h-10 p-2 mt-2 cursor-pointer"
+              value={searchItem}
+              onChange={handleInputChange}
+              placeholder="Type to search"
             />
+            <ul>
+              {filteredList.map((users) => (
+                <li>{users.name}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>
       <div className="flex justify-center items-center text-center text-lg">
-        {/* <table className="border-separate border border-gray-400 ">
-          <thead>
-            <tr className="">
-              <th className="border border-gray-300 m-10">Profile Pic</th>
-              <th className="border border-gray-300 ">Name</th>
-              <th className="border border-gray-300 ">Last Name</th>
-              <th className="border border-gray-300 ">Roll No</th>
-              <th className="border border-gray-300 ">Email</th>
-              <th className="border border-gray-300 ">Contact No.</th>
-              <th className="border border-gray-300 ">Gender</th>
-              <th className="border border-gray-300 ">Date Of Birth</th>
-              <th className="border border-gray-300 ">Country</th>
-              <th className="border border-gray-300 ">Language</th>
-              <th className="border border-gray-300 ">Action</th>
-            </tr>
-            </thead>
-          <tbody>
-            {list.map((item, index) => (
-              <tr key={index}>
-                <td>{item.name}</td>
-                 <td>
-                <img src={item.image} alt="Profile" width="50" height="50" />
-              </td>
-              </tr>
-            ))}
-          </tbody>
-        </table> 
-         */}
-
         <table className="border-separate border border-gray-400 ">
           <thead>
             <tr>
@@ -431,7 +467,7 @@ const CrudApp = () => {
             </tr>
           </thead>
           <tbody>
-            {list.map((item, index) => (
+            {filteredList.map((item, index) => (
               <tr key={index}>
                 <td>{item.name}</td>
                 <td>{item.last}</td>
@@ -462,6 +498,37 @@ const CrudApp = () => {
                 </td>
               </tr>
             ))}
+            {/* {list.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.last}</td>
+                <td>{item.rollNo}</td>
+                <td>{item.email}</td>
+                <td>{item.contact}</td>
+                <td>{item.gender}</td>
+                <td>{item.date}</td>
+                <td>{item.country}</td>
+                <td>{item.language}</td>
+                <td>
+                  <img src={item.image} alt="Profile" width="50" height="50" />
+                </td>
+
+                <td>
+                  <button
+                    className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer"
+                    onClick={() => deleteItem(index)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-500 text-white cursor-pointer"
+                    onClick={() => editItem(index)}
+                  >
+                    Edit
+                  </button>
+                </td>
+              </tr>
+            ))} */}
           </tbody>
         </table>
       </div>
