@@ -38,21 +38,10 @@ const CrudApp = () => {
   const [editIndex, setEditIndex] = useState(null);
   const [errors, setErrors] = useState({});
   const [filters, setFilters] = useState({});
-   const [filteredUsers, setFilteredUsers] = useState(user);
 
-  const handleInputChange = (e) => {
-    const searchTerm = e.target.value;
-    setSearchItem(searchTerm);
-
-    const filteredItems = user.filter((users) =>
-      users.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    setFilteredUsers(filteredItems);
-  };
   // console.log(editIndex, "EditIndex");
-  const [searchItem, setSearchItem] = useState("");
   // console.log(user, "USER");
+  const [searchItem, setSearchItem] = useState("");
 
   const [list, setList] = useState([]);
 
@@ -71,42 +60,28 @@ const CrudApp = () => {
     setUser({ ...user, [name]: value });
     // console.log(name,value);
   };
-  // const inputHandleLanguage = (e) => {
-  //   const { name, value, checked } = e.target;
-  //   console.log(name, "NAME");
-  //   console.log(value, "VALUE");
-  //   // console.log(checked,'CHECKED');
-
-  //   if (name === "language") {
-  //     const current = user.language;
-  //     // console.log(current,'CURRENT');
-  //     let updated = [];
-  //     if (checked) {
-  //       console.log(checked, "CHECKED");
-  //       updated = [...current, value];
-  //       console.log(updated, "UPDATE");
-  //     } else {
-  //       updated = current.filter((lang) => lang !== value);
-  //       console.log("Else Update", updated);
-  //     }
-  //     setUser({ ...user, [name]: updated });
-  //   }
-  // };
   const inputHandleLanguage = (e) => {
     const { name, value, checked } = e.target;
-    if (name === "language") {
-      const current = user.language || [];
-      let updated = [];
+    console.log(name, "NAME");
+    console.log(value, "VALUE");
+    //console.log(checked,'CHECKED');
 
+    if (name === "language") {
+      const current = user.language;
+      // console.log(current,'CURRENT');
+      let updated = [];
       if (checked) {
+        console.log(checked, "CHECKED");
         updated = [...current, value];
+        console.log(updated, "UPDATE");
       } else {
         updated = current.filter((lang) => lang !== value);
+        console.log("Else Update", updated);
       }
-
       setUser({ ...user, [name]: updated });
     }
   };
+
   function editItem(index) {
     setUser(list[index]);
     setEditIndex(index);
@@ -118,34 +93,19 @@ const CrudApp = () => {
     // console.log(...list,'LIST');
   }
 
-  // const submitHandle = (e) => {
-  //   e.preventDefault();
-  //   const formErrors = validateForm(user);
-  //   setErrors(formErrors);
-  //   if (Object.keys(formErrors).length > 0) return;
-  //   console.log(formErrors, "Object Key");
-  //   console.log("Working");
-
-  //   if (editIndex !== null) {
-  //     const updatedList = [...list];
-  //     updatedList[editIndex] = user;
-  //     setList(updatedList);
-  //     setEditIndex(null);
-  //   } else {
-  //     setList([...list, user]);
-  //   }
-
-  //   setUser(User);
-  //   setErrors({});
-  // };
   const submitHandle = (e) => {
     e.preventDefault();
     const formErrors = validateForm(user);
+    //  console.log(formErrors,'FormError');
+    
     setErrors(formErrors);
     if (Object.keys(formErrors).length > 0) return;
 
+
     if (editIndex !== null) {
       const updatedList = [...list];
+      console.log(updatedList,'UPDATED LIST');
+      
       updatedList[editIndex] = user;
       setList(updatedList);
       setEditIndex(null);
@@ -155,15 +115,20 @@ const CrudApp = () => {
     setUser(User);
     setErrors({});
   };
+
   const validateForm = (data) => {
     const errors = {};
     if (!data.name) {
       errors.name = "First Name is required!";
-    } else if (!/[^0-9]/g.test(data.name)) {
-      errors.name = "Number is Not Required!";
+    } else if (!/^[A-Za-z]+$/.test(data.name)) {
+      errors.name = "Number Are Not Allow !";
     }
 
-    if (!data.last) errors.last = "Last name is required!";
+    if (!data.last) {
+      errors.last = "Last name is required!";
+    } else if (!/^[A-Za-z]+$/.test(data.last)) {
+      errors.last = "Number Are Not Allow !";
+    }
     if (!data.rollNo) errors.rollNo = "Roll No is required!";
     if (!data.email) {
       errors.email = "Email is required!";
@@ -183,20 +148,27 @@ const CrudApp = () => {
     }
     return errors;
   };
-  const filteredList = list.filter((item) => {
-    const Gender = !filters.gender || item.gender == filters.gender;
-    // console.log(Gender, " GENDER");
-    const Country = !filters.country || item.country == filters.country;
-    // console.log(Country, " GENDER");
-    const Language =
-      !filters.language || item.language.includes(filters.language);
-    // console.log(Language, " GENDER");
+  const filterList = list
+    .filter((item) => {
+      const Gender = !filters.gender || item.gender == filters.gender;
+      // console.log(Gender, " GENDER");
+      const Country = !filters.country || item.country == filters.country;
+      // console.log(Country, " GENDER");
+      const Language =
+        !filters.language || item.language.includes(filters.language);
+      // console.log(Language, " GENDER");
 
-    return Gender && Country && Language;
-  });
+      return Gender && Country && Language;
+    })
+
+    .filter((item) =>
+      item.name.toLowerCase().includes(searchItem.toLowerCase()) ||
+      item.last.toLowerCase().includes(searchItem.toLowerCase())
+    );
+
   return (
     <div className="pt-15">
-      {/*  <h1 className="text-3xl font-bold underline text-red-400">Hello world!</h1> */}
+      {/*    <h1 className="text-3xl font-bold underline text-red-400">Hello world!</h1> */}
       <div className="flex justify-center items-center ">
         <div className="border-1 border-gray-300 text-lg w-[500px] shadow-2xl rounded-xl ">
           <div className="flex justify-center">
@@ -205,7 +177,7 @@ const CrudApp = () => {
             </h2>
           </div>
           <form onSubmit={submitHandle}>
-            <div className="flex p-3">{/* Children 2 */}</div>
+            <div className="flex p-3"></div>
 
             <div className="child ml-12">
               <label>Enter First Name :</label>
@@ -362,17 +334,15 @@ const CrudApp = () => {
                 onChange={inputHandleLanguage}
               />
               Gujarati
-              {errors.language && <p>{errors.language}</p>}
+              <br />
+              <span className=" text-red-400">{errors.language}</span>
+        
             </div>
 
             <br />
             <div className="ml-10 ">
               <label>Select Profile Pic : </label>
-              {/* <input
-                className="text-red-400"
-                type="file"
-                onChange={imageHandler}
-              /> */}
+
               <input type="file" onChange={imageHandler} />
             </div>
             <br />
@@ -436,16 +406,12 @@ const CrudApp = () => {
           </div>
           <div className="text-lg m-3">
             <input
+              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
               type="text"
+              placeholder="Search"
               value={searchItem}
-              onChange={handleInputChange}
-              placeholder="Type to search"
+              onChange={(e) => setSearchItem(e.target.value)}
             />
-            <ul>
-              {filteredList.map((users) => (
-                <li>{users.name}</li>
-              ))}
-            </ul>
           </div>
         </div>
       </div>
@@ -453,7 +419,7 @@ const CrudApp = () => {
         <table className="border-separate border border-gray-400 ">
           <thead>
             <tr>
-              <th className="border border-gray-300 p-2">Name</th>
+              <th className="border border-gray-300 p-2">First Name</th>
               <th className="border border-gray-300 p-2">Last Name</th>
               <th className="border border-gray-300 p-2">Roll No</th>
               <th className="border border-gray-300 p-2">Email</th>
@@ -467,7 +433,7 @@ const CrudApp = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredList.map((item, index) => (
+            {filterList.map((item, index) => (
               <tr key={index}>
                 <td>{item.name}</td>
                 <td>{item.last}</td>
@@ -477,7 +443,7 @@ const CrudApp = () => {
                 <td>{item.gender}</td>
                 <td>{item.date}</td>
                 <td>{item.country}</td>
-                <td>{item.language}</td>
+                <td>{item.language.join(", ")}</td>
                 <td>
                   <img src={item.image} alt="Profile" width="50" height="50" />
                 </td>
