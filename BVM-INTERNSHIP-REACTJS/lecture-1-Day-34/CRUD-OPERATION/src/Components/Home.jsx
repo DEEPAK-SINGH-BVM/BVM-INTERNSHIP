@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 
 import "./Home.css";
 import { NearMe } from "@mui/icons-material";
 const CrudApp = () => {
-  // MATERIAL UI UPDATED
+  // MATERIAL UI UPDATED]
   // Errors : Number Regex not WORK in (First & last Name) SEARCH  With first & last name
   // The test() method returns true if it finds a match, otherwise false
   // Searching base on (NAME & LAST-NAME)
@@ -18,9 +18,16 @@ const CrudApp = () => {
   //     fontSize: 14,
   //   },
   // }));name
+  /*
+ 
+   useEffect(() => {
+    // Set data when the name state changes
+    localStorage.setItem('userName', name);
+  }, [name]); 
+  */
 
   // Material UI
-
+  
   const User = {
     name: "",
     last: "",
@@ -34,41 +41,50 @@ const CrudApp = () => {
     image: "",
   };
 
+  // const userData = () => Number(localStorage.getItem("user")) || 0;
+
   const [user, setUser] = useState(User);
+  console.log(user, "USER");
+
   const [editIndex, setEditIndex] = useState(null);
   const [errors, setErrors] = useState({});
   const [filters, setFilters] = useState({});
 
-  // console.log(editIndex, "EditIndex");
-  // console.log(user, "USER");
+  useEffect(() => {
+    localStorage.setItem("user", user);
+  }, [user]);
+  console.log(editIndex, "EditIndex");
+
+  console.log(user, "USER");
   const [searchItem, setSearchItem] = useState("");
 
   const [list, setList] = useState([]);
 
   const imageHandler = (e) => {
     const file = e.target.files[0];
-    // console.log(file,'FILES ');
+    console.log(file, "FILES ");
     const imgURL = URL.createObjectURL(file);
-    // console.log(imgURL,"IMAGE URL ");
+    console.log(imgURL, "IMAGE URL ");
     setUser({ ...user, image: imgURL });
   };
 
   const inputHandle = (e) => {
     const { name, value } = e.target;
-    // console.log(name);
-    // console.log(value);
+    console.log(name, "NAME");
+    console.log(value, "VALUE");
     setUser({ ...user, [name]: value });
-    // console.log(name,value);
+    console.log(name, value, "NAME - VALUE");
   };
+
   const inputHandleLanguage = (e) => {
     const { name, value, checked } = e.target;
     console.log(name, "NAME");
     console.log(value, "VALUE");
-    //console.log(checked,'CHECKED');
+    console.log(checked, "CHECKED");
 
     if (name === "language") {
       const current = user.language;
-      // console.log(current,'CURRENT');
+      console.log(current, "CURRENT");
       let updated = [];
       if (checked) {
         console.log(checked, "CHECKED");
@@ -81,31 +97,28 @@ const CrudApp = () => {
       setUser({ ...user, [name]: updated });
     }
   };
-
   function editItem(index) {
     setUser(list[index]);
     setEditIndex(index);
   }
   function deleteItem(index) {
     list.splice(index, 1);
-    // console.log(index);
+    console.log(index);
     setList([...list]);
-    // console.log(...list,'LIST');
+    console.log(...list, "LIST");
   }
 
   const submitHandle = (e) => {
     e.preventDefault();
     const formErrors = validateForm(user);
-    //  console.log(formErrors,'FormError');
-    
+    console.log(formErrors, "FormError");
+
     setErrors(formErrors);
     if (Object.keys(formErrors).length > 0) return;
 
-
     if (editIndex !== null) {
       const updatedList = [...list];
-      console.log(updatedList,'UPDATED LIST');
-      
+      console.log(updatedList, "UPDATED LIST");
       updatedList[editIndex] = user;
       setList(updatedList);
       setEditIndex(null);
@@ -123,13 +136,14 @@ const CrudApp = () => {
     } else if (!/^[A-Za-z]+$/.test(data.name)) {
       errors.name = "Number Are Not Allow !";
     }
-
     if (!data.last) {
       errors.last = "Last name is required!";
     } else if (!/^[A-Za-z]+$/.test(data.last)) {
       errors.last = "Number Are Not Allow !";
     }
+
     if (!data.rollNo) errors.rollNo = "Roll No is required!";
+
     if (!data.email) {
       errors.email = "Email is required!";
     } else if (!/\S+@\S+\.\S+/.test(data.email)) {
@@ -151,24 +165,24 @@ const CrudApp = () => {
   const filterList = list
     .filter((item) => {
       const Gender = !filters.gender || item.gender == filters.gender;
-      // console.log(Gender, " GENDER");
+      console.log(Gender, " GENDER");
       const Country = !filters.country || item.country == filters.country;
-      // console.log(Country, " GENDER");
+      console.log(Country, " GENDER");
       const Language =
         !filters.language || item.language.includes(filters.language);
-      // console.log(Language, " GENDER");
-
+      console.log(Language, " GENDER");
       return Gender && Country && Language;
     })
 
-    .filter((item) =>
-      item.name.toLowerCase().includes(searchItem.toLowerCase()) ||
-      item.last.toLowerCase().includes(searchItem.toLowerCase())
+    .filter(
+      (item) =>
+        item.name.toLowerCase().includes(searchItem.toLowerCase()) ||
+        item.last.toLowerCase().includes(searchItem.toLowerCase())
     );
 
   return (
     <div className="pt-15">
-      {/*    <h1 className="text-3xl font-bold underline text-red-400">Hello world!</h1> */}
+      {/* <h1 className="text-3xl font-bold underline text-red-400">Hello world!</h1> */}
       <div className="flex justify-center items-center ">
         <div className="border-1 border-gray-300 text-lg w-[500px] shadow-2xl rounded-xl ">
           <div className="flex justify-center">
@@ -210,7 +224,7 @@ const CrudApp = () => {
               <div>
                 <label>Roll No :</label>
                 <input
-                  className="w-[200px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
+                  className="w-[190px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
                   type="Number"
                   name="rollNo"
                   placeholder="Enter Roll No"
@@ -224,7 +238,7 @@ const CrudApp = () => {
                 <div>
                   <label>Email :</label>
                   <input
-                    className="w-[200px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
+                    className="w-[190px] border-2 border-gray-400 rounded h-10  mt-2 pl-2 "
                     type="email"
                     name="email"
                     placeholder="Enter Email"
@@ -250,7 +264,6 @@ const CrudApp = () => {
               <br />
               <span className=" text-red-400">{errors.contact}</span>
             </div>
-
             <div className="ml-12 ">
               <label>Select Gender :</label>
               <select
@@ -336,7 +349,6 @@ const CrudApp = () => {
               Gujarati
               <br />
               <span className=" text-red-400">{errors.language}</span>
-        
             </div>
 
             <br />
@@ -359,13 +371,12 @@ const CrudApp = () => {
       <br />
       <br /> <br />
       <div>
-        {/* Filter Section */}
+        {/* r Filter Section */}
         <div className="flex justify-center items-center p-10">
           <div className="text-lg">
             <select
               className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
               name="gender"
-              // value={filters.gender}
               onChange={(e) =>
                 setFilters({ ...filters, gender: e.target.value })
               }
@@ -379,7 +390,6 @@ const CrudApp = () => {
             <select
               className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
               name="country"
-              // value={filters.gender}
               onChange={(e) =>
                 setFilters({ ...filters, country: e.target.value })
               }
@@ -464,37 +474,6 @@ const CrudApp = () => {
                 </td>
               </tr>
             ))}
-            {/* {list.map((item, index) => (
-              <tr key={index}>
-                <td>{item.name}</td>
-                <td>{item.last}</td>
-                <td>{item.rollNo}</td>
-                <td>{item.email}</td>
-                <td>{item.contact}</td>
-                <td>{item.gender}</td>
-                <td>{item.date}</td>
-                <td>{item.country}</td>
-                <td>{item.language}</td>
-                <td>
-                  <img src={item.image} alt="Profile" width="50" height="50" />
-                </td>
-
-                <td>
-                  <button
-                    className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer"
-                    onClick={() => deleteItem(index)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-500 text-white cursor-pointer"
-                    onClick={() => editItem(index)}
-                  >
-                    Edit
-                  </button>
-                </td>
-              </tr>
-            ))} */}
           </tbody>
         </table>
       </div>

@@ -10,7 +10,7 @@
 =>  item-center (items-center) 
 =>  text-center (text-center)
 =>  border-2 (border-width) 
-=>  rounded-xl - 10px  (border-radius ) 
+=>  rounded-xl - 10px  (border-radius) 
 =>  font-sans (font-family) 
 =>  text-lg (font-size) 
 =>  font-red(text-red-400)
