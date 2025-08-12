@@ -1,8 +1,18 @@
 import { combineReducers } from "redux";
 import crudReducer from "./crudReducers";
+
+
 export default combineReducers({
-    lists:crudReducer
-})
+  list: crudReducer,
+});
+
+// const todoReducers = combineReducers({
+//     list:crudReducer,
+// })
+
+// export default todoReducers
+
+
 // import { combineReducers } from "redux";
 // import crudReducer from "./crudReducers";
 
