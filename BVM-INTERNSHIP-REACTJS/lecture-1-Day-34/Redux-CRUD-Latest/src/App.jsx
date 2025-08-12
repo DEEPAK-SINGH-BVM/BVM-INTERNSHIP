@@ -1,14 +1,4 @@
 
-
-// function App() {
-
-//   return (
-//     <div>
-//         <h1>Hello</h1>
-//     </div>
-//   )
-// }
-// export default App
 import React from "react";
 import { Provider } from "react-redux";
 //import "../../App.scss";
