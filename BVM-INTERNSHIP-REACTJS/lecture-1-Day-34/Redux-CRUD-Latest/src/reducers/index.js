@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
 import crudReducer from "./crudReducers";
 
-
 export default combineReducers({
   list: crudReducer,
 });
@@ -11,7 +10,6 @@ export default combineReducers({
 // })
 
 // export default todoReducers
-
 
 // import { combineReducers } from "redux";
 // import crudReducer from "./crudReducers";
@@ -27,3 +25,10 @@ export default combineReducers({
 // });
 
 // export default rootReducer;
+
+// import todoReducer from "./components/Home/crudReducer";
+
+// export default todoReducer;
+// {
+//   todos: [...]
+//              }

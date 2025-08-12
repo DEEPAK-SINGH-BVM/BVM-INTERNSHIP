@@ -18,9 +18,12 @@
 //   }
 // }
 // import { createStore } from "redux";
+// 
+
 const initialState = {
   todos: [],
 };
+
 export default function todoReducer(state = initialState, action) {
   switch (action.type) {
     case "ADD_TODO":
