@@ -1,132 +1,331 @@
-// import React, { useState } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { addTodo, removeTodo } from "./crudAction";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, removeTodo, updateTodo } from "./components/Home/crudAction";
+import "./App.css";
+export default function App() {
+  const emptyUser = {
+    firstName: "",
+    lastName: "",
+    rollNo: "",
+    email: "",
+    contact: "",
+    gender: "",
+    date: "",
+    country: "",
+    language: [],
+  };
 
-// export default function App() {
-//   const [todo, setTodo] = useState({ name: "", description: "" });
+  const [todo, setTodo] = useState(emptyUser);
+  const [editId, setEditId] = useState(null);
+  const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
+  const todos = useSelector((state) => state.counter.list.todos);
 
-//   const dispatch = useDispatch();
-//   const todos = useSelector((state) => state.todos);
+  const validate = () => {
+    let newErrors = {};
+    if (!todo.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!todo.lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!todo.email.includes("@")) newErrors.email = "Valid email required";
+    if (!todo.gender) newErrors.gender = "Gender is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-//   const handleAddTodo = () => {
-//     if (!todo.name || !todo.description) return;
+  const handleSubmit = () => {
+    if (!validate()) return;
 
-//     dispatch(
-//       addTodo({
-//         id: Date.now(),
-//         name: todo.name,
-//         description: todo.description,
-//       })
-//     );
+    if (editId) {
+      dispatch(updateTodo({ ...todo, id: editId }));
+      setEditId(null);
+    } else {
+      dispatch(addTodo({ ...todo, id: Date.now() }));
+    }
+    setTodo(emptyUser);
+  };
 
-//     setTodo({ name: "", description: "" });
-//   };
+  const handleEdit = (data) => {
+    setTodo(data);
+    setEditId(data.id);
+  };
 
-//   const handleRemoveTodo = (id) => {
-//     dispatch(removeTodo(id));
-//   };
+  const handleDelete = (id) => {
+    dispatch(removeTodo(id));
+  };
 
-//   return (
-//     <div id="app">
-//       <h2>Redux CRUD</h2>
+  const inputHandleLanguage = (e) => {
+    const { name, value, checked } = e.target;
 
-//       <input
-//         type="text"
-//         placeholder="Enter Name"
-//         value={todo.name}
-//         onChange={(e) => setTodo({ ...todo, name: e.target.value })}
-//       />
-//       <input
-//         type="text"
-//         placeholder="Enter Description"
-//         value={todo.description}
-//         onChange={(e) => setTodo({ ...todo, description: e.target.value })}
-//       />
-//       <button onClick={handleAddTodo}>Add</button>
+    if (name === "language") {
+      const current = todo.language || [];
+      let updated = [];
 
-//       <ul>
-//         {todos &&
-//           todos.map((t) => (
-//             <li key={t.id}>
-//               <strong>{t.name}</strong> — {t.description}
-//               <button onClick={() => handleRemoveTodo(t.id)}>Remove</button>
-//             </li>
-//           ))}
-//       </ul>
-//     </div>
-//   );
-// }
+      if (checked) {
+        updated = [...current, value];
+      } else {
+        updated = current.filter((lang) => lang !== value); 
+      }
 
-// import "./App.css";
-// import React, { useState } from "react";
-// import { connect } from "react-redux";
+      setTodo({ ...todo, [name]: updated });
+    }
+  };
 
-// const App = ({ todos, addTodo, removeTodo, toggleTodo }) => {
-//   const [text, setText] = useState("");
-//   const handleAddTodo = () => {
-//     if (text.trim() != "") {
-//       addTodo({
-//         id: new Date().getTime(),
-//         text,
-//       });
-//       setText("");
-//     }
-//   };
-//   const handleRemoveTodo = (id) => {
-//     removeTodo(id);
-//   };
-//   const handleToggleTodo = (id) => {
-//     toggleTodo(id);
-//   };
+  return (
+    <div className="p-5">
+      <h2>Redux CRUD Form</h2>
 
-//   return (
-//     <div id="app">
-//       <div>
-//         <h2>Redux-Crud</h2>
-//         <input
-//           type="text"
-//           placeholder="Enter Task"
-//           value={text}
-//           onChange={(e) => setText(e.target.value)}
-//         />
-//         <button onClick={handleAddTodo}>Add</button>
-//       </div>
-//       <ul>
-//         {todos.map((todo) => (
-//           <li
-//             className="Todo"
-//             key={todo.id}
-//             onClick={() => handleToggleTodo(todo.id)}
-//           >
-//             {todo.text}
-//             <button onClick={() => handleRemoveTodo(todo.id)}>Remove</button>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-// const mapStateToProps = (state) => ({
-//   todos: state.todos,
-// });
+      <input
+        placeholder="First Name"
+        value={todo.firstName}
+        onChange={(e) => setTodo({ ...todo, firstName: e.target.value })}
+      />
+      {errors.firstName && <p style={{ color: "red" }}>{errors.firstName}</p>}
 
-// const mapDispatchToProps = (dispatch) => ({
-//   addTodo: (todo) =>
-//     dispatch({
-//       type: "ADD_TODO",
-//       payload: todo,
-//     }),
-//   removeTodo: (id) =>
-//     dispatch({
-//       type: "REMOVE_TODO",
-//       payload: id,
-//     }),
-//   toggleTodo: (id) =>
-//     dispatch({
-//       type: "TOGGLE_TODO",
-//       payload: id,
-//     }),
-// });
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
+      <input
+        placeholder="Last Name"
+        value={todo.lastName}
+        onChange={(e) => setTodo({ ...todo, lastName: e.target.value })}
+      />
+      {errors.lastName && <p style={{ color: "red" }}>{errors.lastName}</p>}
 
+      <input
+        placeholder="Email"
+        value={todo.email}
+        onChange={(e) => setTodo({ ...todo, email: e.target.value })}
+      />
+      {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
 
+      <select
+        value={todo.gender}
+        onChange={(e) => setTodo({ ...todo, gender: e.target.value })}
+      >
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      {errors.gender && <p style={{ color: "red" }}>{errors.gender}</p>}
+
+      <div className="text-[20px]">
+        <label>Select Language :</label>
+
+        <input
+          type="checkbox"
+          name="language"
+          value="Hindi"
+          checked={todo.language.includes("Hindi")}
+          onChange={inputHandleLanguage}
+          className="h-4 w-4 m-2"
+        />
+        <label>Hindi</label>
+
+        <input
+          type="checkbox"
+          name="language"
+          value="English"
+          checked={todo.language.includes("English")}
+          onChange={inputHandleLanguage}
+          className="h-4 w-4 m-2"
+        />
+        <label>English</label>
+
+        <input
+          type="checkbox"
+          name="language"
+          value="Gujarati"
+          checked={todo.language.includes("Gujarati")}
+          onChange={inputHandleLanguage}
+          className="h-4 w-4 m-2"
+        />
+        <label>Gujarati</label>
+      </div>
+
+      <button onClick={handleSubmit}>{editId ? "Update" : "Submit"}</button>
+
+      <table border="1" style={{ marginTop: "20px", width: "100%" }}>
+        <thead>
+          <tr>
+            <th>First</th>
+            <th>Last</th>
+            <th>Email</th>
+            <th>Gender</th>
+            <th>Language</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {todos.map((t) => (
+            <tr key={t.id}>
+              <td>{t.firstName}</td>
+              <td>{t.lastName}</td>
+              <td>{t.email}</td>
+              <td>{t.gender}</td>
+              <td>{t.language.join(", ")}</td>
+              <td>
+                <button onClick={() => handleEdit(t)}>Edit</button>
+                <button onClick={() => handleDelete(t.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+/*
+  import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo, removeTodo, updateTodo } from "./components/Home/crudAction";
+import "./App.css";
+
+export default function App() {
+  const emptyUser = {
+    firstName: "",
+    lastName: "",
+    rollNo: "",
+    email: "",
+    contact: "",
+    gender: "",
+    date: "",
+    country: "",
+    language: [],
+  };
+
+  const [todo, setTodo] = useState(emptyUser);
+  const [editId, setEditId] = useState(null);
+  const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
+  const todos = useSelector((state) => state.counter.list.todos);
+
+  const validate = () => {
+    let newErrors = {};
+    if (!todo.firstName.trim()) newErrors.firstName = "First name is required";
+    if (!todo.lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!todo.email.includes("@")) newErrors.email = "Valid email required";
+    if (!todo.gender) newErrors.gender = "Gender is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleAdd = () => {
+    if (!validate()) return;
+    dispatch(addTodo({ ...todo, id: Date.now() }));
+    setTodo(emptyUser);
+  };
+
+  const handleUpdate = () => {
+    if (!validate()) return;
+    dispatch(updateTodo({ ...todo, id: editId }));
+    setTodo(emptyUser);
+    setEditId(null);
+  };
+
+  const handleEdit = (data) => {
+    setTodo(data);
+    setEditId(data.id);
+  };
+
+  const handleDelete = (id) => {
+    dispatch(removeTodo(id));
+  };
+
+  const inputHandleLanguage = (e) => {
+    const { name, value, checked } = e.target;
+    if (name === "language") {
+      const current = todo.language || [];
+      let updated = checked
+        ? [...current, value]
+        : current.filter((lang) => lang !== value);
+      setTodo({ ...todo, [name]: updated });
+    }
+  };
+
+  return (
+    <div>
+      
+      <input
+        type="text"
+        placeholder="First Name"
+        value={todo.firstName}
+        onChange={(e) => setTodo({ ...todo, firstName: e.target.value })}
+      />
+      {errors.firstName && <p>{errors.firstName}</p>}
+
+      <input
+        type="text"
+        placeholder="Last Name"
+        value={todo.lastName}
+        onChange={(e) => setTodo({ ...todo, lastName: e.target.value })}
+      />
+      {errors.lastName && <p>{errors.lastName}</p>}
+
+      <input
+        type="email"
+        placeholder="Email"
+        value={todo.email}
+        onChange={(e) => setTodo({ ...todo, email: e.target.value })}
+      />
+      {errors.email && <p>{errors.email}</p>}
+
+      <div>
+        <label>
+          <input
+            type="radio"
+            name="gender"
+            value="Male"
+            checked={todo.gender === "Male"}
+            onChange={(e) => setTodo({ ...todo, gender: e.target.value })}
+          />{" "}
+          Male
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="gender"
+            value="Female"
+            checked={todo.gender === "Female"}
+            onChange={(e) => setTodo({ ...todo, gender: e.target.value })}
+          />{" "}
+          Female
+        </label>
+      </div>
+      {errors.gender && <p>{errors.gender}</p>}
+
+      <label>
+        <input
+          type="checkbox"
+          name="language"
+          value="English"
+          checked={todo.language.includes("English")}
+          onChange={inputHandleLanguage}
+        />{" "}
+        English
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          name="language"
+          value="Hindi"
+          checked={todo.language.includes("Hindi")}
+          onChange={inputHandleLanguage}
+        />{" "}
+        Hindi
+      </label>
+
+      {!editId ? (
+        <button onClick={handleAdd}>Add</button>
+      ) : (
+        <button onClick={handleUpdate}>Update</button>
+      )}
+
+      <ul>
+        {todos.map((item) => (
+          <li key={item.id}>
+            {item.firstName} {item.lastName} - {item.email}
+            <button onClick={() => handleEdit(item)}>Edit</button>
+            <button onClick={() => handleDelete(item.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+*/
