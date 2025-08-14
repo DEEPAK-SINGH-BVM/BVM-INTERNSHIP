@@ -21,12 +21,16 @@ export default function App() {
   const [error, setErrors] = useState({});
   const [filters, setFilters] = useState({});
   const [searchItem, setSearchItem] = useState("");
-  console.log(searchItem, "SEARCH");
+  // console.log(searchItem, "SEARCH");
 
   // console.log(filters,'FILTER');
 
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.counter.list.todos);
+  const todos = useSelector((state) => state.todos);
+  // console.log(todos,'PATH');
+  
+  //  const todos = useSelector((state) => state.counter.todos);
+  
   // console.log(todos, "TODOS");
 
   // const handleAddTodo = () => {
@@ -90,7 +94,7 @@ export default function App() {
     if (todo.language.length === 0)
       newErrors.language = "At List One Language Required";
     // if (!todo.language) newErrors.language = "At List One Language Required";
-    //
+
     if (!todo.gender) newErrors.gender = "Gender is required";
 
     setErrors(newErrors);
@@ -104,9 +108,9 @@ export default function App() {
     console.log(edit, "EDIT");
 
     if (edit) {
-      dispatch(editTodo({ ...todo, id: edit }));
+      dispatch(editTodo({ ...todo}));
       setEdit(null);
-      console.log(dispatch(editTodo({ ...todo})), "all -data");
+      // console.log(dispatch(editTodo({ ...todo})), "all -data");
       // console.log(editTodo, "all-data");
     } else {
       dispatch(addTodo({ ...todo, id: Date.now() }));

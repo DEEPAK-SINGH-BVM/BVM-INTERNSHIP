@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodo, removeTodo, editTodo } from "./components/Action/crudAction";
-import { PersistGate } from "redux-persist/integration/react";
 import "./App.css";
 export default function App() {
   const User = {

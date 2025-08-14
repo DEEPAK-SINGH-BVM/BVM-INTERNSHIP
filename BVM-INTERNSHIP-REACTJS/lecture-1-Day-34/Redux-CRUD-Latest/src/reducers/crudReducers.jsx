@@ -21,7 +21,6 @@
 
 const initialState = {
   todos: [],
-
 };
 
 export default function todoReducer(state = initialState, action) {
@@ -62,27 +61,26 @@ export default function todoReducer(state = initialState, action) {
       return state;
   }
 }
+// const initialState = { todos: [] };
 
-/*
-  case "EDIT_TODO":
-  console.log("first-EDIT", state.todos);
-  console.log(
-    "second-EDIT",
-    state.todos.map((todo) =>
-      todo === action.payload ? action.payload : todo
-    )
-  );
-  console.log("ACTION-PAYLOAD-ID", action.payload.id);
-
-  state.todos.forEach((todo) => {
-    console.log("TODO-ID", todo.id);
-  });
-
-  return {
-    ...state,
-    todos: state.todos.map((todo) =>
-      todo.id === action.payload.id ? action.payload : todo
-    ),
-  };
-
- */
+// function todoReducer(state = initialState, action) {
+//   switch (action.type) {
+//     case "ADD_TODO":
+//       return { ...state, todos: [...state.todos, action.payload] };
+//     case "REMOVE_TODO":
+//       return {
+//         ...state,
+//         todos: state.todos.filter((todo) => todo.id !== action.payload),
+//       };
+//     case "EDIT_TODO":
+//       return {
+//         ...state,
+//         todos: state.todos.map((todo) =>
+//           todo.id === action.payload.id ? action.payload : todo
+//         ),
+//       };
+//     default:
+//       return state;
+//   }
+// }
+// export default todoReducer
