@@ -105,9 +105,8 @@ const CrudApp = () => {
 
   const submitHandle = (e) => {
     e.preventDefault();
-    const formErrors = validateForm(user);
     console.log(formErrors, "FormError");
-
+    const formErrors = validateForm(user);
     setErrors(formErrors);
     if (Object.keys(formErrors).length > 0) return;
 
