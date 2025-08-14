@@ -27,7 +27,7 @@ const initialState = {
 export default function todoReducer(state = initialState, action) {
   // console.log("ReducerAction",action.type ,"ActionPayload",action.payload);
   // console.log();
-
+  // debugger
   switch (action.type) {
     case "ADD_TODO":
       // console.log("first ADD ",state.todos);
@@ -50,6 +50,9 @@ export default function todoReducer(state = initialState, action) {
       console.log("second-EDIT", state.todos.map((todo) => todo === action.payload ? action.payload : todo));
       console.log("ACTION-PAYLOAD-ID",action.payload.id);
       
+      // state.todos.forEach((todo) => {
+      //   console.log("TODO-ID", todo.id);
+      // });
       return {
         ...state,
         todos: state.todos.map((todo) => todo.id === action.payload.id ? action.payload : todo
@@ -59,3 +62,27 @@ export default function todoReducer(state = initialState, action) {
       return state;
   }
 }
+
+/*
+  case "EDIT_TODO":
+  console.log("first-EDIT", state.todos);
+  console.log(
+    "second-EDIT",
+    state.todos.map((todo) =>
+      todo === action.payload ? action.payload : todo
+    )
+  );
+  console.log("ACTION-PAYLOAD-ID", action.payload.id);
+
+  state.todos.forEach((todo) => {
+    console.log("TODO-ID", todo.id);
+  });
+
+  return {
+    ...state,
+    todos: state.todos.map((todo) =>
+      todo.id === action.payload.id ? action.payload : todo
+    ),
+  };
+
+ */

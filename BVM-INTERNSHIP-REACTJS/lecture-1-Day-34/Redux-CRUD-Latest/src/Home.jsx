@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addTodo, removeTodo, editTodo } from "./components/Action/crudAction";
+import { PersistGate } from "redux-persist/integration/react";
 import "./App.css";
 export default function App() {
   const User = {
@@ -106,7 +107,7 @@ export default function App() {
     if (edit) {
       dispatch(editTodo({ ...todo, id: edit }));
       setEdit(null);
-      console.log(dispatch(editTodo({ ...todo})), "all -data");
+      console.log(dispatch(editTodo({ ...todo })), "all -data");
       // console.log(editTodo, "all-data");
     } else {
       dispatch(addTodo({ ...todo, id: Date.now() }));
