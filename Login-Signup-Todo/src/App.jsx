@@ -21,7 +21,7 @@
 // export default App;
 import Login from "./components/Login/Login";
 import { useSelector } from "react-redux";
-import { login, selectUser } from "./components/features/userSlice";
+import { selectUser } from "./components/features/userSlice";
 import Logout from "./components/Home/Home";
 import { BrowserRouter, Routes, Route } from "react-router";
 import Signup from "./components/Signup/Signup";
