@@ -1,5 +1,5 @@
 import "./Login.css";
-// import { Link } from "react-router";
+import { Link } from "react-router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../features/userSlice";
@@ -15,7 +15,6 @@ const Login = () => {
       login({
         email: email,
         password: password,
-        loggedIn: true,
       })
     );
   }
@@ -76,7 +75,7 @@ const Login = () => {
                 href="#"
                 className="text-blue-700 hover:underline dark:text-blue-500"
               >
-                {/* <Link to="/">Create account</Link> */}
+                <Link to="/">Create account</Link>
               </a>
             </div>
           </form>

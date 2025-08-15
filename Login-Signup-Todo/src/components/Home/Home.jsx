@@ -7,7 +7,6 @@
 // }
 
 // export default Home
-
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectUser } from "../features/userSlice";
 const Logout = () => {
@@ -16,7 +15,7 @@ const Logout = () => {
 
   const handleLogout = (e) => {
     e.preventDefault();
-    dispatch(logout);
+    dispatch(logout());
   };
   return(
     <div>
