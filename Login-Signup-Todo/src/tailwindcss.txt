@@ -20,6 +20,7 @@
 =>  w-96 (width => w-3/5 (60%))
 =>  boxShadow (shadow-2xl)
 =>  padding p-0(padding) 
+=>  front size (text-2xl)
 =>  m-0: 0;(margin)  
 =>  mt-6 (margin top )
 =>  mb-5 (margin bottom) 
