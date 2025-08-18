@@ -29,10 +29,10 @@ const Logout = () => {
         </div>
       </nav>
 
-      <div className="flex flex-col justify-center sm:h-screen p-4">
+      <div className="flex flex-col justify-center sm:h-screen p-4 ">
         <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8">
           <div className="text-center mb-12">
-            <h1 className="text-3xl">Registration Form</h1>
+            <h1 className="text-3xl font-bold">Registration Form</h1>
           </div>
           <form>
             <div className="space-y-6">
@@ -81,39 +81,34 @@ const Logout = () => {
                   placeholder="Enter Email"
                 />
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/* <span className="font-medium">Email Required !!</span> */}
+                  {/*<span className="font-medium">Email Required !!</span> */}
                 </p>
               </div>
             </div>
             <br />
-            <div className="flex justify-center gap-3">
-              <div>
-                <div className="space-y-6">
-                  <div className="w-[180px]">
-                    <label className="text-slate-900 text-sm font-medium mb-2 block">
-                      Date Of Birth
-                    </label>
-                    <input
-                      type="date"
-                      className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                    />
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                      {/* <span className="font-medium">Date of Birth Required !!</span> */}
-                    </p>
-                  </div>
+            <div className="mx-auto max-w-md md:max-w-md">
+              <div className="sm:flex gap-5 ">
+                <div className="w-[180px] ">
+                  <label className="text-slate-900 text-sm font-medium mb-2 block">
+                    Date Of Birth
+                  </label>
+                  <input
+                    type="date"
+                    className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+                  />
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                    {/* <span className="font-medium">Date of Birth Required !!</span> */}
+                  </p>
                 </div>
-              </div>
-              <br />
-              <div>
-                <div className="space-y-6 ">
-                  <div className="w-[180px]">
+                <div className="gap-3">
+                  <div className="w-[180px] ">
                     <label className="text-slate-900 text-sm font-medium mb-2 block">
                       Contact No.
                     </label>
                     <input
                       type="number"
-                      className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                       placeholder="Enter Contact No."
+                      className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                     />
                     <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                       {/* <span className="font-medium">Contact No. Required !!</span> */}
@@ -123,11 +118,10 @@ const Logout = () => {
               </div>
             </div>
             <br />
-
             <div className="flex justify-center gap-6">
               <div className="w-[180px]">
                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark">
-                  Select an option
+                  Select Country
                 </label>
 
                 <select className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500">
@@ -156,12 +150,12 @@ const Logout = () => {
                   <option value="female">Female</option>
                 </select>
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/* <span className="font-medium">Gender Required !!</span> */}
+                  {/*   <span className="font-medium">Gender Required !!</span> */}
                 </p>
               </div>
             </div>
             <br />
-            <div className="flex items-center text-white gap-2">
+            <div className="flex items-center text-white gap-1">
               <label className="text-slate-900 text-sm font-medium  block w-full">
                 Select Language :
               </label>

@@ -1,155 +1,259 @@
-import React from "react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signup } from "../features/userSlice";
 
 const Signup = () => {
+  let User = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    country: "",
+    gender: "",
+    language: [],
+  };
+  const [user, setUser] = useState(User);
+  console.log(user);
+  
+  const [error, setError] = useState({});
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // console.log(name,'NAME');
+    // console.log(value, "value");
+
+    setUser({ ...user, [name]: value });
+  };
+
+  // const handleLanguage = (e) => {
+  //   const { value, checked } = e.target;
+  //   console.log(value,'language-value');
+
+  //   let updated = [...user.language];
+  //   if (checked) {
+  //     updated.push(value);
+  //   } else {
+  //     updated = updated.filter((lang) => lang !== value);
+  //   }
+  //   setUser({ ...user, language: updated });
+  // };
+
+  const handleLanguage = (e) => {
+    const { value, checked } = e.target;
+    // console.log(value, "language-value");
+    let updated = [...user.language];
+    
+    if (checked) {
+      console.log(checked);
+      console.log(value,'TRUE-VALUE');
+      
+      updated.push(value);
+    }
+     else {
+      updated = updated.filter((lang) => lang !== value);
+    }
+    setUser({ ...user, language: updated });
+  };
+
+  const validate = () => {
+    let newError = {};
+    if (!user.firstName) {
+      newError.firstName = "First name required";
+    } else if (!/^[A-Za-z]+$/.test(user.firstName)) {
+      newError.firstName = "Number Are Not Allow";
+    }
+    if (!user.lastName) {
+      newError.lastName = "Last name required";
+    } else if (!/^[A-Za-z]+$/.test(user.lastName)) {
+      newError.lastName = "Number Are Not Allow";
+    }
+    if (!user.email) newError.email = "Email required";
+    else if (!/\S+@\S+\.\S+/.test(user.email)) newError.email = "Invalid email";
+    if (!user.password) newError.password = "Password required";
+    if (!user.country) newError.country = "Country required";
+    if (!user.gender) newError.gender = "Gender required";
+    if (user.language.length === 0)
+      newError.language = "At least one language required";
+    // console.log(user.language,'LANGUAGE');
+    console.log(Object.keys(newError).length, "length");
+
+    setError(newError);
+    return Object.keys(newError).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    dispatch(signup(user));
+    // console.log(login(user),'CHECKED');
+    
+    navigate("/home");
+  };
+
   return (
     <div>
       <div className="flex justify-center pt-25 ">
         <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-          <form className="space-y-6">
-            <div className="">
-              <h4 className="text-3xl font-medium text-gray-900 dark:text-white">
-                Signup
-              </h4>
-            </div>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <h4 className="text-3xl font-medium text-gray-900 dark:text-white ">
+              Signup
+            </h4>
             <hr className="bg-white" />
+
             <div className="flex justify-center gap-4">
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label className="block mb-2 text-sm text-white">
                   Enter First Name
                 </label>
                 <input
                   type="text"
+                  name="firstName"
+                  value={user.firstName}
+                  onChange={handleChange}
+                  placeholder="First Name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  placeholder=" Enter First Name"
                 />
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/* <span className="font-medium">First Name  !</span> */}
+                  <span className="font-medium">{error.firstName}</span>
                 </p>
               </div>
               <div>
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                <label className="block mb-2 text-sm text-white">
                   Enter Last Name
                 </label>
                 <input
                   type="text"
+                  name="lastName"
+                  value={user.lastName}
+                  onChange={handleChange}
+                  placeholder="Last Name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  placeholder="Enter Last Name"
                 />
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/* <span className="font-medium">Last Name  !</span> */}
+                  <span className="font-medium">{error.lastName}</span>
                 </p>
               </div>
             </div>
+
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Enter email
+              <label className="block mb-2 text-sm text-white">
+                Enter Email
               </label>
               <input
                 type="text"
-                autocomplete="off"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                placeholder="Enter email..."
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                placeholder="Enter email Address..."
               />
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                {/* <span className="font-medium">Email  !</span> */}
+                <span className="font-medium">{error.email}</span>
               </p>
             </div>
+
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                Enter password
+              <label className="block mb-2 text-sm text-white">
+                Enter Password
               </label>
               <input
                 type="password"
                 name="password"
-                id="password"
-                placeholder="Enter Password"
+                value={user.password}
+                onChange={handleChange}
+                placeholder="Enter password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               />
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                {/* <span className="font-medium">Password  !</span> */}
+                <span className="font-medium">{error.password}</span>
               </p>
             </div>
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Select an option
-            </label>
-            <select
-              id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option selected disabled hidden>
-                Choose a country
-              </option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
-            </select>
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              {/* <span className="font-medium">Country  !</span> */}
-            </p>
-            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-              Select an option
-            </label>
 
-            <select
-              id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option selected disabled hidden>
+            <div>
+              <label className="block mb-2 text-sm text-white">
+                Select Country
+              </label>
+              <select
+                name="country"
+                value={user.country}
+                onChange={handleChange}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              >
+                <option value="" disabled>
+                  Choose a country
+                </option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="FR">France</option>
+                <option value="DE">Germany</option>
+              </select>
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                <span className="font-medium">{error.country}</span>
+              </p>
+            </div>
+
+            <div>
+              <label className="block mb-2 text-sm text-white">
                 Select Gender
-              </option>
-              <option value="US">Male</option>
-              <option value="CA">Female</option>
-            </select>
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              {/* <span className="font-medium">Gender  !</span> */}
-            </p>
-            {/* Language  */}
-            <div className="flex items-center text-white gap-1">
-              <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300 w-full">
-                Select Language :
               </label>
+              <select
+                name="gender"
+                value={user.gender}
+                onChange={handleChange}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              >
+                <option value="" disabled>
+                  Select Gender
+                </option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                <span className="font-medium">{error.gender}</span>
+              </p>
+            </div>
 
+            <div className="flex items-center text-white gap-1">
+              <label className="text-sm text-white">Select Language:</label>
               <input
                 type="checkbox"
-                className=" w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                value="English"
+                checked={user.language.includes("English")}
+                onChange={handleLanguage}
               />
-              <label className=" text-sm font-medium text-gray-900 dark:text-gray-300 ">
-                English
-              </label>
+              <span>English</span>
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                value="Hindi"
+                checked={user.language.includes("Hindi")}
+                onChange={handleLanguage}
               />
-              <label className=" text-sm font-medium text-gray-900 dark:text-gray-300 ">
-                Hindi
-              </label>
+              <span>Hindi</span>
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                value="Gujarati"
+                checked={user.language.includes("Gujarati")}
+                onChange={handleLanguage}
               />
-              <label className=" text-sm font-medium text-gray-900 dark:text-gray-300 ">
-                Gujarati
-              </label>
+              <span>Gujarati</span>
             </div>
             <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              {/* <span className="font-medium">At List One Language  !</span> */}
+              <span className="font-medium">{error.language}</span>
             </p>
             <button
               type="submit"
-              className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="w-full text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2.5"
             >
               Signup
             </button>
-            <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-              Already have account !{" "}
-              <Link
-                to="/login"
-                className="text-blue-700 hover:underline dark:text-blue-500"
-              >
+
+            <div className="text-sm text-gray-500">
+              Already have account?{" "}
+              <Link to="/login" className="text-blue-600 hover:underline">
                 Login
               </Link>
             </div>

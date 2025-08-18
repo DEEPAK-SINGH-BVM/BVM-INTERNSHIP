@@ -6,6 +6,10 @@ export const userSlice = createSlice({
     user: null,
   },
   reducers: {
+    signup: (state, action) => {
+      state.user = action.payload;
+      console.log(state.user,'SIGNUP');
+    },
     login: (state, action) => {
       state.user = action.payload;
       console.log(state.user);
@@ -18,7 +22,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { signup,login, logout } = userSlice.actions;
 
 export const selectUser = (state) => state.user.user;
 
