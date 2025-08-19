@@ -1,7 +1,7 @@
 import "./Login.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux"; 
 import { login } from "../features/userSlice";
 
 const Login = () => {
@@ -45,7 +45,7 @@ const Login = () => {
       navigate("/home");
     }
   }, [currentUser, navigate]);
-  /*
+/*
   const handelSubmit = (e) => {
   e.preventDefault();
   if (!validation()) return;
@@ -60,7 +60,7 @@ const Login = () => {
   return (
     <div>
       <div className="flex justify-center pt-25 ">
-        <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
           <form className="space-y-6" onSubmit={handelSubmit}>
             <div>
               <h4 className="text-3xl font-medium text-gray-900 dark:text-white">

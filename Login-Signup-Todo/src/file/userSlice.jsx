@@ -11,10 +11,9 @@ export const userSlice = createSlice({
 
       const { email } = action.payload;
       const userExists = state.user.find((u) => u.email === email);
-      console.log(email,'EMAIL');
-      
+
       if (userExists) {
-        console.log(" User already exists:", email);
+        // console.log(" User already exists:", email);
       } else {
         state.user.push(action.payload);
         state.currentUser = action.payload;

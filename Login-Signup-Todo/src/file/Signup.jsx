@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { signup } from "../features/userSlice";
+import { signup } from "./components/features/userSlice";
 
 const Signup = () => {
   let User = {
@@ -43,12 +43,24 @@ const Signup = () => {
 
   const handleLanguage = (e) => {
     const { value, checked } = e.target;
+  
+    console.log("=== Checkbox Clicked ===");
+    console.log("Value:", value);      // e.g. "English"
+    console.log("Checked:", checked);  // true (checked) or false (unchecked)
+  
     let updated = [...user.language];
+    console.log("Before Update (current user.language):", user.language);
+  
     if (checked) {
+      console.log(`dding "${value}" to array`);
       updated.push(value);
     } else {
+      console.log(`Removing "${value}" from array`);
       updated = updated.filter((lang) => lang !== value);
     }
+  
+    console.log("After Update (new language array):", updated);
+  
     setUser({ ...user, language: updated });
   };
   
@@ -83,8 +95,10 @@ const Signup = () => {
     e.preventDefault();
     if (!validate()) return;
   
+    // Dispatch signup
     dispatch(signup(user));
   
+    // Check if user was added
     const existingUsers = JSON.parse(localStorage.getItem("persist:root"));
     if (existingUsers && existingUsers.user.includes(user.email)) {
       setError({ email: "User already exists!" });
@@ -93,6 +107,7 @@ const Signup = () => {
   
     navigate("/home");
   };
+  
 
   return (
     <div>

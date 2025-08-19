@@ -73,8 +73,8 @@ const Signup = () => {
     if (user.language.length === 0)
       newError.language = "At least one language required";
     // console.log(user.language,'LANGUAGE');
+  
     console.log(Object.keys(newError).length, "length");
-
     setError(newError);
     return Object.keys(newError).length === 0;
   };
@@ -85,19 +85,15 @@ const Signup = () => {
   
     dispatch(signup(user));
   
-    const existingUsers = JSON.parse(localStorage.getItem("persist:root"));
-    if (existingUsers && existingUsers.user.includes(user.email)) {
-      setError({ email: "User already exists!" });
-      return;
-    }
   
     navigate("/home");
   };
+  
 
   return (
     <div>
       <div className="flex justify-center pt-25 ">
-        <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <h4 className="text-3xl font-medium text-gray-900 dark:text-white ">
               Signup

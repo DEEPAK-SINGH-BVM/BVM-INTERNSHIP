@@ -95,7 +95,7 @@ export default function App() {
 
     setErrors(newErrors);
     // console.log(Object.keys(newErrors).length);
-
+  
     return Object.keys(newErrors).length === 0;
   };
 

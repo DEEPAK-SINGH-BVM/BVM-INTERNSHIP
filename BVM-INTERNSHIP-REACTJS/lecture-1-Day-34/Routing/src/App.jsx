@@ -72,16 +72,15 @@
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import Home from "./Pages/Home";
 // import Contact from "./Pages/Contact";
-// import Login from "./Pages/Login";
 // import PrivateRoutes from "./utils/PrivateRoutes";
 
 // function App() {
-//   return (
-//     <div className="App">
-//       <Router>
-//         <Routes>
-//           <Route element={<PrivateRoutes />}>
-//             {/* <Route element={<Home />} path="/" exact /> */}
+  //   return (
+    //     <div className="App">
+    //       <Router>
+    //         <Routes>
+    //           <Route element={<PrivateRoutes />}>
+    //             {/* <Route element={<Home />} path="/" exact /> */}
 //             {/* <Route path="/" element={<Home />} /> */}
 //             <Route path="/Contact" element={<Contact />} />
 //           </Route>
@@ -97,9 +96,8 @@
 // export default App;
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./Home";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
+import Home from "./Pages/Home";
+import Login from "./Pages/Login";    
 
 function App() {
   const isLoggedIn = false; 

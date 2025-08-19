@@ -1,56 +1,52 @@
-import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../features/userSlice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../features/userSlice";
 const Logout = () => {
-  const User = {
-    fname: "",
-    last: "",
+  const dispatch = useDispatch();
+  let User = {
+    firstName: "",
+    lastName: "",
     email: "",
-    date: "",
-    contact: "",
+    password: "",
     country: "",
     gender: "",
-    language: "",
+    language: [],
   };
-
   const [user, setUser] = useState(User);
+
   const [error, setError] = useState({});
 
-  const validation = () => {
+  const validate = () => {
     let newError = {};
-    // console.log(newError,'newError');
-    if (!fname) {
-      newError.fname = "Email is required";
-      // console.log(newError.email, "NEW EMAIL");
-    } else if (!/\S+@\S+\.\S+/.test(fname)) {
-      newError.fname = "Enter a valid email address";
+    if (!user.firstName) {
+      newError.firstName = "First name required";
+    } else if (!/^[A-Za-z]+$/.test(user.firstName)) {
+      newError.firstName = "Number Are Not Allow";
     }
+
+    console.log(Object.keys(newError).length, "length");
     setError(newError);
-
-     console.log(Object.keys(newError).length,'Length');
-
     return Object.keys(newError).length === 0;
   };
-  console.log(user);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, "NAME");
+    console.log(value, "value");
 
-  const dispatch = useDispatch();
-  const users = useSelector((state) => state.user.user);
-  console.log(users, "PATH");
+    setUser({ ...user, [name]: value });
+  };
 
-  // const user = useSelector(selectUser);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validation()) {
-      console.log('working');
-      
-      return;
-    }
-    dispatch(addTodo({ ...user }));
+    if (!validate()) return;
+    dispatch(signup(user));
+    console.log("working");
   };
-  // const handleLogout = (e) => {
-  //   e.preventDefault();
-  //   dispatch(logout());
-  // };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
   return (
     <div>
       {/* <button
@@ -71,6 +67,7 @@ const Logout = () => {
           </div>
         </div>
       </nav>
+
       <div className="flex flex-col justify-center sm:h-screen p-4 ">
         <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8">
           <div className="text-center mb-12">
@@ -85,13 +82,13 @@ const Logout = () => {
                 <input
                   name="name"
                   type="text"
+                  value={user.firstName}
+                  onChange={handleChange}
                   className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                   placeholder="Enter First Name"
-                  value={user.fname}
-                  onChange={(e) => setUser({ ...user, fname: e.target.value })}
                 />
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  <span className="font-medium">{error.fname}</span>
+                  <span className="font-medium">{error.firstName}</span>
                 </p>
               </div>
             </div>
@@ -104,13 +101,11 @@ const Logout = () => {
                 <input
                   name="name"
                   type="text"
-                  value={user.last}
-                  onChange={(e) => setUser({ ...user, last: e.target.value })}
                   className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                   placeholder="Enter Last Name"
                 />
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/* <span className="font-medium">Last Name Required !!</span> */}
+                  {/*  <span className="font-medium">Last Name Required !!</span> */}
                 </p>
               </div>
             </div>
@@ -123,12 +118,9 @@ const Logout = () => {
                 <input
                   name="name"
                   type="email"
-                  value={user.email}
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
                   className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                   placeholder="Enter Email"
                 />
-
                 <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   {/*<span className="font-medium">Email Required !!</span> */}
                 </p>
@@ -144,8 +136,6 @@ const Logout = () => {
                   <input
                     type="date"
                     className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                    value={user.date}
-                    onChange={(e) => setUser({ ...user, date: e.target.value })}
                   />
                   <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                     {/* <span className="font-medium">Date of Birth Required !!</span> */}
@@ -160,10 +150,6 @@ const Logout = () => {
                       type="number"
                       placeholder="Enter Contact No."
                       className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                      value={user.contact}
-                      onChange={(e) =>
-                        setUser({ ...user, contact: e.target.value })
-                      }
                     />
                     <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                       {/* <span className="font-medium">Contact No. Required !!</span> */}
@@ -179,13 +165,7 @@ const Logout = () => {
                   Select Country
                 </label>
 
-                <select
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                  value={user.country}
-                  onChange={(e) =>
-                    setUser({ ...user, country: e.target.value })
-                  }
-                >
+                <select className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500">
                   <option selected disabled hidden>
                     Choose a country
                   </option>
@@ -203,11 +183,7 @@ const Logout = () => {
                   Select Gender
                 </label>
 
-                <select
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                  value={user.gender}
-                  onChange={(e) => setUser({ ...user, gender: e.target.value })}
-                >
+                <select className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500">
                   <option selected disabled hidden>
                     Select Gender
                   </option>

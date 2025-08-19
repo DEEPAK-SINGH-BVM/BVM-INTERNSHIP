@@ -1,8 +1,8 @@
 import "./Login.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; 
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../features/userSlice";
+import { useDispatch, useSelector } from "react-redux"; 
+import { login } from "./components/features/userSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ const Login = () => {
       navigate("/home");
     }
   }, [currentUser, navigate]);
-  /*
+/*
   const handelSubmit = (e) => {
   e.preventDefault();
   if (!validation()) return;
