@@ -1,3 +1,32 @@
+/*
+export const addUser = (user) => ({
+  type: "ADD_USER",
+  payload: user,
+});
+
+const initialState = {
+  users: [],
+};
+
+export default function userReducer(state = initialState, action) {
+  // console.log("ReducerAction",action.type ,"ActionPayload",action.payload);
+  // console.log();
+  // debugger
+  switch (action.type) {
+    case "ADD_USER":
+      // console.log("first ADD ",state.todos);
+      // console.log("second ADD",[...state.todos,action.payload]);
+      // console.log("....STATE",{...state});
+      // console.log("....STATE",[...state.todos,action.payload]);
+      return {
+        ...state,
+        user: [...state.users, action.payload],
+      };
+   default:
+      return state;
+  }
+}
+
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
@@ -84,7 +113,7 @@ const Logout = () => {
         className="px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
       >
         Logout
-      </button> */}
+      </button> 
       <nav className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 ">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className=" flex h-16 items-center justify-end">
@@ -318,7 +347,7 @@ const Logout = () => {
                       
                       >
                         Edit
-                      </button> */}
+                      </button> 
                     <button className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer ">
                       Edit
                     </button>
@@ -333,3 +362,44 @@ const Logout = () => {
 };
 
 export default Logout;
+
+import { configureStore } from "@reduxjs/toolkit";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { combineReducers } from "redux";
+import userReducer from "./components/features/userSlice";
+import usersReducer from "./components/reducer/userReducer";
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const rootReducer = combineReducers({
+  user: userReducer,
+  users: usersReducer,
+});
+// (persistReducer) takes your root Redux reducer and a configuration object, and returns an enhanced reducer it take root-redux & persistConfig object as argument
+// it return enhanced reducer that know how to intact with choose storage
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+// (configureStore) it automatic save & reload state form persist storage
+// it take redux store (which is configured with the persistReducer) as argument it return object that manage the rehydration and saving of your Redux state.
+// when your application loads, pulling the saved state from storage and applying it to your Redux store
+export const store = configureStore({
+  reducer: persistedReducer,
+});
+
+export const persistor = persistStore(store);
+
+export default store; 
+
+
+/*
+import { combineReducers } from "redux";
+import crudReducer from "./crudReducers";
+
+export default combineReducers({
+  list: crudReducer,
+});
+
+*/
