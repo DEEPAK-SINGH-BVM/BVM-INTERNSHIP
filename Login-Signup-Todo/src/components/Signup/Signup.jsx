@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signup } from "../features/userSlice";
+import { InputSignup } from "../Elements/Input";
+import Span from "../Elements/Span";
 
 const Signup = () => {
   let User = {
@@ -15,7 +17,7 @@ const Signup = () => {
   };
   const [user, setUser] = useState(User);
   // console.log(user);
-  
+
   const [error, setError] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,30 +53,29 @@ const Signup = () => {
     }
     setUser({ ...user, language: updated });
   };
-  
 
   const validate = () => {
     let newError = {};
     if (!user.firstName) {
-      newError.firstName = "First name required";
+      newError.firstName = "First name Required !!";
     } else if (!/^[A-Za-z]+$/.test(user.firstName)) {
-      newError.firstName = "Number Are Not Allow";
+      newError.firstName = "Number Are Not Allow !!";
     }
     if (!user.lastName) {
-      newError.lastName = "Last name required";
+      newError.lastName = "Last name Required !!";
     } else if (!/^[A-Za-z]+$/.test(user.lastName)) {
-      newError.lastName = "Number Are Not Allow";
+      newError.lastName = "Number Are Not Allow !!";
     }
-    if (!user.email) newError.email = "Email required";
-    else if (!/\S+@\S+\.\S+/.test(user.email)) newError.email = "Invalid email";
-    if (!user.password) newError.password = "Password required";
-    if (!user.country) newError.country = "Country required";
-    if (!user.gender) newError.gender = "Gender required";
+    if (!user.email) newError.email = "Email Required !!";
+    else if (!/\S+@\S+\.\S+/.test(user.email)) newError.email = "Invalid email !!";
+    if (!user.password) newError.password = "Password Required !!";
+    if (!user.country) newError.country = "Country Required !!";
+    if (!user.gender) newError.gender = "Gender Required !!";
     if (user.language.length === 0)
-      newError.language = "At least one language required";
+      newError.language = "At least one language Required !!";
     // console.log(user.language,'LANGUAGE');
-    console.log(Object.keys(newError).length, "length");
 
+    console.log(Object.keys(newError).length, "length");
     setError(newError);
     return Object.keys(newError).length === 0;
   };
@@ -82,22 +83,16 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-  
+
     dispatch(signup(user));
-  
-    const existingUsers = JSON.parse(localStorage.getItem("persist:root"));
-    if (existingUsers && existingUsers.user.includes(user.email)) {
-      setError({ email: "User already exists!" });
-      return;
-    }
-  
+
     navigate("/home");
   };
 
   return (
     <div>
       <div className="flex justify-center pt-25 ">
-        <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <h4 className="text-3xl font-medium text-gray-900 dark:text-white ">
               Signup
@@ -109,33 +104,49 @@ const Signup = () => {
                 <label className="block mb-2 text-sm text-white">
                   Enter First Name
                 </label>
-                <input
+                {/* <input
                   type="text"
                   name="firstName"
                   value={user.firstName}
                   onChange={handleChange}
                   placeholder="First Name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                /> */}
+                <InputSignup
+                  type="text"
+                  name="firstName"
+                  value={user.firstName}
+                  onChange={handleChange}
+                  placeholder="First Name"
                 />
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   <span className="font-medium">{error.firstName}</span>
-                </p>
+                </p> */}
+                <Span label={error.firstName} />
               </div>
               <div>
                 <label className="block mb-2 text-sm text-white">
                   Enter Last Name
                 </label>
-                <input
+                {/* <input
                   type="text"
                   name="lastName"
                   value={user.lastName}
                   onChange={handleChange}
                   placeholder="Last Name"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                /> */}
+                <InputSignup
+                  type="text"
+                  name="lastName"
+                  value={user.lastName}
+                  onChange={handleChange}
+                  placeholder="Last Name"
                 />
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+                {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                   <span className="font-medium">{error.lastName}</span>
-                </p>
+                </p> */}
+                <Span label={error.lastName} />
               </div>
             </div>
 
@@ -143,13 +154,20 @@ const Signup = () => {
               <label className="block mb-2 text-sm text-white">
                 Enter Email
               </label>
-              <input
-                type="text"
+              {/* <input
+                type="email"
                 name="email"
                 value={user.email}
                 onChange={handleChange}
                 placeholder="Enter email..."
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              /> */}
+              <InputSignup
+                type="email"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                placeholder="Enter Email"
               />
               <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 <span className="font-medium">{error.email}</span>
@@ -160,17 +178,25 @@ const Signup = () => {
               <label className="block mb-2 text-sm text-white">
                 Enter Password
               </label>
-              <input
+              {/* <input
                 type="password"
                 name="password"
                 value={user.password}
                 onChange={handleChange}
                 placeholder="Enter password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              /> */}
+              <InputSignup
+                type="password"
+                name="password"
+                value={user.password}
+                onChange={handleChange}
+                placeholder="Enter Password"
               />
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 <span className="font-medium">{error.password}</span>
-              </p>
+              </p> */}
+              <Span label={error.password} />
             </div>
 
             <div>
@@ -191,11 +217,11 @@ const Signup = () => {
                 <option value="FR">France</option>
                 <option value="DE">Germany</option>
               </select>
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 <span className="font-medium">{error.country}</span>
-              </p>
+              </p> */}
+              <Span label={error.country} />
             </div>
-
             <div>
               <label className="block mb-2 text-sm text-white">
                 Select Gender
@@ -212,12 +238,13 @@ const Signup = () => {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 <span className="font-medium">{error.gender}</span>
-              </p>
+              </p> */}
+              <Span label={error.gender} />
             </div>
 
-            <div className="flex items-center text-white gap-1">
+            <div className="flex items-center text-white gap-1 mb-0 ">
               <label className="text-sm text-white">Select Language:</label>
               <input
                 type="checkbox"
@@ -241,22 +268,24 @@ const Signup = () => {
               />
               <span>Gujarati</span>
             </div>
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
               <span className="font-medium">{error.language}</span>
-            </p>
+            </p> */}
+            <Span label={error.language} />
+
             <button
               type="submit"
-              className="w-full text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2.5"
+              className="w-full text-white bg-blue-700 hover:bg-blue-800 rounded-lg px-5 py-2.5 mt-2 "
             >
               Signup
             </button>
 
-            <div className="text-sm text-gray-500">
+            {/* <div className="text-sm text-gray-500">
               Already have account?{" "}
               <Link to="/login" className="text-blue-600 hover:underline">
                 Login
               </Link>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>

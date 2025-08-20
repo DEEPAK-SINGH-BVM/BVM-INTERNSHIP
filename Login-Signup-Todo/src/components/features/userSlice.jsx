@@ -1,60 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: null,
+    users: [],
+    currentUser: null,
   },
   reducers: {
     signup: (state, action) => {
-      // console.log(" Signup action called with:", action.payload);
-
-      const { email } = action.payload;
-      const userExists = state.user.find((u) => u.email === email);
-      console.log(email,'EMAIL');
-      
-      if (userExists) {
-        console.log(" User already exists:", email);
-      } else {
-        state.user.push(action.payload);
-        state.currentUser = action.payload;
-        // console.log(" Signup successful. Users list now:", state.user);
-        // console.log(" Current user after signup:", state.currentUser);
-      }
+      state.users.push(action.payload);
+      state.currentUser = action.payload;
+      console.log("signup action", action.payload);
     },
 
     login: (state, action) => {
-      // console.log(" Login action called with:", action.payload);
+      console.log("login action:", action.payload);
 
       const { email, password } = action.payload;
-      const user = state.user.find(
-        (u) => u.email === email && u.password === password
-      );
+      // console.log(email, "EMAIL");
+      // console.log(password, "PASSWORD");
 
+      const user = state.users.find(
+        (e) => e.email === email && e.password === password
+      );
       if (user) {
         state.currentUser = user;
-        // console.log(" Login successful. Current user:", state.currentUser);
+        console.log("login successful");
       } else {
-        // console.log(" Invalid email or password for:", email);
+        alert("IInvalid Email & Password");
       }
     },
-    logout: (state) => {
-      state.user = null;
-      console.log(state.user);
-    },
 
-    addTodo: (state, action) => {
-      const newTodo = {
-        id: Date.now(),
-        text: action.payload,
-      };
-      state.push(newTodo);
+    logout: (state) => {
+      // console.log("Logout");
+      state.currentUser = null;
     },
   },
 });
 
-export const { signup, login, logout, addTodo } = userSlice.actions;
+export const { signup, login, logout } = userSlice.actions;
 
-export const selectUser = (state) => state.user.user;
+export const selectUser = (state) => state.user.currentUser;
 
 export default userSlice.reducer;

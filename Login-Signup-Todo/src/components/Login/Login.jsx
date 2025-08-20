@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/userSlice";
+import { InputSignup } from "../Elements/Input";
+import Span from "../Elements/Span";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,13 +19,13 @@ const Login = () => {
   const validation = () => {
     let newError = {};
     if (!email) {
-      newError.email = "Email is required";
+      newError.email = "Email is Required !!";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newError.email = "Enter a valid email address";
     }
 
     if (!password) {
-      newError.password = "Password is required";
+      newError.password = "Password is Required !!";
     }
     setErrors(newError);
 
@@ -60,7 +62,7 @@ const Login = () => {
   return (
     <div>
       <div className="flex justify-center pt-25 ">
-        <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
           <form className="space-y-6" onSubmit={handelSubmit}>
             <div>
               <h4 className="text-3xl font-medium text-gray-900 dark:text-white">
@@ -72,32 +74,48 @@ const Login = () => {
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Enter email
               </label>
-              <input
+              {/* <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                 placeholder="Enter email Address..."
+              /> */}
+              <InputSignup
+                type="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter Email Address..."
               />
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 <span className="font-medium">{error.email}</span>
-              </p>
+              </p> */}
+              <Span label={error.email} />
             </div>
 
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Enter password
               </label>
-              <input
+              {/* <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter Password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              /> */}
+              <InputSignup
+                type="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter Email Address..."
               />
-              <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+              {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 <span className="font-medium">{error.password}</span>
-              </p>
+              </p> */}
+              <Span label={error.password} />
             </div>
 
             <button
@@ -107,7 +125,7 @@ const Login = () => {
               Login
             </button>
 
-            <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+            {/* <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?{" "}
               <Link
                 to="/"
@@ -115,7 +133,7 @@ const Login = () => {
               >
                 Create account
               </Link>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>

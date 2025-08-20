@@ -1,56 +1,125 @@
-import { useDispatch, useSelector } from "react-redux";
-import { logout, selectUser } from "../features/userSlice";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../features/userSlice";
+import { addUser, deleteUser, editUser } from "../action/userAction";
+import Button from "../Elements/Button";
+import { Input } from "../Elements/Input";
+import Span from "../Elements/Span";
 const Logout = () => {
-  const User = {
-    fname: "",
-    last: "",
+  const dispatch = useDispatch();
+  let User = {
+    firstName: "",
+    lastName: "",
     email: "",
-    date: "",
+    dob: "",
     contact: "",
     country: "",
     gender: "",
-    language: "",
+    language: [],
   };
 
   const [user, setUser] = useState(User);
+  const users = useSelector((state) => state.users.users);
+  console.log(users, "PATH");
+
+  const [edit, setEdit] = useState(null);
   const [error, setError] = useState({});
 
   const validation = () => {
     let newError = {};
-    // console.log(newError,'newError');
-    if (!fname) {
-      newError.fname = "Email is required";
-      // console.log(newError.email, "NEW EMAIL");
-    } else if (!/\S+@\S+\.\S+/.test(fname)) {
-      newError.fname = "Enter a valid email address";
+    if (!user.firstName) {
+      newError.firstName = "First name Required !!";
+    } else if (!/^[A-Za-z]+$/.test(user.firstName)) {
+      newError.firstName = "Number are Not allowed";
     }
+    if (!user.lastName) {
+      newError.lastName = "Last name Required !!";
+    } else if (!/^[A-Za-z]+$/.test(user.lastName)) {
+      newError.lastName = "Number are Not allowed";
+    }
+    if (!user.email) {
+      newError.email = "Email is Required !!";
+    } else if (!/^\S+@\S+\.\S+$/.test(user.email)) {
+      newError.email = "Invalid email format";
+    }
+    if (!user.dob) {
+      newError.dob = "Date of birth Required !!";
+    }
+    if (!user.contact) {
+      newError.contact = "Contact number Required !!";
+    } else if (!/^[0-9]{10}$/.test(user.contact)) {
+      newError.contact = "Contact Required 10 digits";
+    }
+    if (!user.country) {
+      newError.country = "Country is Required !!";
+    }
+    if (!user.gender) {
+      newError.gender = "Gender is Required !!";
+    }
+    if (user.language.length === 0) {
+      newError.language = "At least one language Required !!";
+    }
+    console.log(Object.keys(newError).length, "length");
     setError(newError);
-
-     console.log(Object.keys(newError).length,'Length');
-
     return Object.keys(newError).length === 0;
   };
-  console.log(user);
 
-  const dispatch = useDispatch();
-  const users = useSelector((state) => state.user.user);
-  console.log(users, "PATH");
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name, "NAME");
+    console.log(value, "value");
 
-  // const user = useSelector(selectUser);
+    setUser({ ...user, [name]: value });
+  };
+  const inputHandleLanguage = (e) => {
+    const { name, value, checked } = e.target;
+    // console.log(name, "NAME");
+    // console.log(value, "VALUE");
+    // console.log(checked, "CHECKED");
+    //
+    if (name === "language") {
+      const current = user.language;
+      // console.log(current, "CURRENT");
+
+      let updated = [];
+      if (checked) {
+        updated = [...current, value];
+        // console.log(updated, "UPDATE");
+        // console.log(...current, "....CURRENT");
+      } else {
+        updated = current.filter((lang) => lang !== value);
+      }
+      setUser({ ...user, [name]: updated });
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (validation()) {
-      console.log('working');
-      
-      return;
+    if (!validation()) return;
+    console.log(edit, "EDIT");
+
+    if (edit) {
+      dispatch(editUser({ ...user }));
+      setEdit(null);
+    } else {
+      dispatch(addUser({ ...user, id: Date.now() }));
     }
-    dispatch(addTodo({ ...user }));
+    setUser(User);
   };
-  // const handleLogout = (e) => {
-  //   e.preventDefault();
-  //   dispatch(logout());
-  // };
+  const handleLogout = (e) => {
+    e.preventDefault();
+    dispatch(logout());
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteUser(id));
+  };
+  const handleEdit = (data) => {
+    setUser(data);
+    setEdit(data.id);
+    console.log(data, "DATA");
+    console.log(data.id, "data-id");
+  };
   return (
     <div>
       {/* <button
@@ -71,194 +140,254 @@ const Logout = () => {
           </div>
         </div>
       </nav>
-      <div className="flex flex-col justify-center sm:h-screen p-4 ">
+      <br />
+      <div className="flex flex-col justify-center sm:h-screen p-4  ">
         <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8">
-          <div className="text-center mb-12">
-            <h1 className="text-3xl font-bold">Registration Form</h1>
+          <div className="text-center">
+            <h2 className="text-3xl font-bold">Registration Form</h2>
+            <hr />
           </div>
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
-              <div>
-                <label className="text-slate-900 text-sm font-medium mb-2 block">
-                  First Name
-                </label>
-                <input
-                  name="name"
-                  type="text"
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                  placeholder="Enter First Name"
-                  value={user.fname}
-                  onChange={(e) => setUser({ ...user, fname: e.target.value })}
-                />
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  <span className="font-medium">{error.fname}</span>
-                </p>
-              </div>
+              <label className="text-slate-900 text-sm font-medium mb-2 block">
+                First Name
+              </label>
+              {/* <input
+                name="firstName"
+                type="text"
+                value={user.firstName}
+                onChange={handleChange}
+                className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+                placeholder="Enter First Name"
+              /> */}
+              <Input
+                name="firstName"
+                type="text"
+                value={user.firstName}
+                onChange={handleChange}
+                placeholder="Enter First Name"
+              />
+              {/* <p className="mt-2 text-sm text-red-600">{error.firstName}</p> */}
+              <Span label={error.firstName} />
             </div>
             <br />
             <div className="space-y-6">
-              <div>
-                <label className="text-slate-900 text-sm font-medium mb-2 block">
-                  last Name
-                </label>
-                <input
-                  name="name"
-                  type="text"
-                  value={user.last}
-                  onChange={(e) => setUser({ ...user, last: e.target.value })}
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                  placeholder="Enter Last Name"
-                />
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/* <span className="font-medium">Last Name Required !!</span> */}
-                </p>
-              </div>
+              <label className="text-slate-900 text-sm font-medium mb-2 block">
+                Last Name
+              </label>
+              {/* <input
+                name="lastName"
+                type="text"
+                value={user.lastName}
+                onChange={handleChange}
+                className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+                placeholder="Enter Last Name"
+              /> */}
+              <Input
+                name="lastName"
+                type="text"
+                value={user.lastName}
+                onChange={handleChange}
+                placeholder="Enter Last Name"
+              />
+              {/*  <p className="mt-2 text-sm text-red-600">{error.lastName}</p> */}
+              <Span label={error.lastName} />
             </div>
             <br />
-            <div className="space-y-6">
-              <div>
-                <label className="text-slate-900 text-sm font-medium mb-2 block">
-                  Email
-                </label>
-                <input
-                  name="name"
-                  type="email"
-                  value={user.email}
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                  placeholder="Enter Email"
-                />
 
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/*<span className="font-medium">Email Required !!</span> */}
-                </p>
+            <div className="space-y-6">
+              <label className="text-slate-900 text-sm font-medium mb-2 block">
+                Email
+              </label>
+              {/* <input
+                name="email"
+                type="email"
+                value={user.email}
+                onChange={handleChange}
+                className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+                placeholder="Enter Email"
+              /> */}
+              <Input
+                name="email"
+                type="email"
+                value={user.email}
+                onChange={handleChange}
+                placeholder="Enter Email"
+              />
+              {/* <p className="mt-2 text-sm text-red-600">{error.email}</p> */}
+              <Span label={error.email} />
+            </div>
+            <br />
+
+            <div className="sm:flex gap-5">
+              <div className="w-[180px]">
+                <label className="text-slate-900 text-sm font-medium mb-2 block">
+                  Date Of Birth
+                </label>
+                {/* <input
+                  name="dob"
+                  type="date"
+                  value={user.dob}
+                  onChange={handleChange}
+                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+                /> */}
+                <Input
+                  name="dob"
+                  type="date"
+                  value={user.dob}
+                  onChange={handleChange}
+                />
+                {/* <p className="mt-2 text-sm text-red-600">{error.dob}</p> */}
+                <Span label={error.dob} />
+              </div>
+
+              <div className="w-[180px]">
+                <label className="text-slate-900 text-sm font-medium mb-2 block">
+                  Contact No.
+                </label>
+                {/* <input
+                  name="contact"
+                  type="number"
+                  value={user.contact}
+                  onChange={handleChange}
+                  placeholder="Enter Contact No."
+                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+                /> */}
+                <Input
+                  name="contact"
+                  type="number"
+                  value={user.contact}
+                  onChange={handleChange}
+                  placeholder="Enter Contact "
+                />
+                {/* <p className="mt-2 text-sm text-red-600">{error.contact}</p> */}
+                <Span label={error.contact} />
               </div>
             </div>
             <br />
-            <div className="mx-auto max-w-md md:max-w-md">
-              <div className="sm:flex gap-5 ">
-                <div className="w-[180px] ">
-                  <label className="text-slate-900 text-sm font-medium mb-2 block">
-                    Date Of Birth
-                  </label>
-                  <input
-                    type="date"
-                    className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                    value={user.date}
-                    onChange={(e) => setUser({ ...user, date: e.target.value })}
-                  />
-                  <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                    {/* <span className="font-medium">Date of Birth Required !!</span> */}
-                  </p>
-                </div>
-                <div className="gap-3">
-                  <div className="w-[180px] ">
-                    <label className="text-slate-900 text-sm font-medium mb-2 block">
-                      Contact No.
-                    </label>
-                    <input
-                      type="number"
-                      placeholder="Enter Contact No."
-                      className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                      value={user.contact}
-                      onChange={(e) =>
-                        setUser({ ...user, contact: e.target.value })
-                      }
-                    />
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                      {/* <span className="font-medium">Contact No. Required !!</span> */}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <br />
+
             <div className="flex justify-center gap-6">
               <div className="w-[180px]">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
                   Select Country
                 </label>
-
                 <select
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+                  name="country"
                   value={user.country}
-                  onChange={(e) =>
-                    setUser({ ...user, country: e.target.value })
-                  }
+                  onChange={handleChange}
+                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                 >
-                  <option selected disabled hidden>
-                    Choose a country
-                  </option>
+                  <option value="">Select country</option>
                   <option value="usa">USA</option>
                   <option value="india">India</option>
                   <option value="china">China</option>
                 </select>
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/* <span className="font-medium">Country Required !!</span> */}
-                </p>
+                {/* <p className="mt-2 text-sm text-red-600">{error.country}</p> */}
+                <Span label={error.country} />
               </div>
 
               <div className="w-[180px]">
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-dark">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
                   Select Gender
                 </label>
-
                 <select
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+                  name="gender"
                   value={user.gender}
-                  onChange={(e) => setUser({ ...user, gender: e.target.value })}
+                  onChange={handleChange}
+                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                 >
-                  <option selected disabled hidden>
-                    Select Gender
-                  </option>
+                  <option value="">Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
-                <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-                  {/*   <span className="font-medium">Gender Required !!</span> */}
-                </p>
+                {/* <p className="mt-2 text-sm text-red-600">{error.gender}</p> */}
+                <Span label={error.gender} />
               </div>
             </div>
             <br />
-            <div className="flex items-center text-white gap-1">
-              <label className="text-slate-900 text-sm font-medium  block w-full">
-                Select Language :
+            <div className=" items-center ">
+              <label className="text-slate-900 text-sm font-medium block w-full ">
+                Select Language:
               </label>
 
               <input
                 type="checkbox"
-                className=" w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                name="language"
+                value="English"
+                className="m-1"
+                checked={user.language.includes("English")}
+                onChange={inputHandleLanguage}
               />
-              <label className="text-slate-900 text-sm font-medium block ">
-                English
-              </label>
+              <span>English</span>
+
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                name="language"
+                value="Hindi"
+                className="m-1"
+                checked={user.language.includes("Hindi")}
+                onChange={inputHandleLanguage}
               />
-              <label className=" text-slate-900 text-sm font-medium  block ">
-                Hindi
-              </label>
+              <span>Hindi</span>
+
               <input
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                name="language"
+                value="Gujarati"
+                className="m-1"
+                checked={user.language.includes("Gujarati")}
+                onChange={inputHandleLanguage}
               />
-              <label className=" text-slate-900 text-sm font-medium block  ">
-                Gujarati
-              </label>
+              <span>Gujarati</span>
             </div>
-            <p className="mt-2 text-sm text-red-600 dark:text-red-500">
-              {/* <span className="font-medium">At List One Language Required !!</span> */}
-            </p>
-            <div className="mt-12">
+            {/* <p className="mt-2 text-sm text-red-600">{error.language}</p> */}
+            <Span label={error.language} />
+            <div className="mt-3">
               <button
-                type="button"
+                type="submit"
                 className="w-full py-3 px-4 text-sm tracking-wider font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer"
               >
                 Submit
               </button>
             </div>
           </form>
+        </div>
+      </div>
+      <br />
+      {/* FILTER SECTION  */}
+      <div className="flex justify-center  gap-5">
+        <div className="w-[180px]">
+          <select
+            name="gender"
+            className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+          >
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <div className="w-[180px]">
+          <select
+            name="country"
+            className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+          >
+            <option value="">Select Country</option>
+            <option value="usa">USA</option>
+            <option value="india">India</option>
+            <option value="china">China</option>
+          </select>
+        </div>
+
+        <div className="w-[180px]">
+          <select
+            name="language"
+            className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+          >
+            <option value="">Select Country</option>
+            <option value="hindi">Hindi</option>
+            <option value="english">English</option>
+            <option value="gujarati">Gujarati</option>
+          </select>
         </div>
       </div>
       <br />
@@ -295,7 +424,51 @@ const Logout = () => {
               </th>
             </tr>
           </thead>
-          <tbody></tbody>
+
+          <tbody>
+            {users.length > 0 &&
+              users.map((data) => (
+                <tr
+                  key={data.id}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-black"
+                >
+                  <td className="px-6 py-4">{data.firstName}</td>
+                  <td className="px-6 py-4">{data.lastName}</td>
+                  <td className="px-6 py-4">{data.email}</td>
+                  <td className="px-6 py-4">{data.dob}</td>
+                  <td className="px-6 py-4">{data.contact}</td>
+                  <td className="px-6 py-4">{data.country}</td>
+                  <td className="px-6 py-4">{data.gender}</td>
+                  <td className="px-6 py-4">{data.language.join(" ,")}</td>
+                  <td>
+                    {/* <button
+                      onClick={() => handleDelete(data.id)}
+                      className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer "
+                    >
+                
+                      Delete
+                    </button> */}
+                    <Button
+                      color="-red-600"
+                      label="Delete"
+                      onClick={() => handleDelete(data.id)}
+                    />
+
+                    {/* <button
+                      onClick={() => handleEdit(data)}
+                      className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer "
+                    >
+                      Edit
+                    </button> */}
+                    <Button
+                      color="-sky-600"
+                      label="Edit"
+                      onClick={() => handleEdit(data)}
+                    />
+                  </td>
+                </tr>
+              ))}
+          </tbody>
         </table>
       </div>
     </div>
