@@ -107,7 +107,7 @@ const Login = () => {
               Login
             </button>
 
-            <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+            {/* <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?{" "}
               <Link
                 to="/"
@@ -115,7 +115,7 @@ const Login = () => {
               >
                 Create account
               </Link>
-            </div>
+            </div> */}  
           </form>
         </div>
       </div>

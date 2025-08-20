@@ -2,21 +2,20 @@ const initialState = {
   users: [],
 };
 
-export default function userReducer(state = initialState, action) {
-  // console.log("ReducerAction",action.type ,"ActionPayload",action.payload);
-  // console.log();
-  // debugger
+export default function dataReducer(state = initialState, action) {
   switch (action.type) {
     case "ADD_USER":
-      // console.log("first ADD ",state.todos);
-      // console.log("second ADD",[...state.todos,action.payload]);
-      // console.log("....STATE",{...state});
-      // console.log("....STATE",[...state.todos,action.payload]);
       return {
         ...state,
-        user: [...state.users, action.payload],
+        users: [...state.users, action.payload],
       };
-   default:
+    case "DELETE_USER":
+      return {
+        ...state,
+        users: state.users.filter((u) => u.id !== action.payload),
+      };
+    default:
       return state;
   }
 }
+

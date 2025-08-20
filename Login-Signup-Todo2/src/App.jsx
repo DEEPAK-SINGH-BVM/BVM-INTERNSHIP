@@ -28,3 +28,14 @@ const App = () => {
 };
 
 export default App;
+/*
+export default function App() {
+  return (
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <Registration />
+      </PersistGate>
+    </Provider>
+  );
+}
+*/

@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
 import userReducer from "./components/features/userSlice";
-import usersReducer from "./components/reducer/userReducer";
+import dataReducer from "./components/reducer/userReducer";
 const persistConfig = {
   key: "root",
   storage,
@@ -11,7 +11,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   user: userReducer,
-  users: usersReducer,
+  users:dataReducer
 });
 // (persistReducer) takes your root Redux reducer and a configuration object, and returns an enhanced reducer it take root-redux & persistConfig object as argument
 // it return enhanced reducer that know how to intact with choose storage

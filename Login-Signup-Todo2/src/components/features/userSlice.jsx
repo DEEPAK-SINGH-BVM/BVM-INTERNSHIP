@@ -25,16 +25,15 @@ const userSlice = createSlice({
       );
       if (user) {
         state.currentUser = user;
-        console.log("login successful", state.currentUser);
+        console.log("login successful");
       } else {
         alert("IInvalid Email & Password");
       }
     },
 
     logout: (state) => {
-      // console.log("Logout action called");
+      // console.log("Logout");
       state.currentUser = null;
-      // console.log(" User logged out. Current user is now:", state.currentUser);
     },
   },
 });

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
-import { addUser } from "../action/userAction";
+import { addUser, deleteUser } from "../action/userAction";
 const Logout = () => {
   const dispatch = useDispatch();
   let User = {
@@ -9,28 +9,29 @@ const Logout = () => {
     lastName: "",
     email: "",
     dob: "",
+    contact: "",
     country: "",
     gender: "",
     language: [],
   };
+
   const [user, setUser] = useState(User);
-  console.log(user);
-  const users = useSelector((state) => state.users);
+  const users = useSelector((state) => state.users.users);
   console.log(users, "PATH");
 
   const [error, setError] = useState({});
 
-  const validate = () => {
+  const validation = () => {
     let newError = {};
     if (!user.firstName) {
       newError.firstName = "First name required";
     } else if (!/^[A-Za-z]+$/.test(user.firstName)) {
-      newError.firstName = "Only alphabets allowed";
+      newError.firstName = "Number are Not allowed";
     }
     if (!user.lastName) {
       newError.lastName = "Last name required";
     } else if (!/^[A-Za-z]+$/.test(user.lastName)) {
-      newError.lastName = "Only alphabets allowed";
+      newError.lastName = "Number are Not allowed";
     }
     if (!user.email) {
       newError.email = "Email is required";
@@ -43,7 +44,7 @@ const Logout = () => {
     if (!user.contact) {
       newError.contact = "Contact number required";
     } else if (!/^[0-9]{10}$/.test(user.contact)) {
-      newError.contact = "Contact must be 10 digits";
+      newError.contact = "Contact Required 10 digits";
     }
     if (!user.country) {
       newError.country = "Country is required";
@@ -66,16 +67,41 @@ const Logout = () => {
 
     setUser({ ...user, [name]: value });
   };
+  const inputHandleLanguage = (e) => {
+    const { name, value, checked } = e.target;
+    // console.log(name, "NAME");
+    // console.log(value, "VALUE");
+    // console.log(checked, "CHECKED");
 
+    if (name === "language") {
+      const current = user.language;
+      // console.log(current, "CURRENT");
+
+      let updated = [];
+      if (checked) {
+        updated = [...current, value];
+        // console.log(updated, "UPDATE");
+        // console.log(...current, "....CURRENT");
+      }
+      // else {
+      //   updated = current.filter((lang) => lang !== value);
+      // }
+      setUser({ ...user, [name]: updated });
+    }
+  };
   const handleSubmit = () => {
-    if (!validate()) return;
-
+    // debugger
+    if (!validation()) return;
     dispatch(addUser({ ...user, id: Date.now() }));
+
     setUser(User);
   };
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+  };
+  const handleDelete = (id) => {
+    dispatch(deleteUser(id));
   };
   return (
     <div>
@@ -119,7 +145,6 @@ const Logout = () => {
               <p className="mt-2 text-sm text-red-600">{error.firstName}</p>
             </div>
             <br />
-
             <div className="space-y-6">
               <label className="text-slate-900 text-sm font-medium mb-2 block">
                 Last Name
@@ -173,7 +198,7 @@ const Logout = () => {
                 </label>
                 <input
                   name="contact"
-                  type="text"
+                  type="number"
                   value={user.contact}
                   onChange={handleChange}
                   placeholder="Enter Contact No."
@@ -221,8 +246,7 @@ const Logout = () => {
               </div>
             </div>
             <br />
-
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
               <label className="text-slate-900 text-sm font-medium block w-full">
                 Select Language:
               </label>
@@ -232,7 +256,7 @@ const Logout = () => {
                 name="language"
                 value="English"
                 checked={user.language.includes("English")}
-                onChange={handleChange}
+                onChange={inputHandleLanguage}
               />
               <span>English</span>
 
@@ -241,7 +265,7 @@ const Logout = () => {
                 name="language"
                 value="Hindi"
                 checked={user.language.includes("Hindi")}
-                onChange={handleChange}
+                onChange={inputHandleLanguage}
               />
               <span>Hindi</span>
 
@@ -250,7 +274,7 @@ const Logout = () => {
                 name="language"
                 value="Gujarati"
                 checked={user.language.includes("Gujarati")}
-                onChange={handleChange}
+                onChange={inputHandleLanguage}
               />
               <span>Gujarati</span>
             </div>
@@ -301,30 +325,36 @@ const Logout = () => {
               </th>
             </tr>
           </thead>
+
           <tbody>
-            {users.length > 0 &&
-              users.map((data) => (
-                <tr
-                  key={data.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-black"
-                >
-                  <td className="px-6 py-4">{data.firstName}</td>
-                  <td>
-                    <button className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer ">
-                      Delete
-                    </button>
-                    {/* <button
-                        className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer "
-                      
-                      >
-                        Edit
-                      </button> */}
-                    <button className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer ">
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              ))}
+            {users.map((data) => (
+              <tr
+                key={data.id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-black"
+              >
+                <td className="px-6 py-4">{data.firstName}</td>
+                <td className="px-6 py-4">{data.lastName}</td>
+                <td className="px-6 py-4">{data.email}</td>
+                <td className="px-6 py-4">{data.dob}</td>
+                <td className="px-6 py-4">{data.contact}</td>
+                <td className="px-6 py-4">{data.country}</td>
+                <td className="px-6 py-4">{data.gender}</td>
+                <td className="px-6 py-4">{data.language}</td>
+
+                <td>
+                  <button
+                    onClick={() => handleDelete(data.id)}
+                    className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer "
+                  >
+                    Delete
+                  </button>
+
+                  <button className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer ">
+                    Edit
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
