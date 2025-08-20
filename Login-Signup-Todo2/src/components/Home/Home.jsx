@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
-import { addUser, deleteUser } from "../action/userAction";
+import { addUser, deleteUser, editUser } from "../action/userAction";
 const Logout = () => {
   const dispatch = useDispatch();
   let User = {
@@ -18,7 +18,8 @@ const Logout = () => {
   const [user, setUser] = useState(User);
   const users = useSelector((state) => state.users.users);
   console.log(users, "PATH");
-
+  
+  const [edit, setEdit] = useState(null);
   const [error, setError] = useState({});
 
   const validation = () => {
@@ -89,11 +90,25 @@ const Logout = () => {
       setUser({ ...user, [name]: updated });
     }
   };
-  const handleSubmit = () => {
-    // debugger
-    if (!validation()) return;
-    dispatch(addUser({ ...user, id: Date.now() }));
+  // const handleSubmit = () => {
+  //   // debugger
+  //   if (!validation()) return;
+  //   dispatch(addUser({ ...user, id: Date.now() }));
 
+  //   setUser(User);
+  // };
+  const handleSubmit = () => {
+    if (!validate()) return;
+    console.log(edit, "EDIT");
+
+    if (edit) {
+      dispatch({ ...user, id: edit });
+      setEdit(null);
+      console.log(dispatch(editUser({ ...user })), "all -data");
+      // console.log(editUser, "all-data");
+    } else {
+      dispatch(addUser({ ...user, id: Date.now() }));
+    }
     setUser(User);
   };
   const handleLogout = (e) => {
@@ -102,6 +117,12 @@ const Logout = () => {
   };
   const handleDelete = (id) => {
     dispatch(deleteUser(id));
+  };
+  const handleEdit = (data) => {
+    setUser(data);
+    setEdit(data.id);
+    console.log(data);
+    console.log(data.id);
   };
   return (
     <div>
@@ -349,7 +370,10 @@ const Logout = () => {
                     Delete
                   </button>
 
-                  <button className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer ">
+                  <button
+                    onClick={() => handleEdit(user)}
+                    className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer "
+                  >
                     Edit
                   </button>
                 </td>

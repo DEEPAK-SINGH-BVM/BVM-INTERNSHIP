@@ -14,6 +14,27 @@ export default function dataReducer(state = initialState, action) {
         ...state,
         users: state.users.filter((u) => u.id !== action.payload),
       };
+
+    case "EDIT_USER":
+      console.log("first-EDIT", state.users);
+      console.log(
+        "second-EDIT",
+        state.users.map((data) =>
+          data === action.payload ? action.payload : data
+        )
+      );
+      console.log("ACTION-PAYLOAD-ID", action.payload.id);
+
+      // state.users.forEach((user) => {
+      //   console.log("user-ID", user.id);
+      // });
+      return {
+        ...state,
+        users: state.users.map((data) =>
+          data.id === action.payload.id ? action.payload : data
+        ),
+      };
+
     default:
       return state;
   }
