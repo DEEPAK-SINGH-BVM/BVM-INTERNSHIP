@@ -6,7 +6,7 @@ const Select = ({ name, value, onChange, options, className }) => {
       name={name}
       value={value}
       onChange={onChange}
-      className={`text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500 ${className}`}
+      className={`text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500`}
     >
       {options.map((option, i) => (
         <option key={i} value={option.value}>

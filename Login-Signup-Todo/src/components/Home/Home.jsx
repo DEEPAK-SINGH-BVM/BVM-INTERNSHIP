@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../features/userSlice";
+import { logout } from "../action/LoginSignAction";
 import { addUser, deleteUser, editUser } from "../action/userAction";
 import Button from "../Elements/Button";
 import { Input, InputSelectSignup } from "../Elements/Input";
@@ -8,7 +8,12 @@ import Span from "../Elements/Span";
 import Select from "../Elements/Select";
 import { Label, LabelSelect } from "../Elements/label";
 import { TdTable, ThTable } from "../Elements/THtable";
-import { countryOptions , genderOptions,languageOptions } from "../Data/ValueLabel";
+import {
+  countryOptions,
+  genderOptions,
+  languageOptions,
+} from "../Data/ValueLabel";
+import "./Home.css";
 const Logout = () => {
   const dispatch = useDispatch();
   let User = {
@@ -151,21 +156,22 @@ const Logout = () => {
       // console.log(Gender);
       // console.log(item.gender,'ITEM-GENDER');
       // console.log(filters.gender,'filter-gender');
-
       const Country = !filters.country || item.country === filters.country;
-      const Language =
-        !filters.language ||
-        (Array.isArray(item.language)
-          ? item.language.some(
-              (lang) => lang.toLowerCase() === filters.language.toLowerCase()
-            )
-          : item.language.toLowerCase() === filters.language.toLowerCase());
+      const Language = !filters.language || item.language === filters.language;
+
+      // const Language =
+      //   !filters.language ||
+      //   (Array.isArray(item.language)
+      //     ? item.language.some(
+      //         (lang) => lang.toLowerCase() === filters.language.toLowerCase()
+      //       )
+      //     : item.language.toLowerCase() === filters.language.toLowerCase());
 
       return Gender && Country && Language;
     })
     .filter(
       (item) =>
-        // console.log(item.firstName,'ITEM-FIRSTNAME')
+        //  console.log(item.firstName,'ITEM-FIRSTNAME')
         // console.log(searchItem,'SEARCHITEM')
         item.firstName.toLowerCase().includes(searchItem.toLowerCase()) ||
         item.lastName.toLowerCase().includes(searchItem.toLowerCase())
@@ -187,18 +193,32 @@ const Logout = () => {
             >
               Logout
             </button>
+
+            <label class=" flex justify-center  items-center cursor-pointer pl-3">
+              <input type="checkbox" value="" class="sr-only peer" />
+              <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
+              {/* <p class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  Light/Dark
+                </p> */}
+            </label>
+            <p class="ms-3 pt-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+              Light/Dark
+            </p>
           </div>
         </div>
       </nav>
       <br />
-      <div className="flex flex-col justify-center sm:h-screen p-4  ">
-        <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8">
-          <div className="text-center">
+      <div className="flex flex-col justify-center sm:h-screen p-4 hover:border-gray-500 ">
+        {/* Light */}
+        {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 "> */}
+          {/* Dark */}
+          <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 dark:bg-gray-800 dark:border-gray-700 text-white">
+          <div className="text-center ">
             <h2 className="text-3xl font-bold">Registration Form</h2>
             <hr />
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="space-y-6">
+            <div className="space-y-6 ">
               {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                 First Name
               </label> */}
@@ -234,6 +254,7 @@ const Logout = () => {
                 onChange={handleChange}
                 className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                 placeholder="Enter Last Name"
+                 
               /> */}
               <Input
                 name="lastName"
@@ -252,6 +273,7 @@ const Logout = () => {
               </label> */}
               <Label label="Email" />
               {/* <input
+
                 name="email"
                 type="email"
                 value={user.email}
@@ -272,7 +294,7 @@ const Logout = () => {
             </div>
             <br />
             <div className="sm:flex gap-5">
-              <div className="w-[180px]">
+              <div className="sm:w-[180px]">
                 {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Date Of Birth
                 </label> */}
@@ -294,7 +316,7 @@ const Logout = () => {
                 <Span label={error.dob} />
               </div>
 
-              <div className="w-[180px]">
+              <div className="sm:w-[180px]">
                 {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Contact No.
                 </label> */}
@@ -347,14 +369,13 @@ const Logout = () => {
                   options={genderOptions}
                 />
                 {/*
-                
                 <p className="mt-2 text-sm text-red-600">{error.gender}</p> */}
                 <Span label={error.gender} />
               </div>
             </div>
             <br />
             <div className=" items-center ">
-              <label className="text-slate-900 text-sm font-medium block w-full ">
+              <label className="text-sm font-medium block w-full ">
                 Select Language:
               </label>
 
@@ -407,10 +428,12 @@ const Logout = () => {
         </div>
       </div>
       <br />
-      {/* FILTER SECTION  */}
+      {/*
+
+      FILTER SECTION  */}
       <div className="flex justify-center">
-        <div className=" sm:flex gap-5">
-          <div className="text-lg">
+        <div className=" sm:flex gap-5 ">
+          <div className="text-lg m-2">
             <Select
               name="gender"
               value={filters.gender}
@@ -421,7 +444,7 @@ const Logout = () => {
               className="w-[200px] mt-2 cursor-pointer"
             />
           </div>
-          <div className="text-lg ">
+          <div className="text-lg m-2">
             {/* <select
             className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
             name="country"
@@ -444,7 +467,7 @@ const Logout = () => {
               className="w-[200px] mt-2 cursor-pointer"
             />
           </div>
-          <div className="text-lg ">
+          <div className="text-lg m-2">
             {/* <select
             className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
             name="language"
@@ -525,7 +548,10 @@ const Logout = () => {
             {filterList.map((data) => (
               <tr
                 key={data.id}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-black"
+                // LIGHT
+                // className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-black"
+                // DARK
+                className=" border-b dark:bg-gray-700 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-white"
               >
                 <TdTable label={data.firstName} />
                 <TdTable label={data.lastName} />
@@ -548,7 +574,7 @@ const Logout = () => {
                       onClick={() => handleDelete(data.id)}
                       className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer "
                     >
-                
+                     
                       Delete
                     </button> */}
                   <Button

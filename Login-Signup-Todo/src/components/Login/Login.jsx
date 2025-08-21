@@ -2,7 +2,7 @@ import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../features/userSlice";
+import { login } from "../action/LoginSignAction";
 import { InputSignup } from "../Elements/Input";
 import Span from "../Elements/Span";
 import { LabelLogin } from "../Elements/label";
@@ -47,20 +47,21 @@ const Login = () => {
     }
   }, [currentUser, navigate]);
 
-
   return (
     <div>
       <div className="flex justify-center pt-25 ">
-        <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        {/* DARK */}
+        <div className="w-full max-w-sm p-4 bg-blue   border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        {/* LIGHT */}
+        {/* <div className="w-full max-w-sm p-4 bg-white   border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"> */}
           <form className="space-y-6" onSubmit={handelSubmit}>
-            <div>
-              <h4 className="text-3xl font-medium text-gray-900 dark:text-white">
-                Login
-              </h4>
+            <div className=" text-blue-400">
+              <h4 className="text-3xl font-medium underline">Login</h4>
             </div>
 
             <div>
-              {/* <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              {/*
+              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Enter email
               </label> */}
               <LabelLogin label="Enter Email" />
@@ -98,7 +99,6 @@ const Login = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               /> */}
               <InputSignup
-
                 type="password"
                 name="password"
                 value={password}

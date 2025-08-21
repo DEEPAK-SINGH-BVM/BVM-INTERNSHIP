@@ -1,18 +1,23 @@
-const userSlice = createSlice({
-  name: "user",
-  initialState: {
-    users: [],
-    currentUser: null,
-  },
-  reducers: {
-    signup: (state, action) => {
-      state.users.push(action.payload);
-      state.currentUser = action.payload;
-      console.log("signup action", action.payload);
-    },
 
-    login: (state, action) => {
-      console.log("login action:", action.payload);
+const initialState = {
+  users: [],
+  currentUser: null,
+};
+
+export default function userReducer(state = initialState, action) {
+  
+  switch (action.type) {
+    case "SIGNUP":
+      // console.log("signup action", action.payload);
+      return {
+        ...state,
+        users: [...state.users, action.payload],
+        currentUser: action.payload,
+      };
+
+    case "LOGIN": {
+    
+      // console.log("login action:", action.payload); 
       const { email, password } = action.payload;
 
       const user = state.users.find(
@@ -20,21 +25,28 @@ const userSlice = createSlice({
       );
 
       if (user) {
-        state.currentUser = user;
-        console.log("login successful");
+        // console.log("login");
+        return {
+          ...state,
+          currentUser: user,
+        };
       } else {
         alert("Invalid Email & Password");
+        return state;
       }
-    },
+    }
 
-    logout: (state) => {
-      state.currentUser = null;
-    },
-  },
-});
+    case "LOGOUT":
+      // console.log("logout");
+      return {
+        ...state,
+        currentUser: null,
+      };
 
-export const { signup, login, logout } = userSlice.actions;
+    default:
+      return state;
+  }
+}
 
 export const selectUser = (state) => state.user.currentUser;
 
-export default userSlice.reducer;

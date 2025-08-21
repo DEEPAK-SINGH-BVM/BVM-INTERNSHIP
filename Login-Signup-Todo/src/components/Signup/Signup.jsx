@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { signup } from "../features/userSlice";
+import { signup } from "../action/LoginSignAction";
 import { InputSelectSignup, InputSignup } from "../Elements/Input";
 import Span from "../Elements/Span";
 import Select from "../Elements/Select";
@@ -96,16 +96,17 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-
     dispatch(signup(user));
-
     navigate("/home");
   };
 
   return (
     <div>
       <div className="flex justify-center pt-25 ">
+        {/* DARK */}
         <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        {/* LIGHT */}
+        {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 text-black"> */}
           <form className="space-y-6" onSubmit={handleSubmit}>
             <h4 className="text-3xl font-medium text-gray-900 dark:text-white ">
               Signup
@@ -215,7 +216,6 @@ const Signup = () => {
               </p> */}
               <Span label={error.password} />
             </div>
-
             <div>
               {/* <label className="block mb-2 text-sm text-white">
                 Select Country
@@ -249,23 +249,31 @@ const Signup = () => {
               <Span label={error.gender} />
             </div>
 
-            <div className="flex items-center text-white gap-1 mb-0 ">
-              <label className="text-sm text-white">Select Language:</label>
+            <div className="flex items-center  gap-1 mb-0 ">
+              <label className="text-sm ">Select Language:</label>
               {/* <input
                 type="checkbox"
                 value="English"
                 checked={user.language.includes("English")}
                 onChange={handleLanguage}
               /> */}
-              <InputSelectSignup value="English" onChange={handleLanguage}  checked={user.language.includes("English")}/>
+              <InputSelectSignup
+                value="English"
+                onChange={handleLanguage}
+                checked={user.language.includes("English")}
+              />
               <span>English</span>
-              {/* <input
+              {/* <input  
                 type="checkbox"
                 value="Hindi"
                 checked={user.language.includes("Hindi")}
                 onChange={handleLanguage}
               /> */}
-               <InputSelectSignup value="Hindi" onChange={handleLanguage}  checked={user.language.includes("Hindi")}/>
+              <InputSelectSignup
+                value="Hindi"
+                onChange={handleLanguage}
+                checked={user.language.includes("Hindi")}
+              />
               <span>Hindi</span>
               {/* <input
                 type="checkbox"
@@ -273,7 +281,11 @@ const Signup = () => {
                 checked={user.language.includes("Gujarati")}
                 onChange={handleLanguage}
               /> */}
-              <InputSelectSignup value="Gujarati" onChange={handleLanguage}  checked={user.language.includes("Gujarati")}/>
+              <InputSelectSignup
+                value="Gujarati"
+                onChange={handleLanguage}
+                checked={user.language.includes("Gujarati")}
+              />
               <span>Gujarati</span>
             </div>
             {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">

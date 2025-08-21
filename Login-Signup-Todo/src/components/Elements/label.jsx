@@ -11,9 +11,7 @@ export const Label = ({ label }) => {
     // >
     //   {label}
     // </button>
-    <label className="text-slate-900 text-sm font-medium mb-2 block">
-      {label}
-    </label>
+    <label className=" text-sm font-medium mb-2 block ">{label}</label>
   );
 };
 
@@ -25,22 +23,18 @@ export const LabelSelect = ({ label }) => {
     // >
     //   {label}
     // </button>
-    <label className="block mb-2 text-sm font-medium text-gray-900">
-      {label}
-    </label>
+    <label className="block mb-2 text-sm font-medium ">{label}</label>
   );
 };
 
 export const LabelSignup = ({ label }) => {
-  return <label className="block mb-2 text-sm text-white">{label}</label>;
+  return <label className="block mb-2 text-sm ">{label}</label>;
 };
 
 export const LabelLogin = ({ label }) => {
   return (
-    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+    <label className="block mb-2 text-sm font-medium text-gray-900 ">
       {label}
     </label>
   );
 };
-
-

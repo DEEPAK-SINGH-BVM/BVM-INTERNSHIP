@@ -41,22 +41,23 @@ export default function dataReducer(state = initialState, action) {
 }
 /*
 
-const  initialState: {
-    users: [],
-    currentUser: [],
-  };
-export default function userReducer(state = initialState, action){
-    switch(action.type)
-    {
-        case"SIGNUP":
-        return {
-      state.users.push(action.payload);
-      state.currentUser = action.payload;
+const initialState = {
+  users: [],
+  currentUser: null,
+};
+
+export default function userReducer(state = initialState, action) {
+  switch (action.type) {
+    case "SIGNUP":
       console.log("signup action", action.payload);
-        }
-        case"LOGIN":
-        return {
-        console.log("login action:", action.payload);
+      return {
+        ...state,
+        users: [...state.users, action.payload],
+        currentUser: action.payload,
+      };
+
+    case "LOGIN": {
+      console.log("login action:", action.payload);
       const { email, password } = action.payload;
 
       const user = state.users.find(
@@ -64,16 +65,26 @@ export default function userReducer(state = initialState, action){
       );
 
       if (user) {
-        state.currentUser = user;
         console.log("login successful");
+        return {
+          ...state,
+          currentUser: user,
+        };
       } else {
         alert("Invalid Email & Password");
-      }
-        }
-      case"LOGOUT":{
-
-         state.currentUser = null;
+        return state;
       }
     }
+
+    case "LOGOUT":
+      console.log("logout action triggered");
+      return {
+        ...state,
+        currentUser: null,
+      };
+
+    default:
+      return state;
+  }
 }
 */
