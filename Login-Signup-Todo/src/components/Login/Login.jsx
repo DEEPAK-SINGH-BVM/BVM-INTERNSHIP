@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../features/userSlice";
 import { InputSignup } from "../Elements/Input";
 import Span from "../Elements/Span";
+import { LabelLogin } from "../Elements/label";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -36,29 +37,17 @@ const Login = () => {
     e.preventDefault();
     if (!validation()) return;
 
-    //  Dispatch login action
     dispatch(login({ email, password }));
   };
 
-  // Watch Redux state and redirect after successful login
   useEffect(() => {
     if (currentUser) {
       console.log("Login successful", currentUser);
       navigate("/home");
     }
   }, [currentUser, navigate]);
-  /*
-  const handelSubmit = (e) => {
-  e.preventDefault();
-  if (!validation()) return;
 
-  dispatch(login({ email, password }));
 
-  // Redirect immediately (BAD)
-  navigate("/home");
-};
-
- */
   return (
     <div>
       <div className="flex justify-center pt-25 ">
@@ -71,9 +60,10 @@ const Login = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              {/* <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Enter email
-              </label>
+              </label> */}
+              <LabelLogin label="Enter Email" />
               {/* <input
                 type="email"
                 value={email}
@@ -95,10 +85,12 @@ const Login = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+              {/* <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Enter password
-              </label>
+              </label> */}
+              <LabelLogin label="Enter Password" />
               {/* <input
+              
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -106,6 +98,7 @@ const Login = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               /> */}
               <InputSignup
+
                 type="password"
                 name="password"
                 value={password}

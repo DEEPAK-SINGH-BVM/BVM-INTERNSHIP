@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signup } from "../features/userSlice";
-import { InputSignup } from "../Elements/Input";
+import { InputSelectSignup, InputSignup } from "../Elements/Input";
 import Span from "../Elements/Span";
-
+import Select from "../Elements/Select";
+import { LabelSignup } from "../Elements/label";
+import { countryOptions , genderOptions } from "../Data/ValueLabel";
 const Signup = () => {
   let User = {
     firstName: "",
@@ -17,7 +19,18 @@ const Signup = () => {
   };
   const [user, setUser] = useState(User);
   // console.log(user);
+  // const countryOptions = [
+  //   { value: "", label: "Select Country" },
+  //   { value: "usa", label: "USA" },
+  //   { value: "india", label: "India" },
+  //   { value: "china", label: "China" },
+  // ];
 
+  // const genderOptions = [
+  //   { value: "", label: "Select Gender" },
+  //   { value: "male", label: "Male" },
+  //   { value: "female", label: "Female" },
+  // ];
   const [error, setError] = useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -101,9 +114,10 @@ const Signup = () => {
 
             <div className="flex justify-center gap-4">
               <div>
-                <label className="block mb-2 text-sm text-white">
+                {/* <label className="block mb-2 text-sm text-white">
                   Enter First Name
-                </label>
+                </label> */}
+                <LabelSignup label="Enter First Name  " />
                 {/* <input
                   type="text"
                   name="firstName"
@@ -125,9 +139,10 @@ const Signup = () => {
                 <Span label={error.firstName} />
               </div>
               <div>
-                <label className="block mb-2 text-sm text-white">
+                {/* <label className="block mb-2 text-sm text-white">
                   Enter Last Name
-                </label>
+                </label> */}
+                <LabelSignup label="Enter Last Name  " />
                 {/* <input
                   type="text"
                   name="lastName"
@@ -151,9 +166,10 @@ const Signup = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm text-white">
+              {/* <label className="block mb-2 text-sm text-white">
                 Enter Email
-              </label>
+              </label> */}
+              <LabelSignup label="Enter Email  " />
               {/* <input
                 type="email"
                 name="email"
@@ -175,9 +191,10 @@ const Signup = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm text-white">
+              {/* <label className="block mb-2 text-sm text-white">
                 Enter Password
-              </label>
+              </label> */}
+              <LabelSignup label="Enter Password" />
               {/* <input
                 type="password"
                 name="password"
@@ -200,44 +217,32 @@ const Signup = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-sm text-white">
+              {/* <label className="block mb-2 text-sm text-white">
                 Select Country
-              </label>
-              <select
+              </label> */}
+              <LabelSignup label="Select Country" />
+              <Select
                 name="country"
                 value={user.country}
                 onChange={handleChange}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              >
-                <option value="" disabled>
-                  Choose a country
-                </option>
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="FR">France</option>
-                <option value="DE">Germany</option>
-              </select>
+                options={countryOptions}
+              />
               {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 <span className="font-medium">{error.country}</span>
               </p> */}
               <Span label={error.country} />
             </div>
             <div>
-              <label className="block mb-2 text-sm text-white">
+              {/* <label className="block mb-2 text-sm text-white">
                 Select Gender
-              </label>
-              <select
+              </label> */}
+              <LabelSignup label="Select Gender" />
+              <Select
                 name="gender"
                 value={user.gender}
                 onChange={handleChange}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              >
-                <option value="" disabled>
-                  Select Gender
-                </option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
+                options={genderOptions}
+              />
               {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">
                 <span className="font-medium">{error.gender}</span>
               </p> */}
@@ -246,26 +251,29 @@ const Signup = () => {
 
             <div className="flex items-center text-white gap-1 mb-0 ">
               <label className="text-sm text-white">Select Language:</label>
-              <input
+              {/* <input
                 type="checkbox"
                 value="English"
                 checked={user.language.includes("English")}
                 onChange={handleLanguage}
-              />
+              /> */}
+              <InputSelectSignup value="English" onChange={handleLanguage}  checked={user.language.includes("English")}/>
               <span>English</span>
-              <input
+              {/* <input
                 type="checkbox"
                 value="Hindi"
                 checked={user.language.includes("Hindi")}
                 onChange={handleLanguage}
-              />
+              /> */}
+               <InputSelectSignup value="Hindi" onChange={handleLanguage}  checked={user.language.includes("Hindi")}/>
               <span>Hindi</span>
-              <input
+              {/* <input
                 type="checkbox"
                 value="Gujarati"
                 checked={user.language.includes("Gujarati")}
                 onChange={handleLanguage}
-              />
+              /> */}
+              <InputSelectSignup value="Gujarati" onChange={handleLanguage}  checked={user.language.includes("Gujarati")}/>
               <span>Gujarati</span>
             </div>
             {/* <p className="mt-2 text-sm text-red-600 dark:text-red-500">

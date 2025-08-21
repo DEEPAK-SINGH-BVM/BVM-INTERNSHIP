@@ -15,7 +15,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          {/* Protected Route */}
+        
           <Route path="/home" element={user ? <Home /> : <Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
@@ -24,14 +24,3 @@ const App = () => {
 };
 
 export default App;
-/*
-export default function App() {
-  return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <Registration />
-      </PersistGate>
-    </Provider>
-  );
-}
-*/

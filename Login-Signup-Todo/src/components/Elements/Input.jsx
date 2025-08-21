@@ -18,6 +18,7 @@ export  const Input = ({ name, type, value, onChange, placeholder }) => {
     />
   );
 };
+
 export  const InputSignup = ({ name, type, value, onChange, placeholder }) => {
   return (
     // <button
@@ -36,15 +37,31 @@ export  const InputSignup = ({ name, type, value, onChange, placeholder }) => {
     />
   );
 };
-
+export const InputSelectSignup = ({ value,onChange ,  checked }) => {
+  return (
+    // <button
+    //   className={`w-[100px] border-2 border border-gray-300 p-2 bg${color} text-white cursor-pointer `}
+    //   onClick={onClick}
+    // > 
+    //   {label}
+    // </button>
+    <input
+      name={"language"}
+      type={"checkbox"}
+      value={value}
+      className={"m-1"}
+      onChange={onChange}
+      checked={checked}
+    />
+  );
+};
 /*
-Button = ({ color, label = "Click Here", onClick }) 
-     <input
-                name="firstName"
-                type="text"
-                value={user.firstName}
-                onChange={handleChange}
-                className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                placeholder="Enter First Name"
-              />
+   <input
+      type="checkbox"
+      name="language"
+      value="English"
+      className="m-1"
+      checked={user.language.includes("English")}
+      onChange={inputHandleLanguage}
+      />
 */

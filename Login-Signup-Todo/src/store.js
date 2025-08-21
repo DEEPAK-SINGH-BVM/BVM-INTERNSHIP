@@ -28,13 +28,3 @@ export const persistor = persistStore(store);
 
 export default store; 
 
-
-/*
-import { combineReducers } from "redux";
-import crudReducer from "./crudReducers";
-
-export default combineReducers({
-  list: crudReducer,
-});
-
-*/

@@ -3,8 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/userSlice";
 import { addUser, deleteUser, editUser } from "../action/userAction";
 import Button from "../Elements/Button";
-import { Input } from "../Elements/Input";
+import { Input, InputSelectSignup } from "../Elements/Input";
 import Span from "../Elements/Span";
+import Select from "../Elements/Select";
+import { Label, LabelSelect } from "../Elements/label";
+import { TdTable, ThTable } from "../Elements/THtable";
+import { countryOptions , genderOptions,languageOptions } from "../Data/ValueLabel";
 const Logout = () => {
   const dispatch = useDispatch();
   let User = {
@@ -18,10 +22,31 @@ const Logout = () => {
     language: [],
   };
 
+  // const countryOptions = [
+  //   { value: "", label: "Select Country" },
+  //   { value: "usa", label: "USA" },
+  //   { value: "india", label: "India" },
+  //   { value: "china", label: "China" },
+  // ];
+
+  // const genderOptions = [
+  //   { value: "", label: "Select Gender" },
+  //   { value: "male", label: "Male" },
+  //   { value: "female", label: "Female" },
+  // ];
+
+  // const languageOptions = [
+  //   { value: "", label: "Select Language" },
+  //   { value: "hindi", label: "Hindi" },
+  //   { value: "english", label: "English" },
+  //   { value: "gujarati", label: "Gujarati" },
+  // ];
+
   const [user, setUser] = useState(User);
   const users = useSelector((state) => state.users.users);
   console.log(users, "PATH");
-
+  const [filters, setFilters] = useState({});
+  const [searchItem, setSearchItem] = useState("");
   const [edit, setEdit] = useState(null);
   const [error, setError] = useState({});
 
@@ -120,6 +145,31 @@ const Logout = () => {
     console.log(data, "DATA");
     console.log(data.id, "data-id");
   };
+  const filterList = users
+    .filter((item) => {
+      const Gender = !filters.gender || item.gender === filters.gender;
+      // console.log(Gender);
+      // console.log(item.gender,'ITEM-GENDER');
+      // console.log(filters.gender,'filter-gender');
+
+      const Country = !filters.country || item.country === filters.country;
+      const Language =
+        !filters.language ||
+        (Array.isArray(item.language)
+          ? item.language.some(
+              (lang) => lang.toLowerCase() === filters.language.toLowerCase()
+            )
+          : item.language.toLowerCase() === filters.language.toLowerCase());
+
+      return Gender && Country && Language;
+    })
+    .filter(
+      (item) =>
+        // console.log(item.firstName,'ITEM-FIRSTNAME')
+        // console.log(searchItem,'SEARCHITEM')
+        item.firstName.toLowerCase().includes(searchItem.toLowerCase()) ||
+        item.lastName.toLowerCase().includes(searchItem.toLowerCase())
+    );
   return (
     <div>
       {/* <button
@@ -149,9 +199,10 @@ const Logout = () => {
           </div>
           <form onSubmit={handleSubmit}>
             <div className="space-y-6">
-              <label className="text-slate-900 text-sm font-medium mb-2 block">
+              {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                 First Name
-              </label>
+              </label> */}
+              <Label label="First Name" />
               {/* <input
                 name="firstName"
                 type="text"
@@ -172,9 +223,10 @@ const Logout = () => {
             </div>
             <br />
             <div className="space-y-6">
-              <label className="text-slate-900 text-sm font-medium mb-2 block">
+              {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                 Last Name
-              </label>
+              </label> */}
+              <Label label="Last Name" />
               {/* <input
                 name="lastName"
                 type="text"
@@ -194,11 +246,11 @@ const Logout = () => {
               <Span label={error.lastName} />
             </div>
             <br />
-
             <div className="space-y-6">
-              <label className="text-slate-900 text-sm font-medium mb-2 block">
+              {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                 Email
-              </label>
+              </label> */}
+              <Label label="Email" />
               {/* <input
                 name="email"
                 type="email"
@@ -214,16 +266,17 @@ const Logout = () => {
                 onChange={handleChange}
                 placeholder="Enter Email"
               />
-              {/* <p className="mt-2 text-sm text-red-600">{error.email}</p> */}
+              {/*
+              <p className="mt-2 text-sm text-red-600">{error.email}</p> */}
               <Span label={error.email} />
             </div>
             <br />
-
             <div className="sm:flex gap-5">
               <div className="w-[180px]">
-                <label className="text-slate-900 text-sm font-medium mb-2 block">
+                {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Date Of Birth
-                </label>
+                </label> */}
+                <Label label="Date Of Birth" />
                 {/* <input
                   name="dob"
                   type="date"
@@ -242,9 +295,10 @@ const Logout = () => {
               </div>
 
               <div className="w-[180px]">
-                <label className="text-slate-900 text-sm font-medium mb-2 block">
+                {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Contact No.
-                </label>
+                </label> */}
+                <Label label="Contact No." />
                 {/* <input
                   name="contact"
                   type="number"
@@ -265,42 +319,36 @@ const Logout = () => {
               </div>
             </div>
             <br />
-
             <div className="flex justify-center gap-6">
               <div className="w-[180px]">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
+                {/* <label className="block mb-2 text-sm font-medium text-gray-900">
                   Select Country
-                </label>
-                <select
+                </label> */}
+                <LabelSelect label=" Country" />
+                <Select
                   name="country"
                   value={user.country}
                   onChange={handleChange}
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                >
-                  <option value="">Select country</option>
-                  <option value="usa">USA</option>
-                  <option value="india">India</option>
-                  <option value="china">China</option>
-                </select>
+                  options={countryOptions}
+                />
                 {/* <p className="mt-2 text-sm text-red-600">{error.country}</p> */}
                 <Span label={error.country} />
               </div>
 
               <div className="w-[180px]">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
+                {/* <label className="block mb-2 text-sm font-medium text-gray-900">
                   Select Gender
-                </label>
-                <select
+                </label> */}
+                <LabelSelect label="Gender" />
+                <Select
                   name="gender"
                   value={user.gender}
                   onChange={handleChange}
-                  className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-                >
-                  <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-                {/* <p className="mt-2 text-sm text-red-600">{error.gender}</p> */}
+                  options={genderOptions}
+                />
+                {/*
+                
+                <p className="mt-2 text-sm text-red-600">{error.gender}</p> */}
                 <Span label={error.gender} />
               </div>
             </div>
@@ -310,37 +358,42 @@ const Logout = () => {
                 Select Language:
               </label>
 
-              <input
-                type="checkbox"
-                name="language"
+              <InputSelectSignup
                 value="English"
-                className="m-1"
-                checked={user.language.includes("English")}
                 onChange={inputHandleLanguage}
+                checked={user.language.includes("English")}
               />
               <span>English</span>
-
-              <input
+              {/* <input
                 type="checkbox"
                 name="language"
                 value="Hindi"
                 className="m-1"
                 checked={user.language.includes("Hindi")}
                 onChange={inputHandleLanguage}
+              /> */}
+              <InputSelectSignup
+                value="Hindi"
+                onChange={inputHandleLanguage}
+                checked={user.language.includes("Hindi")}
               />
               <span>Hindi</span>
-
-              <input
+              {/* <input
                 type="checkbox"
                 name="language"
                 value="Gujarati"
                 className="m-1"
                 checked={user.language.includes("Gujarati")}
                 onChange={inputHandleLanguage}
+              /> */}
+              <InputSelectSignup
+                value="Gujarati"
+                onChange={inputHandleLanguage}
+                checked={user.language.includes("Gujarati")}
               />
               <span>Gujarati</span>
             </div>
-            {/* <p className="mt-2 text-sm text-red-600">{error.language}</p> */}
+            {/*<p className="mt-2 text-sm text-red-600"> {error.language}</p> */}
             <Span label={error.language} />
             <div className="mt-3">
               <button
@@ -355,119 +408,169 @@ const Logout = () => {
       </div>
       <br />
       {/* FILTER SECTION  */}
-      <div className="flex justify-center  gap-5">
-        <div className="w-[180px]">
-          <select
-            name="gender"
-            className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
-          >
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </div>
-        <div className="w-[180px]">
-          <select
+      <div className="flex justify-center">
+        <div className=" sm:flex gap-5">
+          <div className="text-lg">
+            <Select
+              name="gender"
+              value={filters.gender}
+              onChange={(e) =>
+                setFilters({ ...filters, gender: e.target.value })
+              }
+              options={genderOptions}
+              className="w-[200px] mt-2 cursor-pointer"
+            />
+          </div>
+          <div className="text-lg ">
+            {/* <select
+            className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
             name="country"
-            className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+            onChange={(e) =>
+              setFilters({ ...filters, country: e.target.value })
+            }
           >
             <option value="">Select Country</option>
             <option value="usa">USA</option>
             <option value="india">India</option>
             <option value="china">China</option>
-          </select>
-        </div>
-
-        <div className="w-[180px]">
-          <select
+          </select> */}
+            <Select
+              name="country"
+              value={filters.country}
+              onChange={(e) =>
+                setFilters({ ...filters, country: e.target.value })
+              }
+              options={countryOptions}
+              className="w-[200px] mt-2 cursor-pointer"
+            />
+          </div>
+          <div className="text-lg ">
+            {/* <select
+            className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
             name="language"
-            className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
+            onChange={(e) =>
+              setFilters({ ...filters, language: e.target.value })
+            }
           >
-            <option value="">Select Country</option>
+            <option value="">Select Language</option>
             <option value="hindi">Hindi</option>
             <option value="english">English</option>
             <option value="gujarati">Gujarati</option>
-          </select>
+          </select> */}
+            <Select
+              name="language"
+              value={filters.language}
+              onChange={(e) =>
+                setFilters({ ...filters, language: e.target.value })
+              }
+              options={languageOptions}
+              className="w-[200px] mt-2 cursor-pointer"
+            />
+          </div>
+          <div className="text-lg m-2">
+            <input
+              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
+              type="text"
+              placeholder="Search"
+              value={searchItem}
+              onChange={(e) => setSearchItem(e.target.value)}
+            />
+          </div>
         </div>
       </div>
       <br />
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg   ">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg ">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                First name
-              </th>
-              <th scope="col" className="px-6 py-3">
+            <tr className="border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-white">
+              <ThTable label="First name" />
+              <ThTable label="Last name" />
+              <ThTable label="Email" />
+              <ThTable label="Date Of Birth" />
+              <ThTable label="Contact" />
+              <ThTable label="Country" />
+              <ThTable label="Gender" />
+              <ThTable label="Language" />
+              <ThTable label="Action" />
+              {/* <th scope="col" className="px-6 py-3">
                 Last Name
-              </th>
-              <th scope="col" className="px-6 py-3">
+                </th> */}
+              {/* <th scope="col" className="px-6 py-3">
                 Email
-              </th>
-              <th scope="col" className="px-6 py-3">
+                </th> */}
+              {/* <th scope="col" className="px-6 py-3">
                 Date Of Birth
-              </th>
-              <th scope="col" className="px-6 py-3">
+                </th> */}
+              {/* <th scope="col" className="px-6 py-3">
                 Contact
-              </th>
-              <th scope="col" className="px-6 py-3">
+                </th> */}
+              {/* <th scope="col" className="px-6 py-3">
                 Country
-              </th>
-              <th scope="col" className="px-6 py-3">
+                </th> */}
+              {/* <th scope="col" className="px-6 py-3">
                 Gender
-              </th>
-              <th scope="col" className="px-6 py-3">
+                </th> */}
+              {/* <th scope="col" className="px-6 py-3">
                 Language
-              </th>
-              <th scope="col" className="px-6 py-3">
+                </th> */}
+              {/* <th scope="col" classN
+              ame="px-6 py-3">
                 Action
-              </th>
+                filterList.length > 0 &&
+              </th> */}
             </tr>
           </thead>
 
           <tbody>
-            {users.length > 0 &&
-              users.map((data) => (
-                <tr
-                  key={data.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-black"
-                >
-                  <td className="px-6 py-4">{data.firstName}</td>
-                  <td className="px-6 py-4">{data.lastName}</td>
-                  <td className="px-6 py-4">{data.email}</td>
-                  <td className="px-6 py-4">{data.dob}</td>
-                  <td className="px-6 py-4">{data.contact}</td>
-                  <td className="px-6 py-4">{data.country}</td>
-                  <td className="px-6 py-4">{data.gender}</td>
-                  <td className="px-6 py-4">{data.language.join(" ,")}</td>
-                  <td>
-                    {/* <button
+            {filterList.map((data) => (
+              <tr
+                key={data.id}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-black"
+              >
+                <TdTable label={data.firstName} />
+                <TdTable label={data.lastName} />
+                <TdTable label={data.email} />
+                <TdTable label={data.dob} />
+                <TdTable label={data.contact} />
+                <TdTable label={data.country} />
+                <TdTable label={data.gender} />
+                <TdTable label={data.language.join(" , ")} />
+                {/* <td className="px-6 py-4">{data.firstName}</td> */}
+                {/* <td className="px-6 py-4">{data.dob}</td> */}
+                {/* <td className="px-6 py-4">{data.lastName}</td> */}
+                {/* <td className="px-6 py-4">{data.email}</td> */}
+                {/* <td className="px-6 py-4">{data.contact}</td> */}
+                {/* <td className="px-6 py-4">{data.country}</td> */}
+                {/* <td className="px-6 py-4">{data.gender}</td> */}
+                {/* <td className="px-6 py-4">{data.language.join(" ,")}</td> */}
+                <td>
+                  {/* <button
                       onClick={() => handleDelete(data.id)}
                       className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer "
                     >
                 
                       Delete
                     </button> */}
-                    <Button
-                      color="-red-600"
-                      label="Delete"
-                      onClick={() => handleDelete(data.id)}
-                    />
+                  <Button
+                    color="-red-600"
+                    label="Delete"
+                    onClick={() => handleDelete(data.id)}
+                  />
 
-                    {/* <button
+                  {/* <button
                       onClick={() => handleEdit(data)}
                       className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer "
                     >
                       Edit
                     </button> */}
-                    <Button
-                      color="-sky-600"
-                      label="Edit"
-                      onClick={() => handleEdit(data)}
-                    />
-                  </td>
-                </tr>
-              ))}
+                  <Button
+                    color="-sky-600"
+                    label="Edit"
+                    onClick={() => handleEdit(data)}
+                  />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
