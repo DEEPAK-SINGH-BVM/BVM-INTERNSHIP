@@ -6,7 +6,7 @@ import { InputSelectSignup, InputSignup } from "../Elements/Input";
 import Span from "../Elements/Span";
 import Select from "../Elements/Select";
 import { LabelSignup } from "../Elements/label";
-import { countryOptions , genderOptions } from "../Data/ValueLabel";
+import { countryOptions, genderOptions } from "../Data/ValueLabel";
 const Signup = () => {
   let User = {
     firstName: "",
@@ -32,6 +32,8 @@ const Signup = () => {
   //   { value: "female", label: "Female" },
   // ];
   const [error, setError] = useState({});
+  const [isDark, setIsDark] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -80,7 +82,8 @@ const Signup = () => {
       newError.lastName = "Number Are Not Allow !!";
     }
     if (!user.email) newError.email = "Email Required !!";
-    else if (!/\S+@\S+\.\S+/.test(user.email)) newError.email = "Invalid email !!";
+    else if (!/\S+@\S+\.\S+/.test(user.email))
+      newError.email = "Invalid email !!";
     if (!user.password) newError.password = "Password Required !!";
     if (!user.country) newError.country = "Country Required !!";
     if (!user.gender) newError.gender = "Gender Required !!";
@@ -101,12 +104,46 @@ const Signup = () => {
   };
 
   return (
-    <div>
-      <div className="flex justify-center pt-25 ">
+    // <div className="bg-black">
+    <div className={`h-screen bg-black ${isDark ? "bg-black" : "bg-white "}`}>
+      <nav className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 ">
+        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className=" flex h-16 items-center justify-end">
+            <div className="flex items-center align-center ">
+              <input
+                type="checkbox"
+                id="toggleDark"
+                className="sr-only peer"
+                onChange={() => setIsDark(!isDark)}
+              />
+              <div className="p-3">
+                <button
+                  type="button"
+                  class="text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none  mt-2"
+                >
+                  <label htmlFor="toggleDark" className="cursor-pointer ">
+                    <span className="text-sm font-medium">
+                      {isDark ? "Dark Mode" : "Light Mode"}
+                    </span>
+                  </label>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div className="flex justify-center pt-25  ">
         {/* DARK */}
-        <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        {/* <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"> */}
         {/* LIGHT */}
         {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 text-black"> */}
+        <div
+          className={`max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 text-black ${
+            isDark
+              ? "w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 "
+              : "w-full max-w-sm border bg-white border-gray-300 rounded-2xl p-8 text-black "
+          }`}
+        >
           <form className="space-y-6" onSubmit={handleSubmit}>
             <h4 className="text-3xl font-medium text-gray-900 dark:text-white ">
               Signup

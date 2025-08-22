@@ -54,7 +54,10 @@ const Logout = () => {
   const [searchItem, setSearchItem] = useState("");
   const [edit, setEdit] = useState(null);
   const [error, setError] = useState({});
-
+  const [isDark, setIsDark] = useState(false);
+  
+  // console.log(isDark,'IS-DARK');
+  
   const validation = () => {
     let newError = {};
     if (!user.firstName) {
@@ -154,19 +157,14 @@ const Logout = () => {
     .filter((item) => {
       const Gender = !filters.gender || item.gender === filters.gender;
       // console.log(Gender);
-      // console.log(item.gender,'ITEM-GENDER');
+      // console.log(item.gender, "ITEM-GENDER");
       // console.log(filters.gender,'filter-gender');
+
       const Country = !filters.country || item.country === filters.country;
-      const Language = !filters.language || item.language === filters.language;
-
-      // const Language =
-      //   !filters.language ||
-      //   (Array.isArray(item.language)
-      //     ? item.language.some(
-      //         (lang) => lang.toLowerCase() === filters.language.toLowerCase()
-      //       )
-      //     : item.language.toLowerCase() === filters.language.toLowerCase());
-
+      // const Language = !filters.language || item.language === filters.language;
+      const Language =!filters.language ||String(item.language).toLowerCase().includes(filters.language.toLowerCase());
+      //  console.log(String(item.language), "language");
+      // console.log(item.language, "language");
       return Gender && Country && Language;
     })
     .filter(
@@ -177,7 +175,8 @@ const Logout = () => {
         item.lastName.toLowerCase().includes(searchItem.toLowerCase())
     );
   return (
-    <div>
+    // <div className="bg-black">
+    <div className={`bg-black ${isDark ? "bg-black" : "bg-white "}`}>
       {/* <button
         onClick={(e) => handleLogout(e)}
         className="px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -193,26 +192,50 @@ const Logout = () => {
             >
               Logout
             </button>
-
-            <label class=" flex justify-center  items-center cursor-pointer pl-3">
-              <input type="checkbox" value="" class="sr-only peer" />
-              <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-600"></div>
-              {/* <p class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                  Light/Dark
-                </p> */}
-            </label>
-            <p class="ms-3 pt-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-              Light/Dark
-            </p>
+            <div className="flex items-center align-center ">
+              <input
+                type="checkbox"
+                id="toggleDark"
+                className="sr-only peer"
+                onChange={() => setIsDark(!isDark)}
+              />
+              <div className="p-3">
+                <button
+                  type="button"
+                  class="text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none  mt-2"
+                >
+                  <label htmlFor="toggleDark" className="cursor-pointer ">
+                    <span className="text-sm font-medium">
+                      {isDark ? "Dark Mode" : "Light Mode"}
+                    </span>
+                  </label>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </nav>
       <br />
+      {/* light/dark */}
       <div className="flex flex-col justify-center sm:h-screen p-4 hover:border-gray-500 ">
+        {/* <div
+        className={`flex flex-col justify-center sm:h-screen p-4 hover:border-gray-500  ${
+          isDark
+            ? "flex flex-col justify-center sm:h-screen p-4 hover:border-gray-500 "
+            : "flex flex-col justify-center sm:h-screen p-4 hover:border-gray-500"
+        }`}
+      > */}
         {/* Light */}
         {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 "> */}
-          {/* Dark */}
-          <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 dark:bg-gray-800 dark:border-gray-700 text-white">
+        {/* Dark */}
+        {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 dark:bg-gray-800 dark:border-gray-700 text-white"> */}
+        <div
+          className={`max-w-md w-full mx-auto border rounded-2xl p-8 ${
+            isDark
+              ? "bg-gray-800 border-gray-700 text-white "
+              : "bg-white border-gray-300 text-black "
+          }`}
+        >
           <div className="text-center ">
             <h2 className="text-3xl font-bold">Registration Form</h2>
             <hr />
@@ -273,7 +296,6 @@ const Logout = () => {
               </label> */}
               <Label label="Email" />
               {/* <input
-
                 name="email"
                 type="email"
                 value={user.email}
@@ -490,9 +512,9 @@ const Logout = () => {
               className="w-[200px] mt-2 cursor-pointer"
             />
           </div>
-          <div className="text-lg m-2">
+          <div className="text-lg m-2 ">
             <input
-              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer"
+              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer bg-white "
               type="text"
               placeholder="Search"
               value={searchItem}
@@ -502,7 +524,12 @@ const Logout = () => {
         </div>
       </div>
       <br />
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg ">
+      {/* <div className="relative overflow-x-auto shadow-md sm:rounded-lg "> */}
+      <div
+        className={`relative overflow-x-auto shadow-md sm:rounded-lg ${
+          isDark ? "bg-gray-800 text-white" : "bg-white text-black"
+        }`}
+      >
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr className="border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-white">
@@ -548,10 +575,11 @@ const Logout = () => {
             {filterList.map((data) => (
               <tr
                 key={data.id}
-                // LIGHT
-                // className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-black"
-                // DARK
-                className=" border-b dark:bg-gray-700 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-white"
+                className={`border-b ${
+                  isDark
+                    ? "bg-gray-800 hover:bg-gray-700 text-white border-gray-700"
+                    : "bg-white hover:bg-gray-50 text-black border-gray-200"
+                }`}
               >
                 <TdTable label={data.firstName} />
                 <TdTable label={data.lastName} />
