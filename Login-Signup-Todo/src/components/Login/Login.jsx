@@ -7,12 +7,49 @@ import { InputSignup } from "../Elements/Input";
 import Span from "../Elements/Span";
 import { LabelLogin } from "../Elements/label";
 
+import { faMoon } from "@fortawesome/free-regular-svg-icons";
+import React from "react";
+import { IoMoon } from "react-icons/io5";
+import { IoSunny } from "react-icons/io5";
+import { IconContext } from "react-icons";
+// import { FiPackage } from "react-icons/fi";
+/*
+import { faMoon } from "@fortawesome/free-regular-svg-icons";
+import React from "react";
+import { IoMoon } from "react-icons/io5";
+import { IoSunny } from "react-icons/io5";
+import { IconContext } from "react-icons";
+import "./App.css";
+function App() {
+  const [dark, setDark] = React.useState(false);
+
+  const darkModeHandler = () => {
+    setDark(!dark);
+    document.body.classList.toggle("dark");
+  };
+
+  return (
+    <div className="bg-yellow-100 dark:bg-black h-[400px]">
+      <button onClick={() => darkModeHandler()}>
+        {dark && <IoSunny />}
+        {!dark && <IoMoon />}
+      </button>
+    </div>
+  );
+}
+*/
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setErrors] = useState({});
   const [isDark, setIsDark] = useState(false);
-  
+  const [dark, setDark] = React.useState(false);
+
+  const darkModeHandler = () => {
+    setDark(!dark);
+    document.body.classList.toggle("dark");
+  };
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -50,19 +87,21 @@ const Login = () => {
 
   return (
     // <div className="bg-black h-screen">
-    <div className={`h-screen bg-black ${isDark ? "bg-black" : "bg-white "}`}>
+    // <div className={`h-screen bg-black ${isDark ? "bg-black" : "bg-white "}`}>
+    // <div className="h-screen bg-white dark:bg-black">
+    <div className="h-screen bg-blue border border-gray-200 rounded-lg shadow-sm  dark:bg-black dark:border-gray-700 text-black  dark:text-white">
       <nav className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 ">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className=" flex h-16 items-center justify-end">
             <div className="flex items-center align-center ">
-              <input
+              {/* <input
                 type="checkbox"
                 id="toggleDark"
                 className="sr-only peer"
                 onChange={() => setIsDark(!isDark)}
-              />
+              /> */}
               <div className="p-3">
-                <button
+                {/* <button
                   type="button"
                   class="text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none  mt-2"
                 >
@@ -71,7 +110,16 @@ const Login = () => {
                       {isDark ? "Dark Mode" : "Light Mode"}
                     </span>
                   </label>
+                </button> */}
+
+                <button
+                  onClick={() => darkModeHandler()}
+                  className="text-white cursor-pointer"
+                >
+                  {dark && <IoSunny size={30} />}
+                  {!dark && <IoMoon size={30} />}
                 </button>
+                {/* <FiPackage className="" /> */}
               </div>
             </div>
           </div>
@@ -79,14 +127,14 @@ const Login = () => {
       </nav>
       <div className="flex justify-center pt-25 ">
         {/* DARK */}
-        {/* <div className="w-full max-w-sm p-4 bg-blue border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 text-white"> */}
-        <div
+        <div className="w-full max-w-sm p-4 bg-blue border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 text-black  dark:text-white">
+          {/* <div
           className={`w-full max-w-sm p-4 bg-blue border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 ${
             isDark
               ? "w-full max-w-sm p-4 bg-blue border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 text-white "
               : "w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 "
           }`}
-        >
+        > */}
           {/* LIGHT */}
           {/* <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"> */}
           <form className="space-y-6" onSubmit={handelSubmit}>
@@ -153,7 +201,7 @@ const Login = () => {
               Login
             </button>
 
-            {/* <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+            <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
               Not registered?{" "}
               <Link
                 to="/"
@@ -161,7 +209,7 @@ const Login = () => {
               >
                 Create account
               </Link>
-            </div> */}
+            </div>
           </form>
         </div>
       </div>

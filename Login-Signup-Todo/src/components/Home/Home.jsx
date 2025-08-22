@@ -8,6 +8,13 @@ import Span from "../Elements/Span";
 import Select from "../Elements/Select";
 import { Label, LabelSelect } from "../Elements/label";
 import { TdTable, ThTable } from "../Elements/THtable";
+import { faMoon } from "@fortawesome/free-regular-svg-icons";
+import React from "react";
+import { IoMoon } from "react-icons/io5";
+import { IoSunny } from "react-icons/io5";
+import { IconContext } from "react-icons";
+import { Link, useNavigate } from "react-router-dom";
+
 import {
   countryOptions,
   genderOptions,
@@ -46,7 +53,7 @@ const Logout = () => {
   //   { value: "english", label: "English" },
   //   { value: "gujarati", label: "Gujarati" },
   // ];
-
+  const navigate = useNavigate();
   const [user, setUser] = useState(User);
   const users = useSelector((state) => state.users.users);
   console.log(users, "PATH");
@@ -55,9 +62,16 @@ const Logout = () => {
   const [edit, setEdit] = useState(null);
   const [error, setError] = useState({});
   const [isDark, setIsDark] = useState(false);
-  
+  const [dark, setDark] = React.useState(false);
+  console.log(dark, "LOGIN-DARK");
+
+  const darkModeHandler = () => {
+    setDark(!dark);
+    document.body.classList.toggle("dark");
+  };
+
   // console.log(isDark,'IS-DARK');
-  
+
   const validation = () => {
     let newError = {};
     if (!user.firstName) {
@@ -142,6 +156,7 @@ const Logout = () => {
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logout());
+    navigate("/login");
   };
 
   const handleDelete = (id) => {
@@ -162,7 +177,11 @@ const Logout = () => {
 
       const Country = !filters.country || item.country === filters.country;
       // const Language = !filters.language || item.language === filters.language;
-      const Language =!filters.language ||String(item.language).toLowerCase().includes(filters.language.toLowerCase());
+      const Language =
+        !filters.language ||
+        String(item.language)
+          .toLowerCase()
+          .includes(filters.language.toLowerCase());
       //  console.log(String(item.language), "language");
       // console.log(item.language, "language");
       return Gender && Country && Language;
@@ -176,7 +195,8 @@ const Logout = () => {
     );
   return (
     // <div className="bg-black">
-    <div className={`bg-black ${isDark ? "bg-black" : "bg-white "}`}>
+    // <div className={`bg-black ${isDark ? "bg-black" : "bg-white "}`}>
+    <div className="bg-blue border border-gray-200 rounded-lg shadow-sm  dark:bg-black dark:border-gray-700 text-black  dark:text-white">
       {/* <button
         onClick={(e) => handleLogout(e)}
         className="px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -193,14 +213,14 @@ const Logout = () => {
               Logout
             </button>
             <div className="flex items-center align-center ">
-              <input
+              {/* <input
                 type="checkbox"
                 id="toggleDark"
                 className="sr-only peer"
                 onChange={() => setIsDark(!isDark)}
-              />
+              /> */}
               <div className="p-3">
-                <button
+                {/* <button
                   type="button"
                   class="text-white  focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none  mt-2"
                 >
@@ -209,6 +229,13 @@ const Logout = () => {
                       {isDark ? "Dark Mode" : "Light Mode"}
                     </span>
                   </label>
+                </button> */}
+                <button
+                  onClick={() => darkModeHandler()}
+                  className="text-white cursor-pointer "
+                >
+                  {dark && <IoSunny size={30} />}
+                  {!dark && <IoMoon size={30} />}
                 </button>
               </div>
             </div>
@@ -217,7 +244,8 @@ const Logout = () => {
       </nav>
       <br />
       {/* light/dark */}
-      <div className="flex flex-col justify-center sm:h-screen p-4 hover:border-gray-500 ">
+      <div className="flex justify-center n p-4 hover:border-gray-500 ">
+        {/* <div className="flex justify-center pt-25 "> */}
         {/* <div
         className={`flex flex-col justify-center sm:h-screen p-4 hover:border-gray-500  ${
           isDark
@@ -229,13 +257,15 @@ const Logout = () => {
         {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 "> */}
         {/* Dark */}
         {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 dark:bg-gray-800 dark:border-gray-700 text-white"> */}
-        <div
+        {/* <div
           className={`max-w-md w-full mx-auto border rounded-2xl p-8 ${
             isDark
               ? "bg-gray-800 border-gray-700 text-white "
               : "bg-white border-gray-300 text-black "
           }`}
-        >
+        > */}
+        {/* <div className="max-w-md w-full mx-auto border rounded-2xl p-8  dark: bg-gray-800  border-gray-700 text-white "> */}
+        <div className=" w-full max-w-sm p-4 bg-blue border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 text-black  dark:text-white">
           <div className="text-center ">
             <h2 className="text-3xl font-bold">Registration Form</h2>
             <hr />
@@ -277,7 +307,6 @@ const Logout = () => {
                 onChange={handleChange}
                 className="text-slate-900 bg-white border border-gray-300 w-full text-sm px-4 py-3 rounded-md outline-blue-500"
                 placeholder="Enter Last Name"
-                 
               /> */}
               <Input
                 name="lastName"
@@ -316,7 +345,7 @@ const Logout = () => {
             </div>
             <br />
             <div className="sm:flex gap-5">
-              <div className="sm:w-[180px]">
+              <div className="sm:w-[155px]">
                 {/* <label className="text-slate-900 text-sm font-medium mb-2 block">
                   Date Of Birth
                 </label> */}
@@ -514,7 +543,7 @@ const Logout = () => {
           </div>
           <div className="text-lg m-2 ">
             <input
-              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer bg-white "
+              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer bg-white text-black "
               type="text"
               placeholder="Search"
               value={searchItem}
@@ -525,14 +554,12 @@ const Logout = () => {
       </div>
       <br />
       {/* <div className="relative overflow-x-auto shadow-md sm:rounded-lg "> */}
-      <div
-        className={`relative overflow-x-auto shadow-md sm:rounded-lg ${
-          isDark ? "bg-gray-800 text-white" : "bg-white text-black"
-        }`}
-      >
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg text-red">
+        {/* <div> */}
+        {/* <div className="bg-gray-800 text-white  dark:text-white"> */}
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr className="border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 text-white">
+            <tr className="bg-gray-800 dark:border-gray-700 border-gray-200 text-white ">
               <ThTable label="First name" />
               <ThTable label="Last name" />
               <ThTable label="Email" />
@@ -573,14 +600,17 @@ const Logout = () => {
 
           <tbody>
             {filterList.map((data) => (
-              <tr
-                key={data.id}
-                className={`border-b ${
-                  isDark
-                    ? "bg-gray-800 hover:bg-gray-700 text-white border-gray-700"
-                    : "bg-white hover:bg-gray-50 text-black border-gray-200"
-                }`}
-              >
+              // <tr
+              //   key={data.id}
+              //   className={`border-b ${
+              //     isDark
+              //       ? "bg-gray-800 hover:bg-gray-700 text-white border-gray-700"
+              //       : "bg-white hover:bg-gray-50 text-black border-gray-200"
+              //   }`}
+              // >
+              // <tr className="border-b bg-white hover:bg-gray-50 text-black border-gray-200 dark:bg-gray-800 hover:bg-gray-700 text-white border-gray-700">
+              // <tr className="text-black dark:bg-black text-sky-500 ">
+              <tr className="dark:text-white  dark:bg-black dark:border dark:border-white border text-black ">
                 <TdTable label={data.firstName} />
                 <TdTable label={data.lastName} />
                 <TdTable label={data.email} />

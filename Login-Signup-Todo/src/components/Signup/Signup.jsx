@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signup } from "../action/LoginSignAction";
 import { InputSelectSignup, InputSignup } from "../Elements/Input";
@@ -7,6 +7,13 @@ import Span from "../Elements/Span";
 import Select from "../Elements/Select";
 import { LabelSignup } from "../Elements/label";
 import { countryOptions, genderOptions } from "../Data/ValueLabel";
+
+
+import { faMoon } from "@fortawesome/free-regular-svg-icons";
+import { IoMoon } from "react-icons/io5";
+import { IoSunny } from "react-icons/io5";
+import { IconContext } from "react-icons";
+
 const Signup = () => {
   let User = {
     firstName: "",
@@ -33,6 +40,13 @@ const Signup = () => {
   // ];
   const [error, setError] = useState({});
   const [isDark, setIsDark] = useState(false);
+
+  const [dark, setDark] = React.useState(false);
+  
+  const darkModeHandler = () => {
+    setDark(!dark);
+    document.body.classList.toggle("dark");
+  };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -105,19 +119,20 @@ const Signup = () => {
 
   return (
     // <div className="bg-black">
-    <div className={`h-screen bg-black ${isDark ? "bg-black" : "bg-white "}`}>
+    // <div className={`h-screen bg-black ${isDark ? "bg-black" : "bg-white "}`}>
+    <div className="h-screen bg-blue rounded-lg   dark:bg-black text-black  dark:text-white ">
       <nav className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 ">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className=" flex h-16 items-center justify-end">
             <div className="flex items-center align-center ">
-              <input
+              {/* <input
                 type="checkbox"
                 id="toggleDark"
                 className="sr-only peer"
                 onChange={() => setIsDark(!isDark)}
-              />
+              /> */}
               <div className="p-3">
-                <button
+                {/* <button
                   type="button"
                   class="text-white focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none  mt-2"
                 >
@@ -126,6 +141,14 @@ const Signup = () => {
                       {isDark ? "Dark Mode" : "Light Mode"}
                     </span>
                   </label>
+                </button> */}
+
+                <button
+                  onClick={() => darkModeHandler()}
+                  className="text-white cursor-pointer"
+                >
+                  {dark && <IoSunny size={30} />}
+                  {!dark && <IoMoon size={30} />}
                 </button>
               </div>
             </div>
@@ -133,17 +156,20 @@ const Signup = () => {
         </div>
       </nav>
       <div className="flex justify-center pt-25  ">
+        {/* <div className="flex justify-center h-max bg-blue border border-gray-200 rounded-lg shadow-sm  dark:bg-black dark:border-gray-700 text-black  dark:text-white"> */}
         {/* DARK */}
         {/* <div className="w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"> */}
         {/* LIGHT */}
         {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 text-black"> */}
-        <div
+        {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 text-black dark:w-full max-w-sm p-4 bg-blue text-red-600 border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700"> */}
+        <div className="w-full max-w-sm p-4 bg-blue border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 text-black  dark:text-white">
+          {/* <div
           className={`max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 text-black ${
             isDark
               ? "w-full max-w-sm p-4 bg-blue text-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 "
               : "w-full max-w-sm border bg-white border-gray-300 rounded-2xl p-8 text-black "
           }`}
-        >
+        > */}
           <form className="space-y-6" onSubmit={handleSubmit}>
             <h4 className="text-3xl font-medium text-gray-900 dark:text-white ">
               Signup
@@ -337,12 +363,12 @@ const Signup = () => {
               Signup
             </button>
 
-            {/* <div className="text-sm text-gray-500">
+            <div className="text-sm text-gray-500">
               Already have account?{" "}
               <Link to="/login" className="text-blue-600 hover:underline">
                 Login
               </Link>
-            </div> */}
+            </div>
           </form>
         </div>
       </div>
