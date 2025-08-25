@@ -1,48 +1,48 @@
-// import Login from "./components/Login/Login";
-// import { useSelector } from "react-redux";
-// import { selectUser } from "./components/reducer/LoginSignup";
-// import { BrowserRouter, Routes, Route, Navigate } from "react-router";
-// import Signup from "./components/Signup/Signup";
-// import Home from "./components/Home/Home";
-// import Dark from "./LightDark/dark";
-
-// const App = () => {
-//   const user = useSelector(selectUser);
-//   console.log(user,'SELECT-USER');
-
-//   return (
-//     <div>
-//         {/* <Dark/> */}
-//       <BrowserRouter>
-//         <Routes>
-//           <Route path="/" element={<Signup />} />
-//           <Route path="/login" element={<Login />} />
-
-//           <Route path="/home" element={user ? <Home /> : <Navigate to="/login" />} />
-//         </Routes>
-//       </BrowserRouter>
-//     </div>
-//   );
-// };
-
-// export default App;
-// App.js
-
-import React, { useState } from 'react';
-import Pagination from './Pagination/pagiantion';
-
+import Login from "./components/Login/Login";
+import { useSelector } from "react-redux";
+import { selectUser } from "./components/reducer/LoginSignup";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
+import Signup from "./components/Signup/Signup";
+import Home from "./components/Home/Home";
+import Dark from "./LightDark/dark";
 
 const App = () => {
- 
-    return (
-        <div className="App">
-            {/* <h1 className="text-center text-2xl font-bold">Pagination Example</h1> */}
-            <Pagination/>
-        </div>
-    );
+  const user = useSelector(selectUser);
+  console.log(user,'SELECT-USER');
+
+  return (
+    <div>
+        {/* <Dark/> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+
+          <Route path="/home" element={user ? <Home /> : <Navigate to="/login" />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 };
 
 export default App;
+// App.js
+
+// import React, { useState } from 'react';
+// import Pagination from './Pagination/pagiantion';
+
+
+// const App = () => {
+ 
+//     return (
+//         <div className="App">
+//             {/* <h1 className="text-center text-2xl font-bold">Pagination Example</h1> */}
+//             <Pagination/>
+//         </div>
+//     );
+// };
+
+// export default App;
 
 // import { faMoon } from "@fortawesome/free-regular-svg-icons";
 // import React from "react";

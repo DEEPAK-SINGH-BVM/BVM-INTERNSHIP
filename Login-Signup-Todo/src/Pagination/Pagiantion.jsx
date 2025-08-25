@@ -31,11 +31,15 @@ const Pagination = () => {
       setCurrentPage(currentPage + 1);
     }
   };
-
   return (
     <div className="flex justify-center items-center space-x-2 mt-4 gap-1 bg-gray-100">
       <button
-        className={`px-4 py-2 rounded bg-blue-500 text-white`}
+        // className={`px-4 py-2 rounded bg-blue-500 text-white`}
+        className={`px-4 py-2 rounded ${
+          currentPage === 1
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-blue-500 text-white "
+        }`}
         onClick={handlePrevious}
       >
         Previous
@@ -52,7 +56,12 @@ const Pagination = () => {
         </button>
       ))}
       <button
-        className="px-4 py-2 rounded bg-blue-500 text-white"
+        // className="px-4 py-2 rounded bg-blue-500 text-white"
+        className={`px-4 py-2 rounded ${
+          currentPage === totalPages
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-blue-500 text-white"
+        }`}
         onClick={handleNext}
       >
         Next

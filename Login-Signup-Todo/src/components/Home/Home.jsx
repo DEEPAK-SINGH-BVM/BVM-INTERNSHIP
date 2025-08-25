@@ -33,7 +33,7 @@ const Logout = () => {
     gender: "",
     language: [],
   };
-
+  // COMPLETE  //
   // const countryOptions = [
   //   { value: "", label: "Select Country" },
   //   { value: "usa", label: "USA" },
@@ -64,6 +64,10 @@ const Logout = () => {
   // const [isDark, setIsDark] = useState(false);
   const [dark, setDark] = React.useState(false);
   console.log(dark, "LOGIN-DARK");
+  const [currentPage, setCurrentPage] = useState(1);
+  console.log(currentPage, "current-page");
+
+  const itemsPerPage = 10;
 
   const darkModeHandler = () => {
     setDark(!dark);
@@ -168,7 +172,35 @@ const Logout = () => {
     console.log(data, "DATA");
     console.log(data.id, "data-id");
   };
-  const filterList = users
+
+  //
+  const totalPages = Math.ceil(users.length / itemsPerPage);
+  console.log(totalPages, "TOTAL-PAGE");
+  // debugger
+  const indexStart = (currentPage - 1) * itemsPerPage;
+  console.log(indexStart, "INDEX-START");
+  console.log(currentPage, "current-page");
+  console.log(itemsPerPage, "item-per-page");
+
+  const currentData = users.slice(indexStart, indexStart + itemsPerPage);
+  console.log(currentData, "CURRENT-DATA");
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  let pages = [];
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  for (let i = 1; i <= totalPages; i++) {
+    console.log(i, "I");
+    pages.push(i);
+  }
+  const filterList = currentData
     .filter((item) => {
       const Gender = !filters.gender || item.gender === filters.gender;
       // console.log(Gender);
@@ -323,7 +355,7 @@ const Logout = () => {
                 Email
               </label> */}
               <Label label="Email" />
-              {/* <input
+              {/*<input
                 name="email"
                 type="email"
                 value={user.email}
@@ -656,6 +688,41 @@ const Logout = () => {
             ))}
           </tbody>
         </table>
+        <br />
+        <div className="flex justify-center items-center space-x-2 mt-4 gap-1 ">
+          <button
+            // className={`px-4 py-2 rounded bg-blue-500 text-white`}
+            className={`px-4 py-2 rounded ${
+              currentPage === 1
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-500 text-white "
+            }`}
+            onClick={handlePrevious}
+          >
+            Previous
+          </button>
+          {pages.map((page) => (
+            <button
+              className={`px-4 py-2 rounded ${
+                currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setCurrentPage(page)}
+            >
+              {page}
+            </button>
+          ))}
+          <button
+            // className="px-4 py-2 rounded bg-blue-500 text-white"
+            className={`px-4 py-2 rounded ${
+              currentPage === totalPages
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-500 text-white"
+            }`}
+            onClick={handleNext}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
