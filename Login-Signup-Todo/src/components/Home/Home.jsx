@@ -659,27 +659,35 @@ const Logout = () => {
                 {/* <td className="px-6 py-4">{data.gender}</td> */}
                 {/* <td className="px-6 py-4">{data.language.join(" ,")}</td> */}
                 <td>
-                  {/* <button
-                      onClick={() => handleDelete(data.id)}
-                      className="w-[100px] border-2 border border-gray-300 p-2 bg-red-600 text-white cursor-pointer "
-                    >
-                     
-                      Delete
-                    </button> */}
-                  <Button
+                  {/* <Button
                     color="-red-600"
                     label="Delete"
                     onClick={() => handleDelete(data.id)}
-                  />
+                  /> */}
+                  <button
+                    onClick={() => handleDelete(data.id)}
+                    disabled={edit !== null}
+                    className={`px-4 py-2 bg-red-600 text-white ${
+                      edit !== null
+                        ? "cursor-not-allowed"
+                        : "cursor-pointer"
+                    }`}
+                  >
+                    Delete
+                  </button>
 
-                  {/* <button
-                      onClick={() => handleEdit(data)}
-                      className="w-[100px] border-2 border border-gray-300 p-2 bg-sky-600 text-white cursor-pointer "
-                    >
-                      Edit
-                    </button> */}
+                  {/* <Button
+                    disabled={edit !== null}
+                    label="Delete"
+                    color={`px-4 py-2 bg-red-600 text-white ${
+                      edit !== null
+                        ? "cursor-not-allowed"
+                        : "cursor-not-allowed"
+                    }`}
+                    onClick={() => handleDelete(data.id)}
+                  /> */}
                   <Button
-                    color="-sky-600"
+                    color="-sky-600 "
                     label="Edit"
                     onClick={() => handleEdit(data)}
                   />
@@ -689,9 +697,10 @@ const Logout = () => {
           </tbody>
         </table>
         <br />
-        <div className="flex justify-center items-center space-x-2 mt-4 gap-1 ">
+        <div className="flex justify-center items-center space-x-2  gap-1 p-2">
           <button
             // className={`px-4 py-2 rounded bg-blue-500 text-white`}
+
             className={`px-4 py-2 rounded ${
               currentPage === 1
                 ? "bg-gray-300 cursor-not-allowed"
@@ -704,7 +713,7 @@ const Logout = () => {
           {pages.map((page) => (
             <button
               className={`px-4 py-2 rounded ${
-                currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200"
+                currentPage === page ? "bg-blue-500 text-white" : "bg-gray-400 "
               }`}
               onClick={() => setCurrentPage(page)}
             >
@@ -712,7 +721,7 @@ const Logout = () => {
             </button>
           ))}
           <button
-            // className="px-4 py-2 rounded bg-blue-500 text-white"
+            //   className="px-4 py-2 rounded bg-blue-500 text-white"
             className={`px-4 py-2 rounded ${
               currentPage === totalPages
                 ? "bg-gray-300 cursor-not-allowed"
