@@ -1,17 +1,29 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../action/LoginSignAction";
 import { addUser, deleteUser, editUser } from "../action/userAction";
 import Button from "../Elements/Button";
 import { Input, InputSelectSignup } from "../Elements/Input";
+import Span from "../Elements/Span";
 import Select from "../Elements/Select";
 import { Label, LabelSelect } from "../Elements/label";
 import { TdTable, ThTable } from "../Elements/THtable";
-import { countryOptions, genderOptions } from "../Data/ValueLabel";
-import "./Home.css";
+import { faMoon } from "@fortawesome/free-regular-svg-icons";
+import React from "react";
+import { IoMoon } from "react-icons/io5";
+import { IoSunny } from "react-icons/io5";
+import { IconContext } from "react-icons";
+import { Link, useNavigate } from "react-router-dom";
 
+import {
+  countryOptions,
+  genderOptions,
+  languageOptions,
+} from "../Data/ValueLabel";
+import "./Home.css";
 const Logout = () => {
   const dispatch = useDispatch();
-  const User = {
+  let User = {
     firstName: "",
     lastName: "",
     email: "",
@@ -22,29 +34,97 @@ const Logout = () => {
     language: [],
   };
 
+  const navigate = useNavigate();
   const [user, setUser] = useState(User);
   const users = useSelector((state) => state.users.users);
-
+  console.log(users, "PATH");
+  const [filters, setFilters] = useState({});
+  const [searchItem, setSearchItem] = useState("");
   const [edit, setEdit] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [error, setError] = useState({});
+  const [isDark, setIsDark] = useState(false);
+  const [dark, setDark] = React.useState(false);
+  // console.log(dark, "LOGIN-DARK");
+
+  const darkModeHandler = () => {
+    setDark(!dark);
+    document.body.classList.toggle("dark");
+  };
+  //  Pagination 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  console.log(currentPage, "CURRENT-PAGE");
+  console.log(itemsPerPage, "item-per-page");
+
+  // const totalPages = Math.ceil(users.length / itemsPerPage);
+  // const startIndex = (currentPage - 1) * itemsPerPage;
+  // const currentData = users.slice(startIndex, startIndex + itemsPerPage);
+
+  const validation = () => {
+    let newError = {};
+    if (!user.firstName) {
+      newError.firstName = "First name Required !!";
+    } else if (!/^[A-Za-z]+$/.test(user.firstName)) {
+      newError.firstName = "Number are Not allowed";
+    }
+    if (!user.lastName) {
+      newError.lastName = "Last name Required !!";
+    } else if (!/^[A-Za-z]+$/.test(user.lastName)) {
+      newError.lastName = "Number are Not allowed";
+    }
+    if (!user.email) {
+      newError.email = "Email is Required !!";
+    } else if (!/^\S+@\S+\.\S+$/.test(user.email)) {
+      newError.email = "Invalid email format";
+    }
+    if (!user.dob) {
+      newError.dob = "Date of birth Required !!";
+    }
+    if (!user.contact) {
+      newError.contact = "Contact number Required !!";
+    } else if (!/^[0-9]{10}$/.test(user.contact)) {
+      newError.contact = "Contact Required 10 digits";
+    }
+    if (!user.country) {
+      newError.country = "Country is Required !!";
+    }
+    if (!user.gender) {
+      newError.gender = "Gender is Required !!";
+    }
+    if (user.language.length === 0) {
+      newError.language = "At least one language Required !!";
+    }
+    console.log(Object.keys(newError).length, "length");
+    setError(newError);
+    return Object.keys(newError).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, "NAME");
+    console.log(value, "value");
+
     setUser({ ...user, [name]: value });
   };
-
   const inputHandleLanguage = (e) => {
     const { name, value, checked } = e.target;
     if (name === "language") {
-      const updated = checked
-        ? [...user.language, value]
-        : user.language.filter((lang) => lang !== value);
+      const current = user.language;
+      let updated = [];
+      if (checked) {
+        updated = [...current, value];
+      } else {
+        updated = current.filter((lang) => lang !== value);
+      }
       setUser({ ...user, [name]: updated });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validation()) return;
+    console.log(edit, "EDIT");
+
     if (edit) {
       dispatch(editUser({ ...user }));
       setEdit(null);
@@ -53,471 +133,266 @@ const Logout = () => {
     }
     setUser(User);
   };
-
-  const handleDelete = (id) => {
-    dispatch(deleteUser(id));
-  };
-
-  const handleEdit = (data) => {
-    setUser(data);
-    setEdit(data.id);
-  };
-
-  return (
-    <div className="p-6">
-      {/* Toggle */}
-      <div className="flex items-center gap-3 mb-4">
-        <input
-          type="checkbox"
-          id="toggleDark"
-          className="sr-only peer"
-          checked={isDarkMode}
-          onChange={() => setIsDarkMode(!isDarkMode)}
-        />
-
-        <label htmlFor="toggleDark" className="cursor-pointer">
-          <div className="relative w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-blue-600 transition-colors duration-300">
-            <div className="absolute top-[2px] left-[2px] h-5 w-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full" />
-          </div>
-        </label>
-
-        <span className="text-sm font-medium">
-          {isDarkMode ? "Dark Mode" : "Light Mode"}
-        </span>
-      </div>
-
-      {/* Registration Form */}
-      <div
-        className={`max-w-md w-full mx-auto border rounded-2xl p-8 ${
-          isDarkMode
-            ? "bg-gray-800 border-gray-700 text-white"
-            : "bg-white border-gray-300 text-black"
-        }`}
-      >
-        <div className="text-center mb-4">
-          <h2 className="text-3xl font-bold">Registration Form</h2>
-          <hr />
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
-            <Label label="First Name" />
-            <Input
-              name="firstName"
-              type="text"
-              value={user.firstName}
-              onChange={handleChange}
-              placeholder="Enter First Name"
-            />
-          </div>
-          <br />
-          <div className="space-y-6">
-            <Label label="Last Name" />
-            <Input
-              name="lastName"
-              type="text"
-              value={user.lastName}
-              onChange={handleChange}
-              placeholder="Enter Last Name"
-            />
-          </div>
-          <br />
-          <div className="space-y-6">
-            <Label label="Email" />
-            <Input
-              name="email"
-              type="email"
-              value={user.email}
-              onChange={handleChange}
-              placeholder="Enter Email"
-            />
-          </div>
-          <br />
-          <div className="sm:flex gap-5">
-            <div className="sm:w-[180px]">
-              <Label label="Date Of Birth" />
-              <Input
-                name="dob"
-                type="date"
-                value={user.dob}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="sm:w-[180px]">
-              <Label label="Contact No." />
-              <Input
-                name="contact"
-                type="number"
-                value={user.contact}
-                onChange={handleChange}
-                placeholder="Enter Contact"
-              />
-            </div>
-          </div>
-          <br />
-          <div className="flex justify-center gap-6">
-            <div className="w-[180px]">
-              <LabelSelect label="Country" />
-              <Select
-                name="country"
-                value={user.country}
-                onChange={handleChange}
-                options={countryOptions}
-              />
-            </div>
-            <div className="w-[180px]">
-              <LabelSelect label="Gender" />
-              <Select
-                name="gender"
-                value={user.gender}
-                onChange={handleChange}
-                options={genderOptions}
-              />
-            </div>
-          </div>
-          <br />
-          <div className="items-center">
-            <label className="text-sm font-medium block w-full">
-              Select Language:
-            </label>
-            <InputSelectSignup
-              name="language"
-              value="English"
-              onChange={inputHandleLanguage}
-              checked={user.language.includes("English")}
-            />
-            <span>English</span>
-            <InputSelectSignup
-              name="language"
-              value="Hindi"
-              onChange={inputHandleLanguage}
-              checked={user.language.includes("Hindi")}
-            />
-            <span>Hindi</span>
-            <InputSelectSignup
-              name="language"
-              value="Gujarati"
-              onChange={inputHandleLanguage}
-              checked={user.language.includes("Gujarati")}
-            />
-            <span>Gujarati</span>
-          </div>
-
-          <div className="mt-3">
-            <button
-              type="submit"
-              className="w-full py-3 px-4 text-sm tracking-wider font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Table stays same */}
-      <br />
-      <div
-  className={`relative overflow-x-auto shadow-md sm:rounded-lg ${
-    isDarkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-  }`}
->
-  <table className="w-full text-sm text-left rtl:text-right">
-    <thead
-      className={`text-xs uppercase ${
-        isDarkMode
-          ? "bg-gray-700 text-white"
-          : "bg-gray-100 text-gray-700"
-      }`}
-    >
-      <tr className="border-b">
-        <ThTable label="First name" />
-        <ThTable label="Last name" />
-        <ThTable label="Email" />
-        <ThTable label="Date Of Birth" />
-        <ThTable label="Contact" />
-        <ThTable label="Country" />
-        <ThTable label="Gender" />
-        <ThTable label="Language" />
-        <ThTable label="Action" />
-      </tr>
-    </thead>
-
-    <tbody>
-      {users.map((data) => (
-        <tr
-          key={data.id}
-          className={`border-b ${
-            isDarkMode
-              ? "bg-gray-800 hover:bg-gray-700 text-white border-gray-700"
-              : "bg-white hover:bg-gray-50 text-black border-gray-200"
-          }`}
-        >
-          <TdTable label={data.firstName} />
-          <TdTable label={data.lastName} />
-          <TdTable label={data.email} />
-          <TdTable label={data.dob} />
-          <TdTable label={data.contact} />
-          <TdTable label={data.country} />
-          <TdTable label={data.gender} />
-          <TdTable label={data.language.join(" , ")} />
-          <td className="px-3 py-2 flex gap-2">
-            <Button
-              color="-red-600"
-              label="Delete"
-              onClick={() => handleDelete(data.id)}
-            />
-            <Button
-              color="-sky-600"
-              label="Edit"
-              onClick={() => handleEdit(data)}
-            />
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-    </div>
-  );
-};
-
-export default Logout;
-
-//////////
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addUser, deleteUser, editUser } from "../action/userAction";
-import Button from "../Elements/Button";
-import { Input, InputSelectSignup } from "../Elements/Input";
-import Select from "../Elements/Select";
-import { Label, LabelSelect } from "../Elements/label";
-import { TdTable, ThTable } from "../Elements/THtable";
-import { countryOptions, genderOptions } from "../Data/ValueLabel";
-import { Sun, Moon } from "lucide-react";
-import "./Home.css";
-
-const Logout = () => {
-  const dispatch = useDispatch();
-  const User = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    dob: "",
-    contact: "",
-    country: "",
-    gender: "",
-    language: [],
-  };
-
-  const [user, setUser] = useState(User);
-  const users = useSelector((state) => state.users.users);
-
-  const [edit, setEdit] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  };
-
-  const inputHandleLanguage = (e) => {
-    const { name, value, checked } = e.target;
-    if (name === "language") {
-      const updated = checked
-        ? [...user.language, value]
-        : user.language.filter((lang) => lang !== value);
-      setUser({ ...user, [name]: updated });
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleLogout = (e) => {
     e.preventDefault();
-    if (edit) {
-      dispatch(editUser({ ...user }));
-      setEdit(null);
-    } else {
-      dispatch(addUser({ ...user, id: Date.now() }));
-    }
-    setUser(User);
+    dispatch(logout());
+    navigate("/login");
   };
 
   const handleDelete = (id) => {
     dispatch(deleteUser(id));
   };
-
   const handleEdit = (data) => {
     setUser(data);
     setEdit(data.id);
+    console.log(data, "DATA");
+    console.log(data.id, "data-id");
   };
 
+  const filteredList = users
+    .filter((item) => {
+      const Gender = !filters.gender || item.gender === filters.gender;
+      const Country = !filters.country || item.country === filters.country;
+      const Language =
+        !filters.language ||
+        String(item.language)
+          .toLowerCase()
+          .includes(filters.language.toLowerCase());
+      return Gender && Country && Language;
+    })
+    .filter(
+      (item) =>
+        item.firstName.toLowerCase().includes(searchItem.toLowerCase()) ||
+        item.lastName.toLowerCase().includes(searchItem.toLowerCase())
+    );
+
+  const totalPages = Math.ceil(filteredList.length / itemsPerPage);
+  console.log(totalPages, "total-page");
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  console.log(startIndex, "start-index");
+
+  const currentData = filteredList.slice(startIndex, startIndex + itemsPerPage);
+  console.log(currentData, "current-data");
+
+  //current page
+  console.log("Current Page:", currentPage, "Data:", currentData);
+
   return (
-    <div className={`p-6 ${isDarkMode ? "dark" : ""}`}>
-      {/* Toggle Button */}
-      <div className="flex justify-end mb-4">
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg border transition-colors duration-300 
-            bg-gray-200 text-black hover:bg-gray-300 
-            dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600"
-        >
-          {isDarkMode ? (
-            <>
-              <Moon className="h-5 w-5 text-gray-200" />
-              <span>Dark Mode</span>
-            </>
-          ) : (
-            <>
-              <Sun className="h-5 w-5 text-yellow-400" />
-              <span>Light Mode</span>
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Registration Form */}
-      <div
-        className={`max-w-md w-full mx-auto border rounded-2xl p-8 ${
-          isDarkMode
-            ? "bg-gray-800 border-gray-700 text-white"
-            : "bg-white border-gray-300 text-black"
-        }`}
-      >
-        <div className="text-center mb-4">
-          <h2 className="text-3xl font-bold">Registration Form</h2>
-          <hr />
-        </div>
-
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-6">
-            <Label label="First Name" />
-            <Input
-              name="firstName"
-              type="text"
-              value={user.firstName}
-              onChange={handleChange}
-              placeholder="Enter First Name"
-            />
-          </div>
-          <br />
-          <div className="space-y-6">
-            <Label label="Last Name" />
-            <Input
-              name="lastName"
-              type="text"
-              value={user.lastName}
-              onChange={handleChange}
-              placeholder="Enter Last Name"
-            />
-          </div>
-          <br />
-          <div className="space-y-6">
-            <Label label="Email" />
-            <Input
-              name="email"
-              type="email"
-              value={user.email}
-              onChange={handleChange}
-              placeholder="Enter Email"
-            />
-          </div>
-          <br />
-          <div className="sm:flex gap-5">
-            <div className="sm:w-[180px]">
-              <Label label="Date Of Birth" />
-              <Input
-                name="dob"
-                type="date"
-                value={user.dob}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="sm:w-[180px]">
-              <Label label="Contact No." />
-              <Input
-                name="contact"
-                type="number"
-                value={user.contact}
-                onChange={handleChange}
-                placeholder="Enter Contact"
-              />
-            </div>
-          </div>
-          <br />
-          <div className="flex justify-center gap-6">
-            <div className="w-[180px]">
-              <LabelSelect label="Country" />
-              <Select
-                name="country"
-                value={user.country}
-                onChange={handleChange}
-                options={countryOptions}
-              />
-            </div>
-            <div className="w-[180px]">
-              <LabelSelect label="Gender" />
-              <Select
-                name="gender"
-                value={user.gender}
-                onChange={handleChange}
-                options={genderOptions}
-              />
-            </div>
-          </div>
-          <br />
-          <div className="items-center">
-            <label className="text-sm font-medium block w-full">
-              Select Language:
-            </label>
-            <InputSelectSignup
-              name="language"
-              value="English"
-              onChange={inputHandleLanguage}
-              checked={user.language.includes("English")}
-            />
-            <span>English</span>
-            <InputSelectSignup
-              name="language"
-              value="Hindi"
-              onChange={inputHandleLanguage}
-              checked={user.language.includes("Hindi")}
-            />
-            <span>Hindi</span>
-            <InputSelectSignup
-              name="language"
-              value="Gujarati"
-              onChange={inputHandleLanguage}
-              checked={user.language.includes("Gujarati")}
-            />
-            <span>Gujarati</span>
-          </div>
-
-          <div className="mt-3">
+    <div className="bg-blue border border-gray-200 rounded-lg shadow-sm  dark:bg-black dark:border-gray-700 text-black  dark:text-white">
+      <nav className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 ">
+        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div className=" flex h-16 items-center justify-end">
             <button
-              type="submit"
-              className="w-full py-3 px-4 text-sm tracking-wider font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer"
+              onClick={(e) => handleLogout(e)}
+              className="px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Submit
+              Logout
             </button>
+            <div className="flex items-center align-center ">
+              <div className="p-3">
+                <button
+                  onClick={() => darkModeHandler()}
+                  className="text-white cursor-pointer "
+                >
+                  {dark && <IoSunny size={30} />}
+                  {!dark && <IoMoon size={30} />}
+                </button>
+              </div>
+            </div>
           </div>
-        </form>
-      </div>
-
-      {/* Table */}
+        </div>
+      </nav>
       <br />
-      <div
-        className={`relative overflow-x-auto shadow-md sm:rounded-lg ${
-          isDarkMode ? "bg-gray-800 text-white" : "bg-white text-black"
-        }`}
-      >
-        <table className="w-full text-sm text-left rtl:text-right">
-          <thead
-            className={`text-xs uppercase ${
-              isDarkMode
-                ? "bg-gray-700 text-white"
-                : "bg-gray-100 text-gray-700"
-            }`}
-          >
-            <tr className="border-b">
+
+      <div className="flex justify-center n p-4 hover:border-gray-500 ">
+        <div className=" w-full max-w-sm p-4 bg-blue border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 text-black  dark:text-white">
+          <div className="text-center ">
+            <h2 className="text-3xl font-bold">Registration Form</h2>
+            <hr />
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-6 ">
+              <Label label="First Name" />
+
+              <Input
+                name="firstName"
+                type="text"
+                value={user.firstName}
+                onChange={handleChange}
+                placeholder="Enter First Name"
+              />
+              <Span label={error.firstName} />
+            </div>
+            <br />
+            <div className="space-y-6">
+              <Label label="Last Name" />
+
+              <Input
+                name="lastName"
+                type="text"
+                value={user.lastName}
+                onChange={handleChange}
+                placeholder="Enter Last Name"
+              />
+              <Span label={error.lastName} />
+            </div>
+            <br />
+            <div className="space-y-6">
+              <Label label="Email" />
+
+              <Input
+                name="email"
+                type="email"
+                value={user.email}
+                onChange={handleChange}
+                placeholder="Enter Email"
+              />
+              <Span label={error.email} />
+            </div>
+            <br />
+            <div className="sm:flex gap-5">
+              <div className="sm:w-[155px]">
+                <Label label="Date Of Birth" />
+
+                <Input
+                  name="dob"
+                  type="date"
+                  value={user.dob}
+                  onChange={handleChange}
+                />
+                <Span label={error.dob} />
+              </div>
+
+              <div className="sm:w-[180px]">
+                <Label label="Contact No." />
+
+                <Input
+                  name="contact"
+                  type="number"
+                  value={user.contact}
+                  onChange={handleChange}
+                  placeholder="Enter Contact "
+                />
+                <Span label={error.contact} />
+              </div>
+            </div>
+            <br />
+            <div className="flex justify-center gap-6">
+              <div className="w-[180px]">
+                <LabelSelect label=" Country" />
+                <Select
+                  name="country"
+                  value={user.country}
+                  onChange={handleChange}
+                  options={countryOptions}
+                />
+                <Span label={error.country} />
+              </div>
+
+              <div className="w-[180px]">
+                <LabelSelect label="Gender" />
+                <Select
+                  name="gender"
+                  value={user.gender}
+                  onChange={handleChange}
+                  options={genderOptions}
+                />
+                <Span label={error.gender} />
+              </div>
+            </div>
+            <br />
+            <div className=" items-center ">
+              <label className="text-sm font-medium block w-full ">
+                Select Language:
+              </label>
+
+              <InputSelectSignup
+                value="English"
+                onChange={inputHandleLanguage}
+                checked={user.language.includes("English")}
+              />
+              <span>English</span>
+
+              <InputSelectSignup
+                value="Hindi"
+                onChange={inputHandleLanguage}
+                checked={user.language.includes("Hindi")}
+              />
+              <span>Hindi</span>
+
+              <InputSelectSignup
+                value="Gujarati"
+                onChange={inputHandleLanguage}
+                checked={user.language.includes("Gujarati")}
+              />
+              <span>Gujarati</span>
+            </div>
+            <Span label={error.language} />
+            <div className="mt-3">
+              <button
+                type="submit"
+                className="w-full py-3 px-4 text-sm tracking-wider font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none cursor-pointer"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <br />
+      {/*FILTER SECTION  */}
+      <div className="flex justify-center">
+        <div className=" sm:flex gap-5 ">
+          <div className="text-lg m-2">
+            <Select
+              name="gender"
+              value={filters.gender}
+              onChange={(e) =>
+                setFilters({ ...filters, gender: e.target.value })
+              }
+              options={genderOptions}
+              className="w-[200px] mt-2 cursor-pointer"
+            />
+          </div>
+          <div className="text-lg m-2">
+            <Select
+              name="country"
+              value={filters.country}
+              onChange={(e) =>
+                setFilters({ ...filters, country: e.target.value })
+              }
+              options={countryOptions}
+              className="w-[200px] mt-2 cursor-pointer"
+            />
+          </div>
+          <div className="text-lg m-2">
+            <Select
+              name="language"
+              value={filters.language}
+              onChange={(e) =>
+                setFilters({ ...filters, language: e.target.value })
+              }
+              options={languageOptions}
+              className="w-[200px] mt-2 cursor-pointer"
+            />
+          </div>
+          <div className="text-lg m-2 ">
+            <input
+              className="w-[200px] border-2 border-gray-400 rounded h-10 text-center mt-2 cursor-pointer bg-white text-black "
+              type="text"
+              placeholder="Search"
+              value={searchItem}
+              onChange={(e) => setSearchItem(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+      <br />
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg text-red">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr className="bg-gray-800 dark:border-gray-700 border-gray-200 text-white ">
               <ThTable label="First name" />
               <ThTable label="Last name" />
               <ThTable label="Email" />
@@ -531,14 +406,10 @@ const Logout = () => {
           </thead>
 
           <tbody>
-            {users.map((data) => (
+            {currentData.map((data) => (
               <tr
                 key={data.id}
-                className={`border-b ${
-                  isDarkMode
-                    ? "bg-gray-800 hover:bg-gray-700 text-white border-gray-700"
-                    : "bg-white hover:bg-gray-50 text-black border-gray-200"
-                }`}
+                className="dark:text-white dark:bg-black border text-black"
               >
                 <TdTable label={data.firstName} />
                 <TdTable label={data.lastName} />
@@ -548,14 +419,14 @@ const Logout = () => {
                 <TdTable label={data.country} />
                 <TdTable label={data.gender} />
                 <TdTable label={data.language.join(" , ")} />
-                <td className="px-3 py-2 flex gap-2">
+                <td>
                   <Button
-                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md"
+                    color="-red-600"
                     label="Delete"
                     onClick={() => handleDelete(data.id)}
                   />
                   <Button
-                    className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md"
+                    color="-sky-600"
                     label="Edit"
                     onClick={() => handleEdit(data)}
                   />
@@ -565,31 +436,56 @@ const Logout = () => {
           </tbody>
         </table>
       </div>
+      {filteredList.length > itemsPerPage && (
+        <div className="flex justify-center items-center mt-4 gap-2">
+          <button
+            className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+            onClick={() => {
+              setCurrentPage((prev) => {
+                const newPage = Math.max(prev - 1, 1);
+                console.log("Prev-clicked", newPage);
+                return newPage;
+              });
+            }}
+            disabled={currentPage === 1}
+          >
+            Prev
+          </button>
+
+          {[...Array(totalPages)].map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                console.log("Page button clicked → Page:", i + 1);
+                setCurrentPage(i + 1);
+              }}
+              className={`px-3 py-1 rounded ${
+                currentPage === i + 1
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-black"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+            onClick={() => {
+              setCurrentPage((prev) => {
+                const newPage = Math.min(prev + 1, totalPages);
+                console.log("Next clicked → Page:", newPage);
+                return newPage;
+              });
+            }}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };
 
 export default Logout;
-
-// import { useState } from "react";
-
-// const Logout = () => {
-//   const [isDarkMode, setIsDarkMode] = useState(false);
-
-//   return (
-//     <div
-//       className={`min-h-screen flex items-center justify-center ${
-//         isDarkMode ? "bg-gray-900 text-white" : "bg-white text-black"
-//       }`}
-//     >
-//       <button
-//         onClick={() => setIsDarkMode(!isDarkMode)}
-//         className="px-4 py-2 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700"
-//       >
-//         {isDarkMode ? "Light Mode" : "Dark Mode"}
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default Logout;

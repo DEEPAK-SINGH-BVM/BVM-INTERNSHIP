@@ -61,7 +61,7 @@ const Logout = () => {
   const [searchItem, setSearchItem] = useState("");
   const [edit, setEdit] = useState(null);
   const [error, setError] = useState({});
-  const [isDark, setIsDark] = useState(false);
+  // const [isDark, setIsDark] = useState(false);
   const [dark, setDark] = React.useState(false);
   console.log(dark, "LOGIN-DARK");
 
@@ -203,6 +203,7 @@ const Logout = () => {
       >
         Logout
       </button> */}
+
       <nav className="relative bg-gray-800 after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 ">
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className=" flex h-16 items-center justify-end">
@@ -253,8 +254,6 @@ const Logout = () => {
             : "flex flex-col justify-center sm:h-screen p-4 hover:border-gray-500"
         }`}
       > */}
-        {/* Light */}
-        {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 "> */}
         {/* Dark */}
         {/* <div className="max-w-md w-full mx-auto border border-gray-300 rounded-2xl p-8 dark:bg-gray-800 dark:border-gray-700 text-white"> */}
         {/* <div
