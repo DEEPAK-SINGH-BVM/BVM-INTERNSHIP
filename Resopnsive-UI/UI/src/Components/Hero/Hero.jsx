@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Navbar from "../Navbar/Navbar";
-
+import "./Hero.css"
+import BoxModel from "../Element/Box/Box";
 const navigation = [
   { name: "Product", href: "#" },
   { name: "Features", href: "#" },
@@ -16,9 +17,9 @@ export default function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="bg-gray-900">
+    <div className="bg-gray-900 font-Inter, sans-serif">
       <header className="absolute inset-x-0 top-0 z-50">
-        <Navbar />
+        {/* <Navbar /> */}
         <Dialog
           open={mobileMenuOpen}
           onClose={setMobileMenuOpen}
@@ -71,24 +72,19 @@ export default function Hero() {
           </DialogPanel>
         </Dialog>
       </header>
-
-      <div className="relative ">
-        <div>
+      <div className="relative  Box">
+        <div >
           <img
             src="https://media.dash.org/wp-content/uploads/community_optimised.jpg"
-            alt=""
+            alt="Hero"
+            className="w-full h-[700px] object-cover "
           />
-          {/* <div className="relative mx-auto max-w-2xl py-32 sm:py-48 lg:py-56 mb-100">
-            <div className="text-center">
-              <h2 className="text-3xl font-semibold tracking-tight text-balance text-white sm:text-5xl">
-                Connect, learn and create
-              </h2>
-              <p className="mt-8 text-lg font-medium text-pretty text-gray-400 sm:text-xl/8">
-                Open source projects are only as good as the community behind
-                them.
-              </p>
-            </div>
-          </div> */}
+        </div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center ">
+          <h2 className="text-4xl text-white ">Connect, learn and create</h2>
+          <p className="mt-4 text-lg text-gray-200">
+            Open source projects are only as good as the community behind them.
+          </p>
         </div>
       </div>
     </div>

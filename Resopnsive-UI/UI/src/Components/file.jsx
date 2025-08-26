@@ -1,0 +1,216 @@
+"use client";
+
+import { useState } from "react";
+import { Dialog, DialogPanel } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+
+const navigation = [
+  {
+    name: "Get Started",
+    items: [
+      { name: "Introduction", href: "#" },
+      { name: "Download Wallet", href: "#" },
+      { name: "Setup Guide", href: "#" },
+    ],
+  },
+  {
+    name: "Institutions",
+    items: [
+      { name: "Partnerships", href: "#" },
+      { name: "Enterprise Solutions", href: "#" },
+    ],
+  },
+  {
+    name: "Developers",
+    items: [
+      { name: "Docs", href: "#" },
+      { name: "API Reference", href: "#" },
+      { name: "GitHub", href: "#" },
+    ],
+  },
+  {
+    name: "Community",
+    items: [
+      { name: "Forums", href: "#" },
+      { name: "Events", href: "#" },
+      { name: "Discord", href: "#" },
+    ],
+  },
+];
+
+export function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <header className="bg-white shadow-md">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between p-4">
+        {/* Logo */}
+        <div className="flex items-center">
+          <img
+            src="https://miro.medium.com/v2/resize:fit:1400/1*_DHG7Np0LSZUWpyrpvnyyA.png"
+            alt="Logo"
+            className="h-8 w-auto"
+          />
+        </div>
+
+        {/* Desktop Menu with hover dropdowns */}
+        <div className="hidden md:flex space-x-6 relative">
+          {navigation.map((item) => (
+            <div key={item.name} className="relative group">
+              <button className="text-gray-700 hover:text-blue-600 font-medium">
+                {item.name}
+              </button>
+
+              {/* Dropdown on hover */}
+              <div className="absolute right-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition">
+                <div className="p-2">
+                  {item.items.map((subItem) => (
+                    <a
+                      key={subItem.name}
+                      href={subItem.href}
+                      className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md"
+                    >
+                      {subItem.name}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Mobile Button */}
+        <div className="md:hidden">
+          <button onClick={() => setMobileMenuOpen(true)}>
+            <Bars3Icon className="h-6 w-6 text-gray-700" />
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="md:hidden">
+        <DialogPanel className="fixed inset-0 z-50 bg-gray-900 p-6 overflow-y-auto">
+          <div className="flex justify-between items-center">
+            <h2 className="text-white font-bold">Menu</h2>
+            <button onClick={() => setMobileMenuOpen(false)}>
+              <XMarkIcon className="h-6 w-6 text-white" />
+            </button>
+          </div>
+          <div className="mt-6 space-y-4">
+            {navigation.map((item) => (
+              <div key={item.name}>
+                <p className="text-white font-semibold">{item.name}</p>
+                {item.items.map((subItem) => (
+                  <a
+                    key={subItem.name}
+                    href={subItem.href}
+                    className="block pl-4 text-gray-300 hover:text-blue-400"
+                  >
+                    {subItem.name}
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
+        </DialogPanel>
+      </Dialog>
+    </header>
+  );
+}
+
+
+/*  HERO */
+export function Hero() {
+  return (
+    <div className="relative">
+      <img
+        src="https://media.dash.org/wp-content/uploads/community_optimised.jpg"
+        alt="Hero"
+        className="w-full h-[400px] object-cover"
+      />
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+        <h2 className="text-4xl font-bold text-white">
+          Connect, learn and create
+        </h2>
+        <p className="mt-4 text-lg text-gray-200">
+          Open source projects are only as good as the community behind them.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+/*  BOX */
+export function Box() {
+  return (
+    <div className="bg-white text-center mt-10">
+      <h2 className="text-2xl font-bold text-sky-500 mb-8">
+        Latest news and reviews
+      </h2>
+
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+            <img
+              className="rounded-t-lg w-full h-48 object-cover"
+              src="https://media.dash.org/wp-content/uploads/DashyQR.png"
+              alt="Dash QR"
+            />
+            <h5 className="mt-4 text-lg font-bold text-gray-700">
+              Dash QR Swaps Are Here for Everyone via LeoDEX
+            </h5>
+            <p className="mt-2 text-sm text-gray-600">
+              Biggest enterprise technology acquisitions of 2021 so far.
+            </p>
+            <a
+              href="#"
+              className="inline-block mt-4 px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800"
+            >
+              Read more →
+            </a>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+            <img
+              className="rounded-t-lg w-full h-48 object-cover"
+              src="https://media.dash.org/wp-content/uploads/62PdCouTvNPDFdqJorCLnfauvZdwTKWtZntNNHJQanu8qs7PSbCvMhqBqw1JLU8PzopWDBtQTojuQ31tmyRwfdjiuHJc7Rp8MV5mnr6hrPuroJn.png"
+              alt="Dash App"
+            />
+            <h5 className="mt-4 text-lg font-bold text-gray-700">
+              We’re Searching for the Killer Dash App
+            </h5>
+            <p className="mt-2 text-sm text-gray-600">
+              The community is looking for the next big application built on Dash.
+            </p>
+            <a
+              href="#"
+              className="inline-block mt-4 px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800"
+            >
+              Read more →
+            </a>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+            <img
+              className="rounded-t-lg w-full h-48 object-cover"
+              src="https://media.dash.org/wp-content/uploads/GWfRHDiXcAAwUzA.jpeg"
+              alt="Tech News"
+            />
+            <h5 className="mt-4 text-lg font-bold text-gray-700">
+              Noteworthy technology acquisitions 2021
+            </h5>
+            <p className="mt-2 text-sm text-gray-600">
+              Here are the biggest enterprise technology acquisitions of 2021.
+            </p>
+            <a
+              href="#"
+              className="inline-block mt-4 px-4 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800"
+            >
+              Read more →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

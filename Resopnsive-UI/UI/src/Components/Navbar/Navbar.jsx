@@ -8,7 +8,7 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import './Navbar.css'
+import "./Navbar.css";
 const navigation = [
   { name: "Get Started", href: "#", current: false },
   { name: "Institutions", href: "#", current: false },
@@ -25,7 +25,7 @@ export default function Navbar() {
     <div>
       <Disclosure
         as="nav"
-        className="relative border-1 mt-5 mx-50 rounded-xl border-black bg-white after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10"
+        className=" relative border-1 mx-50 rounded-xl border-black bg-white after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10"
       >
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 ">
           <div className="relative flex h-16 items-center justify-between ">
@@ -44,16 +44,16 @@ export default function Navbar() {
                 />
               </DisclosureButton>
             </div>
-            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              <div className="flex shrink-0 items-center">
+            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start ">
+              <div className="flex shrink-0 items-center ">
                 <img
                   alt="Your Company"
                   src="https://miro.medium.com/v2/resize:fit:1400/1*_DHG7Np0LSZUWpyrpvnyyA.png"
                   className="h-8 w-auto"
                 />
               </div>
-              
-              <div className="hidden sm:ml-6 sm:block  w-full ">
+
+              <div className="hidden sm:ml-6 sm:block w-full">
                 <div className="flex space-x-4">
                   {navigation.map((item) => (
                     <a
@@ -73,7 +73,6 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
-        
           </div>
         </div>
 
