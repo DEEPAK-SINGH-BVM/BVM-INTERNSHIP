@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "name": "Alice Johnson",
+      "email": "alice@example.com",
+      "password": "alice123"
+    },
+    {
+      "name": "Bob Smith",
+      "email": "bob@example.com",
+      "password": "bob456"
+    },
+    {
+      "name": "Charlie Brown",
+      "email": "charlie@example.com",
+      "password": "charlie789"
+    },
+    {
+      "name": "David Lee",
+      "email": "david@example.com",
+      "password": "david321"
+    },
+    {
+      "name": "Eva Green",
+      "email": "eva@example.com",
+      "password": "eva654"
+    }
+  ]
+}
