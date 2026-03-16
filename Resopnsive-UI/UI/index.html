@@ -21,3 +21,54 @@ npm start
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+// cron/trackShipments.js
+const cron = require("node-cron");
+const axios = require("axios");
+const Shipment = require("../model/ShipmentAllDetailsModel"); // Your DB model
+
+const API_URL = "http://localhost:5000/customer/shipment/tracking";
+
+// Run every 5 minutes
+cron.schedule("*/5 * * * *", async () => {
+  console.log(" Running shipment tracking cron job...");
+
+  try {
+    const shipments = await Shipment.find({}); // Get all shipments from DB
+
+    for (let shipment of shipments) {
+      const shipment_id = shipment._id.toString();
+
+      const response = await axios.post(API_URL, { shipment_id });
+      const shipmentData = response.data.shipment;
+
+      const trackHistory = shipmentData?.trackingHistory || [];
+
+      // Standard stages
+      const standardStages = [
+        "label_created",
+        "shipment_picked_up",
+        "at_origin_facility",
+        "in_transit",
+        "arrival_at_destination",
+        "out_for_delivery",
+        "delivered",
+        "exception_held_delayed",
+        "returned_failed_delivery",
+      ];
+
+      const updatedTrackHistory = standardStages.map((stage) => {
+        const existing = trackHistory.find((t) => t.shipment_status === stage);
+        return existing || { last_tracked: null, shipment_status: stage };
+      });
+
+      // Save updated tracking history to DB
+      await Shipment.findByIdAndUpdate(shipment_id, {
+        $set: { trackingHistory: updatedTrackHistory },
+      });
+
+      console.log(`Shipment ${shipment_id} tracking updated`);
+    }
+  } catch (err) {
+    console.error("Error running cron:", err.message);
+  }
+});
