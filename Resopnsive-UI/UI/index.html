@@ -21,137 +21,185 @@ npm start
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-// cron/trackShipments.js
-const cron = require("node-cron");
-const axios = require("axios");
-const Shipment = require("../model/ShipmentAllDetailsModel"); // Your DB model
+////////////
 
-const API_URL = "http://localhost:5000/customer/shipment/tracking";
+import React, { useEffect, useState } from "react";
 
-// Run every 5 minutes
-cron.schedule("*/5 * * * *", async () => {
-  console.log(" Running shipment tracking cron job...");
-
-  try {
-    const shipments = await Shipment.find({}); // Get all shipments from DB
-
-    for (let shipment of shipments) {
-      const shipment_id = shipment._id.toString();
-
-      const response = await axios.post(API_URL, { shipment_id });
-      const shipmentData = response.data.shipment;
-
-      const trackHistory = shipmentData?.trackingHistory || [];
-
-      // Standard stages
-      const standardStages = [
-        "label_created",
-        "shipment_picked_up",
-        "at_origin_facility",
-        "in_transit",
-        "arrival_at_destination",
-        "out_for_delivery",
-        "delivered",
-        "exception_held_delayed",
-        "returned_failed_delivery",
-      ];
-
-      const updatedTrackHistory = standardStages.map((stage) => {
-        const existing = trackHistory.find((t) => t.shipment_status === stage);
-        return existing || { last_tracked: null, shipment_status: stage };
-      });
-
-      // Save updated tracking history to DB
-      await Shipment.findByIdAndUpdate(shipment_id, {
-        $set: { trackingHistory: updatedTrackHistory },
-      });
-
-      console.log(`Shipment ${shipment_id} tracking updated`);
-    }
-  } catch (err) {
-    console.error("Error running cron:", err.message);
-  }
-});
-/////////////
-import React, { useState } from "react";
-
-const CommodityComponent = () => {
-
-  const defaultCommodity = {
+const ViewEmail = () => {
+  const defaultValue = {
     unit: "",
     weight: "",
     pieces: "",
     length: "",
     width: "",
     height: "",
-    feet: "",
-    searchCommodity: "",
-    nmfc: "",
-    nmfcSub: "",
-    description: "",
-    notes: "",
-    additional: [],
-    orderPo: "",
-    ShipperInfo: "",
   };
-
-  const [commodities, setCommodities] = useState([defaultCommodity]);
-
-  // ADD NEW FORM
+  const [commodites, setCommodites] = useState([defaultValue]);
+  const [submitData, setSubmitData] = useState([]);
+  useEffect(() => {
+    const getData = localStorage.getItem("item");
+    if (getData) {
+      setSubmitData(JSON.parse(getData));
+    }
+  }, []);
   const handleAddNew = () => {
-    setCommodities([...commodities, { ...defaultCommodity }]);
+    const newArray = [...commodites];
+    newArray.push({ ...defaultValue });
+    setCommodites(newArray);
   };
 
-  // REMOVE FORM
+  const handleChange = (index, e) => {
+    const { name, value } = e.target;
+    const update = [...commodites];
+    update[index][name] = value;
+    setCommodites(update);
+  };
+
   const handleRemove = (index) => {
-    const updated = commodities.filter((_, i) => i !== index);
-    setCommodities(updated);
+    const removeFromCommodites = commodites.filter((_, i) => i !== index);
+    const removeFromSubmitData = submitData.filter((_, i) => i !== index);
+    setCommodites(removeFromCommodites);
+    setSubmitData(removeFromSubmitData);
+    localStorage.setItem("item", JSON.stringify(removeFromCommodites));
   };
 
-  // INPUT CHANGE
-  const handleChange = (index, field, value) => {
-    const updated = [...commodities];
-    updated[index][field] = value;
-    setCommodities(updated);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const save = commodites.map((item) => ({ ...item }));
+    setSubmitData(save);
+    localStorage.setItem("item", JSON.stringify(save));
+  };
+  const freightClassWeight = (density) => {
+    let frieght;
+    if (density < 0.9) {
+      frieght = "400";
+    } else if (density < 1.9) {
+      frieght = "300";
+    } else if (density < 3.9) {
+      frieght = "250";
+    } else if (density < 5.9) {
+      frieght = "175";
+    } else if (density < 7.9) {
+      frieght = "125";
+    } else if (density < 9.9) {
+      frieght = "100";
+    } else if (density < 11.9) {
+      frieght = "92.5";
+    } else if (density < 14.9) {
+      frieght = "85";
+    } else if (density < 22.4) {
+      frieght = "70";
+    } else if (density < 29.9) {
+      frieght = "65";
+    } else if (29.9 <= density) {
+      frieght = "60";
+    }
+    return frieght;
+  };
+  const calculateFreightClass = (item) => {
+    if (!item.length || !item.height || !item.width) return "";
+    const cubeFeet =
+      (Number(item.length) * Number(item.height) * Number(item.width)) / 1728;
+    console.log("cubeFeet", cubeFeet);
+    const fWeight = Number(item.weight) / (cubeFeet * Number(item.unit));
+    console.log("fWeight", fWeight);
+    return freightClassWeight(fWeight);
   };
 
+  const calculateLinearFeet = (item)=>{
+    if(!item.unit ||!item.weight ||!item.pieces) return "";
+        const col = Math.floor(100 / Number(item.width));
+        console.log('Col',col);
+        const fullRows = Math.floor(Number(item.unit) / col);
+        console.log('fullRows',fullRows);
+        const remainingUnits = Number(item.unit) % col;
+        console.log("remainingUnits", remainingUnits);
+        const columnsUsedInLastRow = Math.ceil(remainingUnits / 1);
+        const fullRowLinearFeet = Number(item.length) * fullRows;
+        const partialRowLinearFeet =
+        Number(item.length) * (columnsUsedInLastRow / col);
+        return ((fullRowLinearFeet + partialRowLinearFeet) / 12).toFixed(2);
+  }
   return (
     <div>
-
-      <button onClick={handleAddNew}>Add New</button>
-
-      {commodities.map((item, index) => (
-        <div key={index} style={{border:"1px solid #ccc", padding:"10px", margin:"10px 0"}}>
-
-          <h4>Commodity {index + 1}</h4>
-
-          <input
-            placeholder="Unit"
-            value={item.unit}
-            onChange={(e) => handleChange(index, "unit", e.target.value)}
-          />
-
-          <input
-            placeholder="Weight"
-            value={item.weight}
-            onChange={(e) => handleChange(index, "weight", e.target.value)}
-          />
-
-          <input
-            placeholder="Pieces"
-            value={item.pieces}
-            onChange={(e) => handleChange(index, "pieces", e.target.value)}
-          />
-
-          <button onClick={() => handleRemove(index)}>
-            Remove
-          </button>
-
-        </div>
-      ))}
-
+      <button onClick={handleAddNew}>Add</button>
+      <form onSubmit={handleSubmit}>
+        {commodites.map((item, index) => {
+          return (
+            <div key={index}>
+              Commodity:{index + 1}
+              <br />
+              <input
+                name="unit"
+                placeholder="unit"
+                value={item.unit}
+                onChange={(e) => handleChange(index, e)}
+              />
+              <input
+                name="weight"
+                placeholder="weight"
+                value={item.weight}
+                onChange={(e) => handleChange(index, e)}
+              />
+              <input
+                name="pieces"
+                placeholder="pieces"
+                value={item.pieces}
+                onChange={(e) => handleChange(index, e)}
+              />
+              <input
+                name="length"
+                placeholder="length"
+                value={item.length}
+                onChange={(e) => handleChange(index, e)}
+              />
+              <input
+                name="width"
+                placeholder="width"
+                value={item.width}
+                onChange={(e) => handleChange(index, e)}
+              />
+              <input
+                name="height"
+                placeholder="height"
+                value={item.height}
+                onChange={(e) => handleChange(index, e)}
+              />
+              <p>Fright Class:{calculateFreightClass(item)}</p>
+              <p>Liner Ft:{calculateLinearFeet(item)}</p>
+              <button type="button" onClick={() => handleRemove(index)}>
+                Remove
+              </button>
+            </div>
+          );
+        })}
+        <button type="submit">Submit</button>
+      </form>
+      {submitData.map((item, index) => {
+        return (
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              gap: "20px",
+              alignItems: "center", 
+              padding: "10px",
+              borderBottom: "1px solid #ccc",
+            }}
+          >
+            <p>{item.unit}</p>
+            <p>{item.weight}</p>
+            <p>{item.pieces}</p>
+            <p>{item.length}</p>
+            <p>{item.width}</p>
+            <p>{item.length}</p>
+            <p>Fright Class:{calculateFreightClass(item)}</p>
+            <p>Liner Ft:{calculateLinearFeet(item)}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };
+export default ViewEmail;
 
-export default CommodityComponent;
